@@ -2,6 +2,7 @@ const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const dotenv = require('dotenv');
+const Dotenv = require('dotenv-webpack');
 
 const { PORT, CSS_PREFIX } = dotenv.config().parsed;
 const { NODE_ENV } = process.env;
@@ -72,5 +73,6 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: 'public/index.html',
     }),
+    new Dotenv(),
   ],
 };
