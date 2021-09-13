@@ -3,3 +3,5 @@
 
 cd FrontEnd
 npx lint-staged
+cd ../BackEnd
+npx lint-staged
