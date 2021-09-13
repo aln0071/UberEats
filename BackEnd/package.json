@@ -4,7 +4,8 @@
   "description": "Uber Eats Backend",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint:fix": "eslint . --fix --ext .js"
   },
   "repository": {
     "type": "git",
@@ -14,5 +15,11 @@
     "uber"
   ],
   "author": "Alan  Kuriakose",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {},
+  "devDependencies": {
+    "eslint": "^7.32.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.24.2"
+  }
 }
