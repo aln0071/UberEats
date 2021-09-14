@@ -4,14 +4,19 @@ const express = require('express');
 // define app
 const app = express();
 
+// add dotenv
+const dotenv = require('dotenv');
+
+dotenv.config();
+
 // import body parser to parse body of request
 const bodyParser = require('body-parser');
 
 // import express session
-var session = require('express-session');
+const session = require('express-session');
 
 // cookie parser for parsing cookies
-var cookieParser = require('cookie-parser');
+const cookieParser = require('cookie-parser');
 
 // import cors for removing cors error
 const cors = require('cors');
@@ -23,9 +28,7 @@ const helmet = require('helmet');
 const morgan = require('morgan');
 
 // defining an array to work as the database (temporary solution)
-const ads = [
-  {title: 'Hello, world (again)!'}
-];
+const ads = [{ title: 'Hello, world (again)!' }];
 
 // add Helmet for extra security
 app.use(helmet());
@@ -38,11 +41,13 @@ app.use(cors());
 
 app.use(cookieParser());
 
-app.use(session({
+app.use(
+  session({
     secret: 'cmpe_273_uber_eats_backend',
     resave: false,
-    saveUninitialized: true
-}));
+    saveUninitialized: true,
+  }),
+);
 
 // adding morgan to log HTTP requests
 app.use(morgan('combined'));
