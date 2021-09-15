@@ -12,12 +12,6 @@ dotenv.config();
 // import body parser to parse body of request
 const bodyParser = require('body-parser');
 
-// import express session
-const session = require('express-session');
-
-// cookie parser for parsing cookies
-const cookieParser = require('cookie-parser');
-
 // import cors for removing cors error
 const cors = require('cors');
 
@@ -39,16 +33,6 @@ app.use(bodyParser.json());
 
 // to remove cors error
 app.use(cors());
-
-app.use(cookieParser());
-
-app.use(
-  session({
-    secret: 'cmpe_273_uber_eats_backend',
-    resave: false,
-    saveUninitialized: true,
-  }),
-);
 
 // adding morgan to log HTTP requests
 app.use(morgan('combined'));
