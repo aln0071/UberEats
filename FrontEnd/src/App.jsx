@@ -1,5 +1,8 @@
 import React, { useEffect } from 'react';
 import './App.css';
+import { ToastContainer } from 'react-toastify';
+import Routes from './Routes';
+import 'react-toastify/dist/ReactToastify.css';
 
 const getApi = () => {
   const url = 'http://localhost:3001';
@@ -20,7 +23,19 @@ const App = () => {
 
   return (
     <div className="App">
-      <h1> Hello, World! </h1>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnVisibilityChange
+        draggable
+        pauseOnHover
+      />
+      <ToastContainer />
+      <Routes />
     </div>
   );
 };
