@@ -26,6 +26,7 @@ const helmet = require('helmet');
 
 // import morgan for loging
 const morgan = require('morgan');
+const { generateAccessToken, authMiddleware } = require('./utils');
 
 // defining an array to work as the database (temporary solution)
 const ads = [{ title: 'Hello, world (again)!' }];
@@ -54,7 +55,12 @@ app.use(morgan('combined'));
 
 // defining an endpoint to return all ads
 app.get('/', (req, res) => {
-  res.send(ads);
+  const token = generateAccessToken('test');
+  res.json({ token, ...ads });
+});
+
+app.get('/auth', authMiddleware, (req, res) => {
+  res.json({ success: true });
 });
 
 // starting the server
