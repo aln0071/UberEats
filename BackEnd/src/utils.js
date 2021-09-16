@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv');
+const mysql = require('mysql');
 
 dotenv.config();
 
@@ -30,4 +31,26 @@ function authMiddleware(req, res, next) {
   return null;
 }
 
-module.exports = { generateAccessToken, authMiddleware };
+function connectToMySQL() {
+  const connection = mysql.createConnection({
+    host: process.env.RDS_HOSTNAME,
+    user: process.env.RDS_USERNAME,
+    password: process.env.RDS_PASSWORD,
+    port: process.env.RDS_PORT,
+    database: process.env.RDS_DB,
+    ssl: 'Amazon RDS',
+  });
+
+  connection.connect((err) => {
+    if (err) {
+      console.error(`Database connection failed: ${err.stack}`);
+      return;
+    }
+
+    console.log('Connected to database.');
+  });
+
+  connection.end();
+}
+
+module.exports = { generateAccessToken, authMiddleware, connectToMySQL };

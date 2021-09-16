@@ -20,7 +20,11 @@ const helmet = require('helmet');
 
 // import morgan for loging
 const morgan = require('morgan');
-const { generateAccessToken, authMiddleware } = require('./utils');
+const {
+  generateAccessToken,
+  authMiddleware,
+  connectToMySQL,
+} = require('./utils');
 
 // defining an array to work as the database (temporary solution)
 const ads = [{ title: 'Hello, world (again)!' }];
@@ -45,6 +49,11 @@ app.get('/', (req, res) => {
 
 app.get('/auth', authMiddleware, (req, res) => {
   res.json({ success: true });
+});
+
+app.get('/mysql', (req, res) => {
+  connectToMySQL();
+  res.json({ done: 'true' });
 });
 
 // starting the server
