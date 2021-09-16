@@ -50,18 +50,18 @@ app.get('/auth', authMiddleware, (req, res) => {
 });
 
 app.post('/login', async (req, res) => {
-  const response = await login(req.body.username, req.body.password);
-  if (response.status === true) {
+  try {
+    const response = await login(req.body.username, req.body.password);
     const token = generateAccessToken(req.body.username);
     res.json({
       status: true,
       token: `Bearer ${token}`,
       ...response,
     });
-  } else {
+  } catch (error) {
     res.status(401).send({
       status: false,
-      message: 'Invalid credentials',
+      message: error.message,
     });
   }
 });

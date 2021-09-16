@@ -36,20 +36,18 @@ function executeQuery(queryString, params = {}) {
     pool.getConnection((error, connection) => {
       if (error) {
         reject(error);
+        return;
       }
 
       // for object to query mapping
       connection.config.queryFormat = function (query, values) {
         if (!values) return query;
-        return query.replace(
-          /:(\w+)/g,
-          (txt, key) => {
-            if (values.hasOwnProperty(key)) {
-              return this.escape(values[key]);
-            }
-            return txt;
-          },
-        );
+        return query.replace(/:(\w+)/g, (txt, key) => {
+          if (values.hasOwnProperty(key)) {
+            return this.escape(values[key]);
+          }
+          return txt;
+        });
       };
 
       connection.query(queryString, params, (err, rows) => {
