@@ -20,11 +20,9 @@ const helmet = require('helmet');
 
 // import morgan for loging
 const morgan = require('morgan');
-const {
-  generateAccessToken,
-  authMiddleware,
-  connectToMySQL,
-} = require('./utils');
+const { generateAccessToken, authMiddleware } = require('./utils/utils');
+
+const { login } = require('./utils/endpoints');
 
 // defining an array to work as the database (temporary solution)
 const ads = [{ title: 'Hello, world (again)!' }];
@@ -51,9 +49,21 @@ app.get('/auth', authMiddleware, (req, res) => {
   res.json({ success: true });
 });
 
-app.get('/mysql', (req, res) => {
-  connectToMySQL();
-  res.json({ done: 'true' });
+app.post('/login', async (req, res) => {
+  const response = await login(req.body.username, req.body.password);
+  if (response.status === true) {
+    const token = generateAccessToken(req.body.username);
+    res.json({
+      status: true,
+      token: `Bearer ${token}`,
+      ...response,
+    });
+  } else {
+    res.status(401).send({
+      status: false,
+      message: 'Invalid credentials',
+    });
+  }
 });
 
 // starting the server
