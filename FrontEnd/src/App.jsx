@@ -1,25 +1,13 @@
-import React, { useEffect } from 'react';
+import React, { useState } from 'react';
 import './App.css';
 import { ToastContainer } from 'react-toastify';
 import Routes from './Routes';
 import 'react-toastify/dist/ReactToastify.css';
-
-const getApi = () => {
-  const url = 'http://localhost:3001';
-  fetch(url)
-    .then((res) => res.json())
-    .then((res) => {
-      console.log(res);
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-};
+import UserContext from './utils/usercontext';
 
 const App = () => {
-  useEffect(() => {
-    getApi();
-  }, []);
+  const [userDetails, setUserDetails] = useState({});
+  const value = { userDetails, setUserDetails };
 
   return (
     <div className="App">
@@ -35,7 +23,9 @@ const App = () => {
         pauseOnHover
       />
       <ToastContainer />
-      <Routes />
+      <UserContext.Provider value={value}>
+        <Routes />
+      </UserContext.Provider>
     </div>
   );
 };

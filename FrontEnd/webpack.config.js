@@ -1,5 +1,4 @@
 const path = require('path');
-const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const dotenv = require('dotenv');
 const Dotenv = require('dotenv-webpack');
@@ -55,13 +54,13 @@ module.exports = {
     publicPath: '/',
     filename: 'bundle.js',
   },
+  devtool: 'source-map',
   devServer: {
     port: PORT,
     hot: true,
     liveReload: true,
   },
   plugins: [
-    new webpack.HotModuleReplacementPlugin(),
     new HtmlWebpackPlugin({
       template: 'public/index.html',
     }),
