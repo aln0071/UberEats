@@ -6,7 +6,9 @@ import 'react-toastify/dist/ReactToastify.css';
 import UserContext from './utils/usercontext';
 
 const App = () => {
-  const [userDetails, setUserDetails] = useState({});
+  const [userDetails, setUserDetails] = useState(
+    JSON.parse(window.sessionStorage.getItem('userDetails')) || {},
+  );
   const value = { userDetails, setUserDetails };
 
   return (

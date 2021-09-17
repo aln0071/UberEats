@@ -1,7 +1,8 @@
-import React, { useContext, useState } from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Paper, Typography } from '@material-ui/core';
 import { toast } from 'react-toastify';
+import PropTypes from 'prop-types';
 import styles from '../styles.scss';
 import {
   toastOptions,
@@ -10,28 +11,22 @@ import {
   createToastBody,
 } from '../utils';
 import login from '../utils/endpoints';
-import UserContext from '../utils/usercontext';
 
 const loginUser = async (username, password, setUserDetails) => {
   try {
     const data = await login(username, password);
-    console.log(data);
     toast.success('Success: Loggedin', toastOptions);
+    window.sessionStorage.setItem('userDetails', JSON.stringify(data));
     setUserDetails(data);
   } catch (error) {
-    setUserDetails({});
     toast.error(createToastBody(error), toastOptions);
   }
 };
 
-export default function Login() {
+export default function Login({ setUserDetails }) {
   const handleChange = (event) => event.target.value;
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const { userDetails, setUserDetails } = useContext(UserContext);
-  if (JSON.stringify(userDetails) !== '{}') {
-    return <Redirect to="/register" />;
-  }
   return (
     <div className={styles.loginContainer}>
       <Paper elevation={3} style={{ padding: '10px' }}>
@@ -71,3 +66,11 @@ export default function Login() {
     </div>
   );
 }
+
+Login.defaultProps = {
+  setUserDetails: () => {},
+};
+
+Login.propTypes = {
+  setUserDetails: PropTypes.func,
+};

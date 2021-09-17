@@ -1,7 +1,7 @@
 import React from 'react';
 
 const UserContext = React.createContext({
-  userDetails: {},
+  userDetails: JSON.parse(window.sessionStorage.getItem('userDetails')) || {},
   setUserDetails: () => {},
 });
 
