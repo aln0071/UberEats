@@ -5,10 +5,12 @@ const { pool } = require('./mysql');
 
 dotenv.config();
 
+// to generate new access token
 function generateAccessToken(username) {
   return jwt.sign({ username }, process.env.SECRET, { expiresIn: '1h' });
 }
 
+// to verify jwt token
 function authMiddleware(req, res, next) {
   const authHeader = req.headers.authorization;
   const token = authHeader && authHeader.split(' ')[1];
@@ -28,6 +30,7 @@ function authMiddleware(req, res, next) {
   return null;
 }
 
+// to execute an sql query
 function executeQuery(queryString, params = {}) {
   return new Promise((resolve, reject) => {
     if (typeof queryString !== 'string' || typeof params !== 'object') {

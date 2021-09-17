@@ -45,8 +45,8 @@ app.get('/', (req, res) => {
   res.json({ token, ...ads });
 });
 
-app.get('/auth', authMiddleware, (req, res) => {
-  res.json({ success: true });
+app.post('/auth', authMiddleware, (req, res) => {
+  res.sendStatus(200);
 });
 
 app.post('/login', async (req, res) => {
