@@ -20,11 +20,9 @@ const helmet = require('helmet');
 
 // import morgan for loging
 const morgan = require('morgan');
-const {
-  generateAccessToken,
-  authMiddleware,
-  connectToMySQL,
-} = require('./utils');
+const { generateAccessToken, authMiddleware } = require('./utils/utils');
+
+const { login } = require('./utils/endpoints');
 
 // defining an array to work as the database (temporary solution)
 const ads = [{ title: 'Hello, world (again)!' }];
@@ -47,13 +45,25 @@ app.get('/', (req, res) => {
   res.json({ token, ...ads });
 });
 
-app.get('/auth', authMiddleware, (req, res) => {
-  res.json({ success: true });
+app.post('/auth', authMiddleware, (req, res) => {
+  res.sendStatus(200);
 });
 
-app.get('/mysql', (req, res) => {
-  connectToMySQL();
-  res.json({ done: 'true' });
+app.post('/login', async (req, res) => {
+  try {
+    const response = await login(req.body.username, req.body.password);
+    const token = generateAccessToken(req.body.username);
+    res.json({
+      status: true,
+      token: `Bearer ${token}`,
+      ...response,
+    });
+  } catch (error) {
+    res.status(401).send({
+      status: false,
+      message: error.message,
+    });
+  }
 });
 
 // starting the server

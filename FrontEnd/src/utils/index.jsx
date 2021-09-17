@@ -1,3 +1,4 @@
+import React from 'react';
 import { Button, withStyles, TextField } from '@material-ui/core';
 
 // this object stores the options applied to toasts in the project
@@ -32,3 +33,12 @@ export const BlackTextField = withStyles({
     },
   },
 })(TextField);
+
+// function to create toast message from error
+export const createToastBody = (error) => (
+  <div>
+    <b>Error:</b>
+    {' '}
+    {error.message}
+  </div>
+);

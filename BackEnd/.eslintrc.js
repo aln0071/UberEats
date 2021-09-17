@@ -5,12 +5,12 @@ module.exports = {
     node: true,
   },
   ignorePatterns: ['node_modules/*'],
-  extends: [
-    'airbnb-base',
-  ],
+  extends: ['airbnb-base'],
   parserOptions: {
     ecmaVersion: 12,
   },
   rules: {
+    'no-param-reassign': 1,
+    'no-prototype-builtins': 1,
   },
 };
