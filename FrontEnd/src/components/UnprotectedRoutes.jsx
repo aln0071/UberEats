@@ -1,22 +1,21 @@
 import React from 'react';
 import { Redirect, Route } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
 
-export default function UnprotectedRoutes({ userDetails, path, children }) {
-  if (userDetails === null) {
-    return <Route to={path}>{children}</Route>;
+export default function UnprotectedRoutes({ path, children }) {
+  if (useSelector((state) => state.user.token)) {
+    return <Redirect to="/home" />;
   }
-  return <Redirect to="/home" />;
+  return <Route to={path}>{children}</Route>;
 }
 
 UnprotectedRoutes.defaultProps = {
-  userDetails: null,
   path: '',
   children: undefined,
 };
 
 UnprotectedRoutes.propTypes = {
   path: PropTypes.string,
-  userDetails: PropTypes.oneOfType([PropTypes.object]),
   children: PropTypes.node,
 };

@@ -1,12 +1,13 @@
 import React from 'react';
 import { Redirect, Route } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
 
 export default function ProtectedRoute({ path, children }) {
-  if (window.sessionStorage.getItem('userDetails') === null) {
-    return <Redirect to="/login" />;
+  if (useSelector((state) => state.user.token)) {
+    return <Route path={path}>{children}</Route>;
   }
-  return <Route path={path}>{children}</Route>;
+  return <Redirect to="/login" />;
 }
 
 ProtectedRoute.defaultProps = {

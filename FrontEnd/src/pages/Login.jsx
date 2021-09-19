@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { Paper, Typography } from '@material-ui/core';
 import { toast } from 'react-toastify';
-import PropTypes from 'prop-types';
+import { useDispatch, useSelector } from 'react-redux';
 import styles from '../styles.scss';
 import {
   toastOptions,
@@ -11,22 +11,27 @@ import {
   createToastBody,
 } from '../utils';
 import login from '../utils/endpoints';
+import loginAction from '../store/actions';
 
-const loginUser = async (username, password, setUserDetails) => {
-  try {
-    const data = await login(username, password);
-    toast.success('Success: Loggedin', toastOptions);
-    window.sessionStorage.setItem('userDetails', JSON.stringify(data));
-    setUserDetails(data);
-  } catch (error) {
-    toast.error(createToastBody(error), toastOptions);
-  }
-};
+export default function Login() {
+  const dispatch = useDispatch();
 
-export default function Login({ setUserDetails }) {
+  const loginUser = async (username, password) => {
+    try {
+      const data = await login(username, password);
+      toast.success('Success: Loggedin', toastOptions);
+      dispatch(loginAction(data));
+    } catch (error) {
+      toast.error(createToastBody(error), toastOptions);
+    }
+  };
+
   const handleChange = (event) => event.target.value;
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  if (useSelector((state) => state.user.token)) {
+    return <Redirect to="/home" />;
+  }
   return (
     <div className={styles.loginContainer}>
       <Paper elevation={3} style={{ padding: '10px' }}>
@@ -52,7 +57,7 @@ export default function Login({ setUserDetails }) {
             variant="contained"
             fullWidth
             onClick={() => {
-              loginUser(username, password, setUserDetails);
+              loginUser(username, password);
             }}
           >
             Login
@@ -66,11 +71,3 @@ export default function Login({ setUserDetails }) {
     </div>
   );
 }
-
-Login.defaultProps = {
-  setUserDetails: () => {},
-};
-
-Login.propTypes = {
-  setUserDetails: PropTypes.func,
-};

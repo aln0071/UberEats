@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { HashRouter as Router, Switch, Route } from 'react-router-dom';
 import ProtectedRoute from './components/ProtectedRoute';
 import UnprotectedRoutes from './components/UnprotectedRoutes';
@@ -8,18 +8,15 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 
 export default function Routes() {
-  const [userDetails, setUserDetails] = useState(
-    JSON.parse(window.sessionStorage.getItem('userDetails')),
-  );
   return (
     <Router>
       <div>
         <Switch>
-          <UnprotectedRoutes path="/login" userDetails={userDetails}>
-            <Login setUserDetails={setUserDetails} />
+          <UnprotectedRoutes path="/login">
+            <Login />
           </UnprotectedRoutes>
-          <UnprotectedRoutes path="/register" userDetails={userDetails}>
-            <Register setUserDetails={setUserDetails} />
+          <UnprotectedRoutes path="/register">
+            <Register />
           </UnprotectedRoutes>
           <ProtectedRoute path="/home">
             <Home />
