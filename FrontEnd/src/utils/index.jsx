@@ -1,5 +1,11 @@
 import React from 'react';
-import { Button, withStyles, TextField } from '@material-ui/core';
+import {
+  Button,
+  withStyles,
+  TextField,
+  FormLabel,
+  Radio,
+} from '@material-ui/core';
 
 // this object stores the options applied to toasts in the project
 export const toastOptions = {
@@ -33,6 +39,23 @@ export const BlackTextField = withStyles({
     },
   },
 })(TextField);
+
+export const BlackFormLabel = withStyles({
+  root: {
+    '&.Mui-focused': {
+      color: 'black',
+    },
+  },
+})(FormLabel);
+
+export const BlackRadio = withStyles({
+  root: {
+    '&.Mui-checked': {
+      color: 'black',
+    },
+    color: 'black',
+  },
+})(Radio);
 
 // function to create toast message from error
 export const createToastBody = (error) => (
