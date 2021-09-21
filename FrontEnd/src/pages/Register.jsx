@@ -7,25 +7,55 @@ import {
   FormControlLabel,
   RadioGroup,
 } from '@material-ui/core';
+import { toast } from 'react-toastify';
 import styles from '../styles.scss';
 import {
   BlackButton,
   BlackFormLabel,
   BlackRadio,
   BlackTextField,
+  createToastBody,
+  toastOptions,
 } from '../utils';
-
-const register = () => {};
+import { register } from '../utils/endpoints';
+import { isValid, validations } from '../utils/validations';
 
 export default function Register() {
   const [registerDetails, setRegisterDetails] = useState({
     type: 'customer',
+    name: '',
+    email: '',
+    password: '',
   });
   const handleChange = (event) => {
     setRegisterDetails({
       ...registerDetails,
       [event.target.id]: event.target.value,
     });
+  };
+
+  const [errors, setErrors] = useState({});
+
+  const onSubmit = async () => {
+    let localErrors = {};
+    const customerProfile = validations.register.customer;
+    Object.keys(customerProfile).forEach((key) => {
+      if (!isValid(customerProfile[key].regex, registerDetails[key])) {
+        localErrors = {
+          ...localErrors,
+          [key]: customerProfile[key].message,
+        };
+      }
+    });
+    setErrors(localErrors);
+    if (Object.keys(localErrors).length === 0) {
+      try {
+        await register(registerDetails);
+        toast.success('Success: User registered successfully', toastOptions);
+      } catch (error) {
+        toast.error(createToastBody(error), toastOptions);
+      }
+    }
   };
 
   return (
@@ -72,6 +102,9 @@ export default function Register() {
             id="name"
             onChange={handleChange}
             fullWidth
+            required
+            error={errors.name}
+            helperText={errors.name}
           />
         </div>
         <div className={styles.loginInput}>
@@ -81,6 +114,9 @@ export default function Register() {
             onChange={handleChange}
             id="email"
             fullWidth
+            required
+            error={errors.email}
+            helperText={errors.email}
           />
         </div>
         <div className={styles.loginInput}>
@@ -90,10 +126,13 @@ export default function Register() {
             onChange={handleChange}
             id="password"
             fullWidth
+            required
+            error={errors.password}
+            helperText={errors.password}
           />
         </div>
         <div className={styles.loginButton}>
-          <BlackButton variant="contained" fullWidth onClick={register}>
+          <BlackButton variant="contained" fullWidth onClick={onSubmit}>
             Register
           </BlackButton>
         </div>

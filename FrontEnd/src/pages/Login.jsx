@@ -10,7 +10,7 @@ import {
   BlackTextField,
   createToastBody,
 } from '../utils';
-import login from '../utils/endpoints';
+import { login } from '../utils/endpoints';
 import loginAction from '../store/actions';
 
 export default function Login() {
