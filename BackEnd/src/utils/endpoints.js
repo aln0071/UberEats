@@ -1,5 +1,5 @@
 const { executeQuery } = require('./utils');
-const { _login } = require('./queries');
+const { _login, _registerUser } = require('./queries');
 
 function login(username, password) {
   return executeQuery(_login, { username, password }).then((response) => {
@@ -12,4 +12,20 @@ function login(username, password) {
   });
 }
 
-module.exports = { login };
+function register(params) {
+  const {
+    email, password, type, name,
+  } = params;
+  if (type === 'customer') {
+    return executeQuery(_registerUser, { email, password, name }).catch(
+      (error) => {
+        if (String(error.message).startsWith('ER_DUP_ENTRY')) {
+          throw new Error('User with this email already exists');
+        }
+      },
+    );
+  }
+  return null;
+}
+
+module.exports = { login, register };

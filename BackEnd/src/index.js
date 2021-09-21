@@ -22,7 +22,7 @@ const helmet = require('helmet');
 const morgan = require('morgan');
 const { generateAccessToken, authMiddleware } = require('./utils/utils');
 
-const { login } = require('./utils/endpoints');
+const { login, register } = require('./utils/endpoints');
 
 // defining an array to work as the database (temporary solution)
 const ads = [{ title: 'Hello, world (again)!' }];
@@ -60,6 +60,18 @@ app.post('/login', async (req, res) => {
     });
   } catch (error) {
     res.status(401).send({
+      status: false,
+      message: error.message,
+    });
+  }
+});
+
+app.post('/register', async (req, res) => {
+  try {
+    await register(req.body);
+    res.sendStatus(200);
+  } catch (error) {
+    res.status(400).send({
       status: false,
       message: error.message,
     });
