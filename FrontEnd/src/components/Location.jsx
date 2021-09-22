@@ -3,13 +3,15 @@ import {
   Select,
   InputLabel,
   TextareaAutosize,
+  FormHelperText,
 } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 import styles from '../styles.scss';
 import { BlackFormControl, BlackTextField } from '../utils';
 import { getCities, getCountries, getStates } from '../utils/endpoints';
 
-export default function Location() {
+export default function Location({ errors, onChange, value }) {
   const defaultValues = {
     country: '',
     state: '',
@@ -18,10 +20,10 @@ export default function Location() {
     zip: '',
   };
 
-  const [location, setLocation] = useState(defaultValues);
-
-  const getMap = (values = [], code, label) => values.map((value) => (
-    <MenuItem value={value[code]}>{value[label]}</MenuItem>
+  const getMap = (values = [], code, label) => values.map((val) => (
+    <MenuItem key={`${code}${val[code]}`} value={val[code]}>
+      {val[label]}
+    </MenuItem>
   ));
 
   const [countries, setCountries] = useState([]);
@@ -56,27 +58,27 @@ export default function Location() {
   };
 
   const handleChange = (e, id) => {
-    const { value } = e.target;
+    const newValue = e.target.value;
     switch (id) {
       case 'country':
-        setLocation({
+        onChange({
           ...defaultValues,
-          [id]: value,
+          [id]: newValue,
         });
-        fetchStateList(value);
+        fetchStateList(newValue);
         break;
       case 'state':
-        setLocation({
+        onChange({
           ...defaultValues,
-          country: location.country,
-          [id]: value,
+          country: value.country,
+          [id]: newValue,
         });
-        fetchCityList(value);
+        fetchCityList(newValue);
         break;
       default:
-        setLocation({
-          ...location,
-          [id]: value,
+        onChange({
+          ...value,
+          [id]: newValue,
         });
     }
   };
@@ -86,63 +88,73 @@ export default function Location() {
   return (
     <div>
       <div className={styles.loginInput}>
-        <BlackFormControl fullWidth>
+        <BlackFormControl fullWidth error={errors.country}>
           <InputLabel required>Country</InputLabel>
           <Select
             onChange={(e) => handleChange(e, 'country')}
             label="Country"
-            value={location.country}
+            value={value.country}
           >
             {getMap(countries, 'countrycode', 'country')}
           </Select>
+          {errors.country && <FormHelperText>{errors.country}</FormHelperText>}
         </BlackFormControl>
       </div>
-      {location.country !== '' && (
+      {value.country !== '' && (
         <>
           <div className={styles.loginInput}>
-            <BlackFormControl fullWidth>
+            <BlackFormControl fullWidth error={errors.state}>
               <InputLabel required>State</InputLabel>
               <Select
                 onChange={(e) => handleChange(e, 'state')}
                 label="State"
-                value={location.state}
+                value={value.state}
               >
                 {getMap(states, 'statecode', 'state')}
               </Select>
+              {errors.state && <FormHelperText>{errors.state}</FormHelperText>}
             </BlackFormControl>
           </div>
-          {location.state !== '' && (
+          {value.state !== '' && (
             <>
               <div className={styles.loginInput}>
-                <BlackFormControl fullWidth>
+                <BlackFormControl fullWidth error={errors.city}>
                   <InputLabel required>City</InputLabel>
                   <Select
                     onChange={(e) => handleChange(e, 'city')}
                     label="City"
-                    value={location.city}
+                    value={value.city}
                   >
                     {getMap(cities, 'citycode', 'city')}
                   </Select>
+                  {errors.city && (
+                    <FormHelperText>{errors.city}</FormHelperText>
+                  )}
                 </BlackFormControl>
               </div>
               <div className={styles.loginInput}>
-                <BlackFormControl fullWidth>
+                <BlackFormControl fullWidth error={errors.location}>
                   <TextareaAutosize
                     placeholder="Address"
                     minRows={3}
                     onChange={(e) => handleChange(e, 'location')}
-                    value={location.location}
+                    value={value.location}
                   />
+                  {errors.location && (
+                    <FormHelperText>{errors.location}</FormHelperText>
+                  )}
                 </BlackFormControl>
               </div>
               <div className={styles.loginInput}>
                 <BlackTextField
                   label="Zip Code"
-                  type="text"
+                  type="number"
                   fullWidth
                   required
-                  value={location.zip}
-                  onChange={(e) => handleChange(e, 'location')}
+                  value={value.zip}
+                  onChange={(e) => handleChange(e, 'zip')}
+                  error={errors.zip}
+                  helperText={errors.zip}
                 />
               </div>
             </>
@@ -152,3 +164,21 @@ export default function Location() {
     </div>
   );
 }
+
+Location.defaultProps = {
+  errors: {},
+  onChange: () => {},
+  value: {
+    country: '',
+    state: '',
+    city: '',
+    location: '',
+    zip: '',
+  },
+};
+
+Location.propTypes = {
+  errors: PropTypes.oneOfType([PropTypes.object]),
+  value: PropTypes.oneOfType([PropTypes.object]),
+  onChange: PropTypes.func,
+};

@@ -22,39 +22,71 @@ import { isValid, validations } from '../utils/validations';
 import Location from '../components/Location';
 
 export default function Register() {
+  const defaultLocation = {
+    country: '',
+    state: '',
+    city: '',
+    location: '',
+    zip: '',
+  };
   const [registerDetails, setRegisterDetails] = useState({
-    type: 'customer',
+    type: 'restaurant',
     name: '',
     email: '',
     password: '',
+    location: { ...defaultLocation },
   });
+
+  const [errors, setErrors] = useState({});
+  const [locationErrors, setLocationErrors] = useState({});
+
   const handleChange = (event) => {
+    setErrors({});
+    setLocationErrors({});
+    if (event.target.id === 'type') {
+      registerDetails.location = { ...defaultLocation };
+    }
     setRegisterDetails({
       ...registerDetails,
       [event.target.id]: event.target.value,
     });
   };
 
-  const [errors, setErrors] = useState({});
-
   const onSubmit = async () => {
-    let localErrors = {};
+    const localErrors = {};
     const customerProfile = validations.register.customer;
     Object.keys(customerProfile).forEach((key) => {
       if (!isValid(customerProfile[key].regex, registerDetails[key])) {
-        localErrors = {
-          ...localErrors,
-          [key]: customerProfile[key].message,
-        };
+        localErrors[key] = customerProfile[key].message;
       }
     });
     setErrors(localErrors);
-    if (Object.keys(localErrors).length === 0) {
-      try {
-        await register(registerDetails);
-        toast.success('Success: User registered successfully', toastOptions);
-      } catch (error) {
-        toast.error(createToastBody(error), toastOptions);
+
+    if (registerDetails.type === 'customer') {
+      if (Object.keys(localErrors).length === 0) {
+        try {
+          await register(registerDetails);
+          toast.success('Success: User registered successfully', toastOptions);
+        } catch (error) {
+          toast.error(createToastBody(error), toastOptions);
+        }
+      }
+    } else {
+      const localLocationErrors = {};
+      const locationProfile = validations.register.location;
+      Object.keys(locationProfile).forEach((key) => {
+        if (
+          !isValid(locationProfile[key].regex, registerDetails.location[key])
+        ) {
+          localLocationErrors[key] = locationProfile[key].message;
+        }
+      });
+      setLocationErrors(localLocationErrors);
+      if (
+        Object.keys(localErrors).length === 0
+        && Object.keys(localLocationErrors).length === 0
+      ) {
+        // do api call
       }
     }
   };
@@ -132,7 +164,20 @@ export default function Register() {
             helperText={errors.password}
           />
         </div>
-        {registerDetails.type === 'restaurant' && <Location />}
+        {registerDetails.type === 'restaurant' && (
+          <Location
+            errors={locationErrors}
+            onChange={(newLocation) => {
+              handleChange({
+                target: {
+                  id: 'location',
+                  value: newLocation,
+                },
+              });
+            }}
+            value={registerDetails.location}
+          />
+        )}
         <div className={styles.loginButton}>
           <BlackButton variant="contained" fullWidth onClick={onSubmit}>
             Register

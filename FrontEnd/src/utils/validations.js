@@ -17,6 +17,27 @@ export const validations = {
         message: 'Invalid password.',
       },
     },
-    restaurant: {},
+    location: {
+      country: {
+        regex: /.+/,
+        message: 'Country required',
+      },
+      state: {
+        regex: /.+/,
+        message: 'State required',
+      },
+      city: {
+        regex: /.+/,
+        message: 'City required',
+      },
+      location: {
+        regex: /[a-zA-Z0-9]+[a-zA-Z0-9, ]*/,
+        message: 'Invalid address',
+      },
+      zip: {
+        regex: /[0-9]{5,6}/,
+        message: 'Invalid zip code',
+      },
+    },
   },
 };

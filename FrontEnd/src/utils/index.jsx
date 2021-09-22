@@ -38,6 +38,9 @@ export const BlackTextField = withStyles({
     '& .MuiInput-underline:after': {
       borderBottomColor: 'black',
     },
+    '& .MuiInput-underline.Mui-error:after': {
+      borderBottomColor: '#f44336',
+    },
   },
 })(TextField);
 
@@ -65,6 +68,9 @@ export const BlackFormControl = withStyles({
     },
     '& .MuiInput-underline:after': {
       borderBottomColor: 'black',
+    },
+    '& .MuiInput-underline.Mui-error:after': {
+      borderBottomColor: '#f44336',
     },
   },
 })(FormControl);
