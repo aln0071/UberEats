@@ -17,7 +17,6 @@ const App = () => (
       draggable
       pauseOnHover
     />
-    <ToastContainer />
     <Routes />
   </div>
 );

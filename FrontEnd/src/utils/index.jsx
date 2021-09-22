@@ -5,6 +5,7 @@ import {
   TextField,
   FormLabel,
   Radio,
+  FormControl,
 } from '@material-ui/core';
 
 // this object stores the options applied to toasts in the project
@@ -56,6 +57,17 @@ export const BlackRadio = withStyles({
     color: 'black',
   },
 })(Radio);
+
+export const BlackFormControl = withStyles({
+  root: {
+    '& label.Mui-focused': {
+      color: 'black',
+    },
+    '& .MuiInput-underline:after': {
+      borderBottomColor: 'black',
+    },
+  },
+})(FormControl);
 
 // function to create toast message from error
 export const createToastBody = (error) => (

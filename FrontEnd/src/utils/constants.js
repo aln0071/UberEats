@@ -3,4 +3,7 @@ export const urls = {
   login: 'login',
   auth: 'auth',
   register: 'register',
+  countries: 'countries',
+  states: 'states',
+  cities: 'cities',
 };

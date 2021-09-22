@@ -1,4 +1,4 @@
-const post = (url, body) => fetch(url, {
+export const post = (url, body) => fetch(url, {
   method: 'POST',
   body: JSON.stringify(body),
   headers: {
@@ -6,4 +6,4 @@ const post = (url, body) => fetch(url, {
   },
 });
 
-export default post;
+export const get = (url) => fetch(url);

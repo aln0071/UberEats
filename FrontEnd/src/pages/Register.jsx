@@ -19,6 +19,7 @@ import {
 } from '../utils';
 import { register } from '../utils/endpoints';
 import { isValid, validations } from '../utils/validations';
+import Location from '../components/Location';
 
 export default function Register() {
   const [registerDetails, setRegisterDetails] = useState({
@@ -131,6 +132,7 @@ export default function Register() {
             helperText={errors.password}
           />
         </div>
+        {registerDetails.type === 'restaurant' && <Location />}
         <div className={styles.loginButton}>
           <BlackButton variant="contained" fullWidth onClick={onSubmit}>
             Register
