@@ -22,7 +22,13 @@ const helmet = require('helmet');
 const morgan = require('morgan');
 const { generateAccessToken, authMiddleware } = require('./utils/utils');
 
-const { login, register } = require('./utils/endpoints');
+const {
+  login,
+  register,
+  getCountries,
+  getStates,
+  getCities,
+} = require('./utils/endpoints');
 
 // defining an array to work as the database (temporary solution)
 const ads = [{ title: 'Hello, world (again)!' }];
@@ -74,6 +80,42 @@ app.post('/register', async (req, res) => {
     res.status(400).send({
       status: false,
       message: error.message,
+    });
+  }
+});
+
+app.get('/countries', async (req, res) => {
+  try {
+    const countrylist = await getCountries();
+    res.json(countrylist);
+  } catch (error) {
+    res.status(500).send({
+      status: false,
+      message: 'Failed to fetch',
+    });
+  }
+});
+
+app.get('/states', async (req, res) => {
+  try {
+    const statelist = await getStates(req.query.countrycode);
+    res.json(statelist);
+  } catch (error) {
+    res.status(500).send({
+      status: false,
+      message: 'Failed to fetch',
+    });
+  }
+});
+
+app.get('/cities', async (req, res) => {
+  try {
+    const citylist = await getCities(req.query.statecode);
+    res.json(citylist);
+  } catch (error) {
+    res.status(500).send({
+      status: false,
+      message: 'Failed to fetch',
     });
   }
 });

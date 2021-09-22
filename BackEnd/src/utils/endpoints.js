@@ -1,6 +1,12 @@
 const bcrypt = require('bcrypt');
 const { executeQuery } = require('./utils');
-const { _login, _registerUser } = require('./queries');
+const {
+  _login,
+  _registerUser,
+  _getCountries,
+  _getStates,
+  _getCities,
+} = require('./queries');
 
 function login(username, password) {
   return executeQuery(_login, { email: username }).then(async (response) => {
@@ -42,4 +48,18 @@ async function register(params) {
   return null;
 }
 
-module.exports = { login, register };
+function getCountries() {
+  return executeQuery(_getCountries);
+}
+
+function getStates(countrycode) {
+  return executeQuery(_getStates, { countrycode });
+}
+
+function getCities(statecode) {
+  return executeQuery(_getCities, { statecode });
+}
+
+module.exports = {
+  login, register, getCountries, getStates, getCities,
+};
