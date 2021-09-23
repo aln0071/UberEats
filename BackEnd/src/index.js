@@ -75,7 +75,13 @@ app.post('/login', async (req, res) => {
 app.post('/register', async (req, res) => {
   try {
     await register(req.body);
-    res.sendStatus(200);
+    res.status(200).send({
+      status: true,
+      message:
+        req.body.type === 'c'
+          ? 'User registered successfully'
+          : 'Restaurant registered successfully',
+    });
   } catch (error) {
     res.status(400).send({
       status: false,

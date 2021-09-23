@@ -2,10 +2,12 @@ const bcrypt = require('bcrypt');
 const { executeQuery } = require('./utils');
 const {
   _login,
-  _registerUser,
+  _register,
   _getCountries,
   _getStates,
   _getCities,
+  _addLocation,
+  _updateLocationInUserTable,
 } = require('./queries');
 
 function login(username, password) {
@@ -32,20 +34,35 @@ async function register(params) {
   const saltRounds = 10;
   const hashedPassword = await bcrypt.hash(password, saltRounds);
 
-  if (type === 'customer') {
-    return executeQuery(_registerUser, {
-      email,
-      password: hashedPassword,
-      name,
-    }).catch((error) => {
+  return executeQuery(_register, {
+    email,
+    password: hashedPassword,
+    name,
+    type,
+  })
+    .then((response) => {
+      if (type === 'r') {
+        const userid = response.insertId;
+        const { citycode, location, zip } = params;
+        return executeQuery(_addLocation, { citycode, location, zip }).then(
+          (res) => {
+            const locationid = res.insertId;
+            return executeQuery(_updateLocationInUserTable, {
+              userid,
+              locationid,
+            });
+          },
+        );
+      }
+      return response;
+    })
+    .catch((error) => {
       if (String(error.message).startsWith('ER_DUP_ENTRY')) {
         throw new Error('User with this email already exists');
       } else {
         throw error;
       }
     });
-  }
-  return null;
 }
 
 function getCountries() {
@@ -61,5 +78,9 @@ function getCities(statecode) {
 }
 
 module.exports = {
-  login, register, getCountries, getStates, getCities,
+  login,
+  register,
+  getCountries,
+  getStates,
+  getCities,
 };
