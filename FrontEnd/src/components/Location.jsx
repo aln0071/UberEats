@@ -15,7 +15,7 @@ export default function Location({ errors, onChange, value }) {
   const defaultValues = {
     country: '',
     state: '',
-    city: '',
+    citycode: '',
     location: '',
     zip: '',
   };
@@ -118,17 +118,17 @@ export default function Location({ errors, onChange, value }) {
           {value.state !== '' && (
             <>
               <div className={styles.loginInput}>
-                <BlackFormControl fullWidth error={errors.city}>
+                <BlackFormControl fullWidth error={errors.citycode}>
                   <InputLabel required>City</InputLabel>
                   <Select
-                    onChange={(e) => handleChange(e, 'city')}
+                    onChange={(e) => handleChange(e, 'citycode')}
                     label="City"
-                    value={value.city}
+                    value={value.citycode}
                   >
                     {getMap(cities, 'citycode', 'city')}
                   </Select>
-                  {errors.city && (
-                    <FormHelperText>{errors.city}</FormHelperText>
+                  {errors.citycode && (
+                    <FormHelperText>{errors.citycode}</FormHelperText>
                   )}
                 </BlackFormControl>
               </div>
@@ -171,7 +171,7 @@ Location.defaultProps = {
   value: {
     country: '',
     state: '',
-    city: '',
+    citycode: '',
     location: '',
     zip: '',
   },

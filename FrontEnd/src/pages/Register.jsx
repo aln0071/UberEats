@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import {
   FormControl,
   Paper,
@@ -22,15 +22,16 @@ import { isValid, validations } from '../utils/validations';
 import Location from '../components/Location';
 
 export default function Register() {
+  const history = useHistory();
   const defaultLocation = {
     country: '',
     state: '',
-    city: '',
+    citycode: '',
     location: '',
     zip: '',
   };
   const [registerDetails, setRegisterDetails] = useState({
-    type: 'restaurant',
+    type: 'r',
     name: '',
     email: '',
     password: '',
@@ -62,17 +63,8 @@ export default function Register() {
     });
     setErrors(localErrors);
 
-    if (registerDetails.type === 'customer') {
-      if (Object.keys(localErrors).length === 0) {
-        try {
-          await register(registerDetails);
-          toast.success('Success: User registered successfully', toastOptions);
-        } catch (error) {
-          toast.error(createToastBody(error), toastOptions);
-        }
-      }
-    } else {
-      const localLocationErrors = {};
+    const localLocationErrors = {};
+    if (registerDetails.type === 'r') {
       const locationProfile = validations.register.location;
       Object.keys(locationProfile).forEach((key) => {
         if (
@@ -81,12 +73,23 @@ export default function Register() {
           localLocationErrors[key] = locationProfile[key].message;
         }
       });
-      setLocationErrors(localLocationErrors);
-      if (
-        Object.keys(localErrors).length === 0
-        && Object.keys(localLocationErrors).length === 0
-      ) {
-        // do api call
+    }
+    setLocationErrors(localLocationErrors);
+
+    if (
+      Object.keys(localErrors).length === 0
+      && Object.keys(localLocationErrors).length === 0
+    ) {
+      // do api call
+      try {
+        const response = await register({
+          ...registerDetails,
+          ...registerDetails.location,
+        });
+        toast.success(`Success: ${response.message}`, toastOptions);
+        history.push('/login');
+      } catch (error) {
+        toast.error(createToastBody(error), toastOptions);
       }
     }
   };
@@ -114,12 +117,12 @@ export default function Register() {
               }}
             >
               <FormControlLabel
-                value="customer"
+                value="c"
                 control={<BlackRadio />}
                 label="Customer"
               />
               <FormControlLabel
-                value="restaurant"
+                value="r"
                 control={<BlackRadio />}
                 label="Restaurant"
               />
@@ -128,9 +131,7 @@ export default function Register() {
         </div>
         <div className={styles.loginInput}>
           <BlackTextField
-            label={
-              registerDetails.type === 'customer' ? 'Name' : 'Restaurant Name'
-            }
+            label={registerDetails.type === 'c' ? 'Name' : 'Restaurant Name'}
             type="text"
             id="name"
             onChange={handleChange}
@@ -164,7 +165,7 @@ export default function Register() {
             helperText={errors.password}
           />
         </div>
-        {registerDetails.type === 'restaurant' && (
+        {registerDetails.type === 'r' && (
           <Location
             errors={locationErrors}
             onChange={(newLocation) => {

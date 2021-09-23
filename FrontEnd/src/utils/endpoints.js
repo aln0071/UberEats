@@ -6,7 +6,8 @@ const handleResponse = async (response) => {
   try {
     data = await response.json();
   } catch (error) {
-    throw new Error(response.statusText);
+    if (response.status !== 200) throw new Error(response.statusText);
+    else return { status: response.status, message: response.statusText };
   }
   if (response.status !== 200) {
     throw new Error(data.message);

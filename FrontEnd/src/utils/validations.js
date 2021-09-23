@@ -26,7 +26,7 @@ export const validations = {
         regex: /.+/,
         message: 'State required',
       },
-      city: {
+      citycode: {
         regex: /.+/,
         message: 'City required',
       },
