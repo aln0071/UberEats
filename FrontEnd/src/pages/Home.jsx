@@ -1,26 +1,13 @@
 import {
-  Box, AppBar, Toolbar, Typography, Button,
+  Box, AppBar, Toolbar, Button,
 } from '@material-ui/core';
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import React, { useState } from 'react';
 import CustomerDashboard from './CustomerDashboard';
-import NavTabs from '../components/NavTabs';
 import ProfileMenu from '../components/ProfileMenu';
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-  },
-  menuButton: {
-    marginRight: theme.spacing(2),
-  },
-  title: {
-    flexGrow: 1,
-  },
-}));
+import NavTabs from '../components/NavTabs';
 
 export default function Home() {
-  const classes = useStyles();
+  const [currentTab, setCurrentTab] = useState(0);
 
   return (
     <div>
@@ -28,14 +15,14 @@ export default function Home() {
         <AppBar position="static">
           <Toolbar>
             Uber Eats
-            <Typography variant="h6" className={classes.title}>
-              <NavTabs />
-            </Typography>
+            <div style={{ flexGrow: 1 }}>
+              <NavTabs setCurrentTab={setCurrentTab} currentTab={currentTab} />
+            </div>
             <Button color="inherit">Logout</Button>
             <ProfileMenu />
           </Toolbar>
         </AppBar>
-        <CustomerDashboard />
+        <CustomerDashboard currentTab={currentTab} />
       </Box>
     </div>
   );
