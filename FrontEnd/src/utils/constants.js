@@ -6,4 +6,5 @@ export const urls = {
   countries: 'countries',
   states: 'states',
   cities: 'cities',
+  updateProfile: 'update-profile',
 };

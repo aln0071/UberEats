@@ -6,10 +6,10 @@ const handleResponse = async (response) => {
   try {
     data = await response.json();
   } catch (error) {
-    if (response.status !== 200) throw new Error(response.statusText);
+    if (response.status !== 200 && response.status !== 204) throw new Error(response.statusText);
     else return { status: response.status, message: response.statusText };
   }
-  if (response.status !== 200) {
+  if (response.status !== 200 && response.status !== 204) {
     throw new Error(data.message);
   }
   return data;
@@ -25,17 +25,28 @@ export const register = (params) => {
   return post(url, params).then(handleResponse);
 };
 
+export const updateProfile = (params) => {
+  const url = `${baseUrl}${urls.updateProfile}`;
+  return post(url, params).then(handleResponse);
+};
+
 export const getCountries = () => {
   const url = `${baseUrl}${urls.countries}`;
   return get(url).then(handleResponse);
 };
 
 export const getStates = (countrycode) => {
-  const url = `${baseUrl}${urls.states}?countrycode=${countrycode}`;
+  let url = `${baseUrl}${urls.states}`;
+  if (countrycode) {
+    url = `${url}?countrycode=${countrycode}`;
+  }
   return get(url).then(handleResponse);
 };
 
 export const getCities = (statecode) => {
-  const url = `${baseUrl}${urls.cities}?statecode=${statecode}`;
+  let url = `${baseUrl}${urls.cities}`;
+  if (statecode) {
+    url = `${url}?statecode=${statecode}`;
+  }
   return get(url).then(handleResponse);
 };

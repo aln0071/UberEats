@@ -5,7 +5,7 @@ import ProfileMenu from '../components/ProfileMenu';
 import NavTabs from '../components/NavTabs';
 
 export default function Home() {
-  const [currentTab, setCurrentTab] = useState(0);
+  const [currentTab, setCurrentTab] = useState(3);
 
   return (
     <div>
