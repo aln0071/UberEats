@@ -13,4 +13,5 @@ module.exports = {
   _getAllStates: 'select * from states',
   _getCities: 'select * from cities where statecode = :statecode',
   _getAllCities: 'select * from cities',
+  _findUserWithEmail: 'select * from users where email = :email',
 };

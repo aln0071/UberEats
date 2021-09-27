@@ -11,6 +11,7 @@ const {
   _getAllStates,
   _getAllCities,
   _updateProfile,
+  _findUserWithEmail,
 } = require('./queries');
 
 function login(username, password) {
@@ -76,10 +77,13 @@ function updateProfile(params) {
   const updateQuery = _updateProfile.replace(
     ':optionalfields',
     paramsToQuery({
-      email, name, phone, nickname, dob,
+      email,
+      name,
+      phone,
+      nickname,
+      dob,
     }),
   );
-  console.log(updateQuery);
   return executeQuery(updateQuery, params);
 }
 
@@ -100,6 +104,11 @@ function getCities(statecode) {
     return executeQuery(_getAllCities);
   }
   return executeQuery(_getCities, { statecode });
+}
+
+/* eslint no-unused-vars: 0 */
+function findUserWithEmail(email) {
+  return executeQuery(_findUserWithEmail, { email });
 }
 
 module.exports = {
