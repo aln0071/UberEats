@@ -12,6 +12,7 @@ const {
   _getAllCities,
   _updateProfile,
   _findUserWithEmail,
+  _getLocation,
 } = require('./queries');
 
 function login(username, password) {
@@ -69,10 +70,10 @@ async function register(params) {
     });
 }
 
-function updateProfile(params) {
+async function updateProfile(params) {
   // const { email, name, citycode, locationid, location, zip, phone, nickname, dob } = params;
   const {
-    email, name, phone, nickname, dob,
+    email, name, phone, nickname, dob, location, citycode, zip, userid,
   } = params;
   const updateQuery = _updateProfile.replace(
     ':optionalfields',
@@ -84,7 +85,26 @@ function updateProfile(params) {
       dob,
     }),
   );
-  return executeQuery(updateQuery, params);
+  executeQuery(updateQuery, params);
+  const locationData = await executeQuery(_getLocation, {
+    location,
+    citycode,
+    zip,
+  });
+  if (locationData.length !== 0) {
+    // use existing data
+    const { locationid } = locationData[0];
+    await executeQuery(_updateLocationInUserTable, { locationid, userid });
+  } else {
+    // add new entry to locaion table
+    const response = await executeQuery(_addLocation, {
+      location,
+      citycode,
+      zip,
+    });
+    const locationid = response.insertId;
+    await executeQuery(_updateLocationInUserTable, { locationid, userid });
+  }
 }
 
 function getCountries() {
