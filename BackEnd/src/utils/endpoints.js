@@ -1,5 +1,5 @@
 const bcrypt = require('bcrypt');
-const { executeQuery } = require('./utils');
+const { executeQuery, paramsToQuery } = require('./utils');
 const {
   _login,
   _register,
@@ -10,6 +10,7 @@ const {
   _updateLocationInUserTable,
   _getAllStates,
   _getAllCities,
+  _updateProfile,
 } = require('./queries');
 
 function login(username, password) {
@@ -67,6 +68,21 @@ async function register(params) {
     });
 }
 
+function updateProfile(params) {
+  // const { email, name, citycode, locationid, location, zip, phone, nickname, dob } = params;
+  const {
+    email, name, phone, nickname, dob,
+  } = params;
+  const updateQuery = _updateProfile.replace(
+    ':optionalfields',
+    paramsToQuery({
+      email, name, phone, nickname, dob,
+    }),
+  );
+  console.log(updateQuery);
+  return executeQuery(updateQuery, params);
+}
+
 function getCountries() {
   return executeQuery(_getCountries);
 }
@@ -92,4 +108,5 @@ module.exports = {
   getCountries,
   getStates,
   getCities,
+  updateProfile,
 };

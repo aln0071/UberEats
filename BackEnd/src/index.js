@@ -28,6 +28,7 @@ const {
   getCountries,
   getStates,
   getCities,
+  updateProfile,
 } = require('./utils/endpoints');
 
 // defining an array to work as the database (temporary solution)
@@ -122,6 +123,21 @@ app.get('/cities', async (req, res) => {
     res.status(500).send({
       status: false,
       message: 'Failed to fetch',
+    });
+  }
+});
+
+app.post('/update-profile', async (req, res) => {
+  try {
+    await updateProfile(req.body);
+    res.status(200).send({
+      status: true,
+      message: 'Profile updated successfully',
+    });
+  } catch (error) {
+    res.status(400).send({
+      status: false,
+      message: error.message,
     });
   }
 });

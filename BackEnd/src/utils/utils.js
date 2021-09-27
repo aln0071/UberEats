@@ -65,4 +65,21 @@ function executeQuery(queryString, params = {}) {
   });
 }
 
-module.exports = { generateAccessToken, authMiddleware, executeQuery };
+function paramsToQuery(params) {
+  return Object.keys(params).reduce((t, c) => {
+    if ([undefined, null].includes(params[c])) {
+      return t;
+    }
+    if (t === '') {
+      return `${c} = :${c}`;
+    }
+    return `${t}, ${c} = :${c}`;
+  }, '');
+}
+
+module.exports = {
+  generateAccessToken,
+  authMiddleware,
+  executeQuery,
+  paramsToQuery,
+};
