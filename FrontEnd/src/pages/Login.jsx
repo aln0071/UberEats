@@ -11,7 +11,7 @@ import {
   createToastBody,
 } from '../utils';
 import { login } from '../utils/endpoints';
-import loginAction from '../store/actions';
+import { loginAction } from '../store/actions';
 
 export default function Login() {
   const dispatch = useDispatch();

@@ -1,6 +1,4 @@
-import {
-  Box, AppBar, Toolbar, Button,
-} from '@material-ui/core';
+import { Box, AppBar, Toolbar } from '@material-ui/core';
 import React, { useState } from 'react';
 import CustomerDashboard from './CustomerDashboard';
 import ProfileMenu from '../components/ProfileMenu';
@@ -18,8 +16,7 @@ export default function Home() {
             <div style={{ flexGrow: 1 }}>
               <NavTabs setCurrentTab={setCurrentTab} currentTab={currentTab} />
             </div>
-            <Button color="inherit">Logout</Button>
-            <ProfileMenu />
+            <ProfileMenu setCurrentTab={setCurrentTab} />
           </Toolbar>
         </AppBar>
         <CustomerDashboard currentTab={currentTab} />

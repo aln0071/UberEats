@@ -2,8 +2,13 @@ import React from 'react';
 import IconButton from '@material-ui/core/IconButton';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import { Menu, MenuItem } from '@material-ui/core';
+import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
+import { logoutAction } from '../store/actions';
 
-export default function ProfileMenu() {
+export default function ProfileMenu({ setCurrentTab }) {
+  const dispatch = useDispatch();
+
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleMenu = (event) => {
@@ -39,9 +44,31 @@ export default function ProfileMenu() {
         open={open}
         onClose={handleClose}
       >
-        <MenuItem onClick={handleClose}>Profile</MenuItem>
-        <MenuItem onClick={handleClose}>My account</MenuItem>
+        <MenuItem
+          onClick={() => {
+            setCurrentTab(3);
+            handleClose();
+          }}
+        >
+          Profile
+        </MenuItem>
+        <MenuItem
+          onClick={() => {
+            handleClose();
+            dispatch(logoutAction());
+          }}
+        >
+          Logout
+        </MenuItem>
       </Menu>
     </div>
   );
 }
+
+ProfileMenu.defaultProps = {
+  setCurrentTab: () => {},
+};
+
+ProfileMenu.propTypes = {
+  setCurrentTab: PropTypes.func,
+};

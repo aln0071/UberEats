@@ -1,4 +1,4 @@
-import { SET_USER_DETAILS } from '../actions/types';
+import { CLEAR_USER_DETAILS, SET_USER_DETAILS } from '../actions/types';
 
 const initialState = JSON.parse(window.sessionStorage.getItem('user')) || {};
 
@@ -9,6 +9,8 @@ const user = (state = { ...initialState }, action) => {
         ...state,
         ...action.payload,
       };
+    case CLEAR_USER_DETAILS:
+      return {};
     default:
       return state;
   }

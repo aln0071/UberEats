@@ -31,7 +31,7 @@ export default function Register() {
     zip: '',
   };
   const [registerDetails, setRegisterDetails] = useState({
-    type: 'r',
+    type: 'c',
     name: '',
     email: '',
     password: '',

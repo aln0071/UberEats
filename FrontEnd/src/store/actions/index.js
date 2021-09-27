@@ -1,8 +1,10 @@
-import { SET_USER_DETAILS } from './types';
+import { CLEAR_USER_DETAILS, SET_USER_DETAILS } from './types';
 
-const loginAction = (userDetails) => ({
+export const loginAction = (userDetails) => ({
   type: SET_USER_DETAILS,
   payload: userDetails,
 });
 
-export default loginAction;
+export const logoutAction = () => ({
+  type: CLEAR_USER_DETAILS,
+});

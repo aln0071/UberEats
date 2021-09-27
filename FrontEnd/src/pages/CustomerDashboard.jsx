@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Restaurants from '../components/Restaurants';
+import Profile from './Profile';
 
 function TabPanel({ value, index, children }) {
   if (value === index) {
@@ -32,6 +33,9 @@ export default function CustomerDashboard({ currentTab }) {
       </TabPanel>
       <TabPanel value={currentTab} index={2}>
         Orders
+      </TabPanel>
+      <TabPanel value={currentTab} index={3}>
+        <Profile />
       </TabPanel>
     </div>
   );
