@@ -8,6 +8,8 @@ const {
   _getCities,
   _addLocation,
   _updateLocationInUserTable,
+  _getAllStates,
+  _getAllCities,
 } = require('./queries');
 
 function login(username, password) {
@@ -70,10 +72,17 @@ function getCountries() {
 }
 
 function getStates(countrycode) {
+  console.error(countrycode);
+  if (countrycode === undefined) {
+    return executeQuery(_getAllStates);
+  }
   return executeQuery(_getStates, { countrycode });
 }
 
 function getCities(statecode) {
+  if (statecode === undefined) {
+    return executeQuery(_getAllCities);
+  }
   return executeQuery(_getCities, { statecode });
 }
 
