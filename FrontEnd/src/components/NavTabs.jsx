@@ -8,6 +8,8 @@ import Tab from '@material-ui/core/Tab';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import ShoppingBasket from '@material-ui/icons/ShoppingBasket';
 import StoreIcon from '@material-ui/icons/Store';
+import { useSelector } from 'react-redux';
+import FastfoodIcon from '@material-ui/icons/Fastfood';
 
 function a11yProps(index) {
   return {
@@ -27,6 +29,8 @@ const useStyles = makeStyles((theme) => ({
 export default function NavTabs({ setCurrentTab, currentTab }) {
   const classes = useStyles();
 
+  const user = useSelector((state) => state.user);
+
   const handleChange = (event, newValue) => {
     setCurrentTab(newValue);
   };
@@ -34,31 +38,60 @@ export default function NavTabs({ setCurrentTab, currentTab }) {
   return (
     <div className={classes.root}>
       <AppBar position="static" style={{ boxShadow: 'none' }}>
-        <Tabs
-          value={currentTab}
-          onChange={handleChange}
-          aria-label="scrollable prevent tabs example"
-          centered
-        >
-          <Tab
-            label="Restaurants"
-            icon={<StoreIcon />}
-            aria-label="restaurants"
-            {...a11yProps(0)}
-          />
-          <Tab
-            label="Favourites"
-            icon={<FavoriteIcon />}
-            aria-label="favorite"
-            {...a11yProps(1)}
-          />
-          <Tab
-            label="Orders"
-            icon={<ShoppingBasket />}
-            aria-label="shopping"
-            {...a11yProps(4)}
-          />
-        </Tabs>
+        {user.type === 'c' && (
+          <Tabs
+            value={currentTab}
+            onChange={handleChange}
+            aria-label="scrollable prevent tabs example"
+            centered
+          >
+            <Tab
+              label="Restaurants"
+              icon={<StoreIcon />}
+              aria-label="restaurants"
+              {...a11yProps(0)}
+            />
+            <Tab
+              label="Favourites"
+              icon={<FavoriteIcon />}
+              aria-label="favorite"
+              {...a11yProps(1)}
+            />
+            <Tab
+              label="Orders"
+              icon={<ShoppingBasket />}
+              aria-label="shopping"
+              {...a11yProps(4)}
+            />
+          </Tabs>
+        )}
+        {user.type === 'r' && (
+          <Tabs
+            value={currentTab}
+            onChange={handleChange}
+            aria-label="scrollable prevent tabs example"
+            centered
+          >
+            <Tab
+              label="Profile"
+              icon={<StoreIcon />}
+              aria-label="profile"
+              {...a11yProps(0)}
+            />
+            <Tab
+              label="Dishes"
+              icon={<FastfoodIcon />}
+              aria-label="dishes"
+              {...a11yProps(1)}
+            />
+            <Tab
+              label="Orders"
+              icon={<ShoppingBasket />}
+              aria-label="orders"
+              {...a11yProps(4)}
+            />
+          </Tabs>
+        )}
       </AppBar>
     </div>
   );
