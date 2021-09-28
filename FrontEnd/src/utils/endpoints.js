@@ -50,3 +50,8 @@ export const getCities = (statecode) => {
   }
   return get(url).then(handleResponse);
 };
+
+export const updateDishes = (dishes) => {
+  const url = `${baseUrl}${urls.updateDishes}`;
+  return post(url, dishes).then(handleResponse);
+};

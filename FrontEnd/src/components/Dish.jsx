@@ -52,13 +52,6 @@ export default function Dish({ dish }) {
         onChange={handleChange}
         type="text"
       />
-      <BlackTextField
-        id="description"
-        label="Description"
-        value={dish.description}
-        onChange={handleChange}
-        type="text"
-      />
       <BlackFormControl>
         <InputLabel required>Category</InputLabel>
         <Select onChange={handleChange} value={dish.category}>
