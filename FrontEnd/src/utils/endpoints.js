@@ -60,3 +60,8 @@ export const addDish = (dish) => {
   const url = `${baseUrl}${urls.addDish}`;
   return post(url, dish).then(handleResponse);
 };
+
+export const getAllDishes = ({ userid }) => {
+  const url = `${baseUrl}${urls.getDishes}?restaurantid=${userid}`;
+  return get(url).then(handleResponse);
+};

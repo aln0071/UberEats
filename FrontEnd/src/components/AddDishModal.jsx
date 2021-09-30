@@ -13,11 +13,12 @@ import { Input } from 'baseui/input';
 import { FormControl } from 'baseui/form-control';
 import { Select } from 'baseui/select';
 import { toast } from 'react-toastify';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
-import { addDish } from '../utils/endpoints';
+import { addDish, getAllDishes } from '../utils/endpoints';
 import { createToastBody, toastOptions } from '../utils';
 import { isValid, validations } from '../utils/validations';
+import { setDishesAction } from '../store/actions';
 
 export default function AddDishModal({ isOpen, setIsOpen }) {
   const [values, setValues] = React.useState({
@@ -46,6 +47,8 @@ export default function AddDishModal({ isOpen, setIsOpen }) {
 
   const user = useSelector((state) => state.user);
 
+  const dispatch = useDispatch();
+
   const handleSubmit = async () => {
     const newValues = {
       ...values,
@@ -61,9 +64,12 @@ export default function AddDishModal({ isOpen, setIsOpen }) {
 
     try {
       const response = await addDish(newValues);
+      const newDishesList = await getAllDishes(user);
+      dispatch(setDishesAction(newDishesList));
       toast.success(`Success: ${response.message}`, toastOptions);
       setIsOpen(false);
     } catch (error) {
+      console.log(error);
       toast.error(createToastBody(error), toastOptions);
     }
   };

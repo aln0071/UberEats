@@ -9,6 +9,7 @@ export const urls = {
   updateProfile: 'update-profile',
   updateDishes: 'update-dishes',
   addDish: 'add-dish',
+  getDishes: 'get-dishes',
 };
 
 export const dishCategories = [
