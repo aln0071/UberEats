@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
+import { setDishesAction } from '../store/actions';
 // import { addDishAction } from '../store/actions';
 import { BlackButton, createToastBody, toastOptions } from '../utils';
-import { updateDishes } from '../utils/endpoints';
+import { getAllDishes, updateDishes } from '../utils/endpoints';
 import { isValid, validations } from '../utils/validations';
 import AddDishModal from './AddDishModal';
 import Dish from './Dish';
@@ -56,7 +57,19 @@ export default function Dishes() {
     <Dish id={dish.dishid} dish={dish} index={index} />
   ));
 
-  useEffect(() => {}, []);
+  const user = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+
+  useEffect(async () => {
+    // fetch all dishes
+    try {
+      const dishList = await getAllDishes(user);
+      dispatch(setDishesAction(dishList));
+    } catch (error) {
+      console.log(error);
+      toast.error(createToastBody(error), toastOptions);
+    }
+  }, []);
 
   return (
     <div>
