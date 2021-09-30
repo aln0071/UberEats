@@ -14,6 +14,7 @@ const {
   _findUserWithEmail,
   _getLocation,
   _addDishQuery,
+  _getAllDishes,
 } = require('./queries');
 
 function login(username, password) {
@@ -126,22 +127,28 @@ function getCities(statecode) {
   return executeQuery(_getCities, { statecode });
 }
 
-function updateDish(dish) {
-
-}
+function updateDish(dish) {}
 
 function addDish(dish) {
   const {
     restaurantid, dishname, description, category, price,
   } = dish;
   const values = {
-    restaurantid, dishname, description, category, price,
+    restaurantid,
+    dishname,
+    description,
+    category,
+    price,
   };
   const query = _addDishQuery
     .replace(':optionalfields', optionalFields(values))
     .replace(':optionalvalues', optionalFields(values, ':'));
   console.log(query);
   return executeQuery(query, values);
+}
+
+function getAllDishes(restaurantid) {
+  return executeQuery(_getAllDishes, { restaurantid });
 }
 
 /* eslint no-unused-vars: 0 */
@@ -157,4 +164,5 @@ module.exports = {
   getCities,
   updateProfile,
   addDish,
+  getAllDishes,
 };

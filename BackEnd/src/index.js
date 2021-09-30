@@ -30,6 +30,7 @@ const {
   getCities,
   updateProfile,
   addDish,
+  getAllDishes,
 } = require('./utils/endpoints');
 
 // defining an array to work as the database (temporary solution)
@@ -168,6 +169,18 @@ app.post('/add-dish', async (req, res) => {
       status: true,
       message: 'Dish added successfully',
     });
+  } catch (error) {
+    res.status(400).send({
+      status: false,
+      message: error.message,
+    });
+  }
+});
+
+app.get('/get-dishes', authMiddleware, async (req, res) => {
+  try {
+    const dishList = await getAllDishes(req.query.restaurantid);
+    res.json(dishList);
   } catch (error) {
     res.status(400).send({
       status: false,
