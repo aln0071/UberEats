@@ -54,6 +54,7 @@
   "dependencies": {
     "@material-ui/core": "^4.12.3",
     "@material-ui/icons": "^4.11.2",
+    "baseui": "^10.3.0",
     "prop-types": "^15.7.2",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
@@ -62,7 +63,9 @@
     "react-toastify": "^8.0.2",
     "redux": "^4.1.1",
     "redux-devtools-extension": "^2.13.9",
-    "redux-thunk": "^2.3.0"
+    "redux-thunk": "^2.3.0",
+    "styletron-engine-atomic": "^1.4.8",
+    "styletron-react": "^6.0.1"
   },
   "lint-staged": {
     "*.{js,jsx,scss,css,json,md,babelrc,html}": "prettier --write",

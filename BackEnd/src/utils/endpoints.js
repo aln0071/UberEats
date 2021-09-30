@@ -1,5 +1,5 @@
 const bcrypt = require('bcrypt');
-const { executeQuery, paramsToQuery } = require('./utils');
+const { executeQuery, paramsToQuery, optionalFields } = require('./utils');
 const {
   _login,
   _register,
@@ -13,6 +13,7 @@ const {
   _updateProfile,
   _findUserWithEmail,
   _getLocation,
+  _addDishQuery,
 } = require('./queries');
 
 function login(username, password) {
@@ -71,7 +72,6 @@ async function register(params) {
 }
 
 async function updateProfile(params) {
-  // const { email, name, citycode, locationid, location, zip, phone, nickname, dob } = params;
   const {
     email, name, phone, nickname, dob, location, citycode, zip, userid,
   } = params;
@@ -126,6 +126,24 @@ function getCities(statecode) {
   return executeQuery(_getCities, { statecode });
 }
 
+function updateDish(dish) {
+
+}
+
+function addDish(dish) {
+  const {
+    restaurantid, dishname, description, category, price,
+  } = dish;
+  const values = {
+    restaurantid, dishname, description, category, price,
+  };
+  const query = _addDishQuery
+    .replace(':optionalfields', optionalFields(values))
+    .replace(':optionalvalues', optionalFields(values, ':'));
+  console.log(query);
+  return executeQuery(query, values);
+}
+
 /* eslint no-unused-vars: 0 */
 function findUserWithEmail(email) {
   return executeQuery(_findUserWithEmail, { email });
@@ -138,4 +156,5 @@ module.exports = {
   getStates,
   getCities,
   updateProfile,
+  addDish,
 };

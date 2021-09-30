@@ -4,8 +4,10 @@ import { Select, MenuItem, InputLabel } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 import IconButton from '@material-ui/core/IconButton';
 import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
 import { dishCategories } from '../utils/constants';
 import { BlackFormControl, BlackTextField } from '../utils';
+import { updateDishAction } from '../store/actions';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -24,16 +26,22 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Dish({ dish }) {
+export default function Dish({ dish, index }) {
   const classes = useStyles();
-
-  const handleChange = () => {};
 
   const renderCategories = () => dishCategories.map((cat) => (
     <MenuItem key={`${cat.id}${cat.label}`} value={cat.id}>
       {cat.label}
     </MenuItem>
   ));
+
+  const dispatch = useDispatch();
+
+  const handleChange = (e) => {
+    const { id } = e.target;
+    const { value } = e.target;
+    dispatch(updateDishAction(index, { ...dish, [id]: value }));
+  };
 
   return (
     <fieldset className={classes.root} noValidate autoComplete="off">
@@ -54,7 +62,17 @@ export default function Dish({ dish }) {
       />
       <BlackFormControl>
         <InputLabel required>Category</InputLabel>
-        <Select onChange={handleChange} value={dish.category}>
+        <Select
+          onChange={(e) => {
+            handleChange({
+              target: {
+                id: 'category',
+                value: e.target.value,
+              },
+            });
+          }}
+          value={dish.category}
+        >
           {renderCategories()}
         </Select>
       </BlackFormControl>
@@ -74,8 +92,15 @@ export default function Dish({ dish }) {
 
 Dish.defaultProps = {
   dish: {},
+  index: 0,
 };
 
 Dish.propTypes = {
-  dish: PropTypes.oneOf([PropTypes.object]),
+  dish: PropTypes.shape({
+    dishname: PropTypes.string,
+    description: PropTypes.string,
+    category: PropTypes.string,
+    price: PropTypes.number,
+  }),
+  index: PropTypes.number,
 };

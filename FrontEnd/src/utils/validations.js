@@ -82,9 +82,9 @@ export const validations = {
       regex: /[a-zA-Z ]+/,
       message: 'Invalid dish name',
     },
-    price: {
-      regex: /^[1-9][0-9]*$/,
-      message: 'Invalid price',
-    },
+    // price: {
+    //   regex: /^[1-9][0-9]*$/,
+    //   message: 'Invalid price',
+    // },
   },
 };

@@ -16,4 +16,6 @@ module.exports = {
   _findUserWithEmail: 'select * from users where email = :email',
   _getLocation:
     'select * from locations where citycode = :citycode and location = :location and zip = :zip',
+  _addDishQuery:
+    'insert into dishes ( :optionalfields ) values( :optionalvalues )',
 };

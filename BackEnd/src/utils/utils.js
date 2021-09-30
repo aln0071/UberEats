@@ -77,9 +77,22 @@ function paramsToQuery(params) {
   }, '');
 }
 
+function optionalFields(params, prefix = '') {
+  return Object.keys(params).reduce((t, c) => {
+    if ([undefined, null].includes(params[c])) {
+      return t;
+    }
+    if (t === '') {
+      return `${prefix}${c}`;
+    }
+    return `${t}, ${prefix}${c}`;
+  }, '');
+}
+
 module.exports = {
   generateAccessToken,
   authMiddleware,
   executeQuery,
   paramsToQuery,
+  optionalFields,
 };

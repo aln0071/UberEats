@@ -55,3 +55,8 @@ export const updateDishes = (dishes) => {
   const url = `${baseUrl}${urls.updateDishes}`;
   return post(url, dishes).then(handleResponse);
 };
+
+export const addDish = (dish) => {
+  const url = `${baseUrl}${urls.addDish}`;
+  return post(url, dish).then(handleResponse);
+};

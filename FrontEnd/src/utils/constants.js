@@ -8,6 +8,7 @@ export const urls = {
   cities: 'cities',
   updateProfile: 'update-profile',
   updateDishes: 'update-dishes',
+  addDish: 'add-dish',
 };
 
 export const dishCategories = [

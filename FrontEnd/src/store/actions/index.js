@@ -3,6 +3,7 @@ import {
   SET_USER_DETAILS,
   ADD_DISH,
   SET_DISHES,
+  UPDATE_DISH,
 } from './types';
 
 export const loginAction = (userDetails) => ({
@@ -19,20 +20,34 @@ export const logoutAction = () => ({
   type: CLEAR_USER_DETAILS,
 });
 
+// let tempdishid = 0;
+
 export const addDishAction = () => {
   const dishLayout = {
-    name: '',
-    restaurantid: '',
+    // dishid: `temp${tempdishid++}`,
     dishname: '',
     description: '',
     category: 1,
     price: 0,
   };
-  return {
-    type: ADD_DISH,
-    payload: dishLayout,
+
+  return (dispatch, getState) => {
+    const { user } = getState();
+    dishLayout.restaurantid = user.userid;
+    dispatch({
+      type: ADD_DISH,
+      payload: dishLayout,
+    });
   };
 };
+
+export const updateDishAction = (index, value) => ({
+  type: UPDATE_DISH,
+  payload: {
+    index,
+    value,
+  },
+});
 
 export const setDishesAction = (dishes) => ({
   type: SET_DISHES,
