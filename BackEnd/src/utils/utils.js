@@ -90,10 +90,21 @@ function optionalFields(params, prefix = '') {
   }, '');
 }
 
+// for where conditions
+function optionalConditions(params) {
+  return Object.keys(params).reduce((t, c) => {
+    if ([undefined, null, ''].includes(params[c])) {
+      return t;
+    }
+    return `${t} and ${c} = :${c}`;
+  }, '');
+}
+
 module.exports = {
   generateAccessToken,
   authMiddleware,
   executeQuery,
   paramsToQuery,
   optionalFields,
+  optionalConditions,
 };
