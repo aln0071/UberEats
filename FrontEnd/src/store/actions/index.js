@@ -4,14 +4,11 @@ import {
   ADD_DISH,
   SET_DISHES,
   UPDATE_DISH,
+  SET_MESSAGE,
+  CLEAR_MESSAGE,
 } from './types';
 
 export const loginAction = (userDetails) => ({
-  type: SET_USER_DETAILS,
-  payload: userDetails,
-});
-
-export const updateUserDetails = (userDetails) => ({
   type: SET_USER_DETAILS,
   payload: userDetails,
 });
@@ -41,6 +38,11 @@ export const addDishAction = () => {
   };
 };
 
+export const updateUserDetails = (userDetails) => ({
+  type: SET_USER_DETAILS,
+  payload: userDetails,
+});
+
 export const updateDishAction = (index, value) => ({
   type: UPDATE_DISH,
   payload: {
@@ -52,4 +54,16 @@ export const updateDishAction = (index, value) => ({
 export const setDishesAction = (dishes) => ({
   type: SET_DISHES,
   payload: dishes,
+});
+
+export const setMessageAction = (message, type) => ({
+  type: SET_MESSAGE,
+  payload: {
+    message,
+    type,
+  },
+});
+
+export const clearMessageAction = () => ({
+  type: CLEAR_MESSAGE,
 });

@@ -7,19 +7,21 @@ import {
   FormControlLabel,
   RadioGroup,
 } from '@material-ui/core';
-import { toast } from 'react-toastify';
+// import { toast } from 'react-toastify';
+import { useDispatch } from 'react-redux';
 import styles from '../styles.scss';
 import {
   BlackButton,
   BlackFormLabel,
   BlackRadio,
   BlackTextField,
-  createToastBody,
-  toastOptions,
+  // createToastBody,
+  // toastOptions,
 } from '../utils';
 import { register } from '../utils/endpoints';
 import { isValid, validations } from '../utils/validations';
 import Location from '../components/Location';
+import { setMessageAction } from '../store/actions';
 
 export default function Register() {
   const history = useHistory();
@@ -53,6 +55,8 @@ export default function Register() {
     });
   };
 
+  const dispatch = useDispatch();
+
   const onSubmit = async () => {
     const localErrors = {};
     const customerProfile = validations.register.customer;
@@ -82,14 +86,20 @@ export default function Register() {
     ) {
       // do api call
       try {
-        const response = await register({
+        await register({
           ...registerDetails,
           ...registerDetails.location,
         });
-        toast.success(`Success: ${response.message}`, toastOptions);
+        // const response = await register({
+        //   ...registerDetails,
+        //   ...registerDetails.location,
+        // });
+        // toast.success(`Success: ${response.message}`, toastOptions);
+        dispatch(setMessageAction('User registered successfully.', 'success'));
         history.push('/login');
       } catch (error) {
-        toast.error(createToastBody(error), toastOptions);
+        // toast.error(createToastBody(error), toastOptions);
+        dispatch(setMessageAction('Registration failed.', 'error'));
       }
     }
   };
