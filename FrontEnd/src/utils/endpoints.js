@@ -65,3 +65,8 @@ export const getAllDishes = ({ userid }) => {
   const url = `${baseUrl}${urls.getDishes}?restaurantid=${userid}`;
   return get(url).then(handleResponse);
 };
+
+export const getAllRestaurants = ({ citycode, statecode }) => {
+  const url = `${baseUrl}${urls.getAllRestaurants}?citycode=${citycode}&&statecode=${statecode}`;
+  return get(url).then(handleResponse);
+};

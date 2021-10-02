@@ -4,6 +4,7 @@ import {
   ADD_DISH,
   SET_DISHES,
   UPDATE_DISH,
+  SET_RESTAURANTS,
 } from './types';
 
 export const loginAction = (userDetails) => ({
@@ -52,4 +53,9 @@ export const updateDishAction = (index, value) => ({
 export const setDishesAction = (dishes) => ({
   type: SET_DISHES,
   payload: dishes,
+});
+
+export const setRestaurantsAction = (restaurants) => ({
+  type: SET_RESTAURANTS,
+  payload: restaurants,
 });

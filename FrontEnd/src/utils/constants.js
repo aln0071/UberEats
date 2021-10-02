@@ -10,6 +10,7 @@ export const urls = {
   updateDishes: 'update-dishes',
   addDish: 'add-dish',
   getDishes: 'get-dishes',
+  getAllRestaurants: 'get-restaurants',
 };
 
 export const dishCategories = [
