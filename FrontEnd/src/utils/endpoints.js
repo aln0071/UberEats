@@ -25,9 +25,19 @@ export const register = (params) => {
   return post(url, params).then(handleResponse);
 };
 
-export const updateProfile = (params) => {
+export const updateProfile = (params, pictures = []) => {
   const url = `${baseUrl}${urls.updateProfile}`;
-  return post(url, params).then(handleResponse);
+  const formData = new FormData();
+  pictures.forEach((pic) => {
+    formData.append('image', pic);
+  });
+  Object.keys(params).forEach((key) => {
+    if (params[key] !== null) formData.append(key, params[key]);
+  });
+  return fetch(url, {
+    method: 'POST',
+    body: formData,
+  }).then(handleResponse);
 };
 
 export const getCountries = () => {

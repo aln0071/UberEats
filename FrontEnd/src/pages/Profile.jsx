@@ -3,11 +3,13 @@ import { makeStyles } from '@material-ui/core/styles';
 import { useSelector, useDispatch } from 'react-redux';
 import { Select, MenuItem, InputLabel } from '@material-ui/core';
 import { toast } from 'react-toastify';
+import { FileUploader } from 'baseui/file-uploader';
+import { FormControl } from 'baseui/form-control';
+import { Button } from 'baseui/button';
 import { updateUserDetails } from '../store/actions';
 import {
   BlackTextField,
   BlackFormControl,
-  BlackButton,
   toastOptions,
   createToastBody,
 } from '../utils';
@@ -18,7 +20,6 @@ import {
   updateProfile,
 } from '../utils/endpoints';
 import { validations, isValid } from '../utils/validations';
-import FileUpload from '../components/FileUpload';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -39,6 +40,8 @@ const useStyles = makeStyles((theme) => ({
 export default function Profile() {
   const profileData = useSelector((state) => state.user);
   const dispatch = useDispatch();
+
+  const [pictures, setPictures] = React.useState([]);
 
   const classes = useStyles();
 
@@ -102,7 +105,7 @@ export default function Profile() {
     if (Object.keys(localErrors).length === 0) {
       // call api
       try {
-        const response = await updateProfile(profileData);
+        const response = await updateProfile(profileData, pictures);
         toast.success(`Success: ${response.message}`, toastOptions);
       } catch (error) {
         console.log(error);
@@ -237,10 +240,23 @@ export default function Profile() {
         />
       </div>
       <div>
-        <FileUpload />
+        <FormControl label="Pictures">
+          <span>
+            {pictures.map((pic) => (
+              <span style={{ marginRight: '10px' }}>{pic.path}</span>
+            ))}
+            <FileUploader
+              onDrop={(acceptedFiles, rejectedFiles) => {
+                console.log(rejectedFiles);
+                setPictures(acceptedFiles);
+              }}
+              accept=".jpg,.png"
+            />
+          </span>
+        </FormControl>
       </div>
       <div>
-        <BlackButton onClick={handleSubmit}>Update Profile</BlackButton>
+        <Button onClick={handleSubmit}>Update Profile</Button>
       </div>
     </form>
   );
