@@ -18,6 +18,7 @@ import {
   updateProfile,
 } from '../utils/endpoints';
 import { validations, isValid } from '../utils/validations';
+import FileUpload from '../components/FileUpload';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -234,6 +235,9 @@ export default function Profile() {
           type="number"
           onChange={handleChange}
         />
+      </div>
+      <div>
+        <FileUpload />
       </div>
       <div>
         <BlackButton onClick={handleSubmit}>Update Profile</BlackButton>

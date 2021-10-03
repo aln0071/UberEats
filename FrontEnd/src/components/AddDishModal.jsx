@@ -15,6 +15,7 @@ import { Select } from 'baseui/select';
 import { toast } from 'react-toastify';
 import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
+import { FileUploader } from 'baseui/file-uploader';
 import { addDish, getAllDishes } from '../utils/endpoints';
 import { createToastBody, toastOptions } from '../utils';
 import { isValid, validations } from '../utils/validations';
@@ -27,6 +28,7 @@ export default function AddDishModal({ isOpen, setIsOpen }) {
     category: [{ id: 1, label: 'Veg' }],
     price: 1,
   });
+  const [pictures, setPictures] = React.useState([]);
   const handleChange = (e) => {
     setValues({
       ...values,
@@ -62,7 +64,10 @@ export default function AddDishModal({ isOpen, setIsOpen }) {
       return;
     }
 
+    newValues.pictures = pictures;
+
     try {
+      // const uploadDetails = await uploadFilesEndpoint(pictures);
       const response = await addDish(newValues);
       const newDishesList = await getAllDishes(user);
       dispatch(setDishesAction(newDishesList));
@@ -129,6 +134,21 @@ export default function AddDishModal({ isOpen, setIsOpen }) {
             type="number"
             min={1}
           />
+        </FormControl>
+        <FormControl label="Pictures">
+          <span>
+            {pictures.map((pic) => (
+              <span style={{ marginRight: '10px' }}>{pic.path}</span>
+            ))}
+            <FileUploader
+              onDrop={(acceptedFiles, rejectedFiles) => {
+                console.log(rejectedFiles);
+                setPictures(acceptedFiles);
+                // uploadFilesEndpoint(acceptedFiles);
+              }}
+              accept=".jpg,.png"
+            />
+          </span>
         </FormControl>
       </ModalBody>
       <ModalFooter>

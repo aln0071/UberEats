@@ -10,7 +10,7 @@ import AddDishModal from './AddDishModal';
 import Dish from './Dish';
 
 export default function Dishes() {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
 
   const dishes = useSelector((state) => state.dishes);
 

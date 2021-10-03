@@ -57,8 +57,23 @@ export const updateDishes = (dishes) => {
 };
 
 export const addDish = (dish) => {
+  const { pictures } = dish;
+  const formdata = new FormData();
+  pictures.forEach((pic) => {
+    formdata.append('image', pic);
+  });
+  Object.keys(dish).forEach((key) => {
+    if (key === 'pictures') {
+      return;
+    }
+    formdata.append(key, dish[key]);
+  });
   const url = `${baseUrl}${urls.addDish}`;
-  return post(url, dish).then(handleResponse);
+  // return post(url, dish).then(handleResponse);
+  return fetch(url, {
+    method: 'POST',
+    body: formdata,
+  }).then(handleResponse);
 };
 
 export const getAllDishes = ({ userid }) => {
@@ -69,4 +84,17 @@ export const getAllDishes = ({ userid }) => {
 export const getAllRestaurants = ({ citycode, statecode }) => {
   const url = `${baseUrl}${urls.getAllRestaurants}?citycode=${citycode}&&statecode=${statecode}`;
   return get(url).then(handleResponse);
+};
+
+export const uploadFilesEndpoint = (files) => {
+  const formdata = new FormData();
+  files.forEach((file) => {
+    formdata.append('image', file);
+  });
+  formdata.append('username', 'alan');
+  const url = `${baseUrl}${urls.uploadImage}`;
+  return fetch(url, {
+    method: 'POST',
+    body: formdata,
+  }).then(handleResponse);
 };
