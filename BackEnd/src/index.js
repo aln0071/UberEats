@@ -1,13 +1,19 @@
 // import express
 const express = require('express');
+const path = require('path');
 
 // define app
 const app = express();
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // add dotenv
 const dotenv = require('dotenv');
 
 dotenv.config();
+
+const multer = require('multer');
+
+const upload = multer({ dest: 'src/uploads/' });
 
 // import body parser to parse body of request
 const bodyParser = require('body-parser');
@@ -31,6 +37,7 @@ const {
   updateProfile,
   addDish,
   getAllDishes,
+  getAllRestaurants,
 } = require('./utils/endpoints');
 
 // defining an array to work as the database (temporary solution)
@@ -187,6 +194,27 @@ app.get('/get-dishes', authMiddleware, async (req, res) => {
       message: error.message,
     });
   }
+});
+
+app.get('/get-restaurants', authMiddleware, async (req, res) => {
+  try {
+    const restaurantList = await getAllRestaurants(req.query);
+    res.json(restaurantList.map((restaurant) => {
+      delete restaurant.password;
+      return restaurant;
+    }));
+  } catch (error) {
+    res.status(400).send({
+      status: false,
+      message: error.message,
+    });
+  }
+});
+
+app.post('/images', upload.array('image', 12), (req, res) => {
+  const { files } = req;
+  console.log(files);
+  res.send('got it!');
 });
 
 // starting the server
