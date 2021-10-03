@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Grid, Cell } from 'baseui/layout-grid';
 import { getAllRestaurantsAction } from '../store/actions/restaurants';
 import RestaurantCard from './RestaurantCard';
+import styles from '../styles.scss';
 
 export default function Restaurants() {
   const dispatch = useDispatch();
@@ -22,15 +23,8 @@ export default function Restaurants() {
   ));
 
   return (
-    <div className="restaurants-container">
-      <h1>Restaurants</h1>
-      <div>Search bar</div>
+    <div className={styles.restaurantsContainer}>
       <Grid gridGaps={[2, 6, 12]}>{renderRestaurants()}</Grid>
-      <ul>
-        <li>rest 1</li>
-        <li>rest 2</li>
-        <li>rest 3</li>
-      </ul>
     </div>
   );
 }
