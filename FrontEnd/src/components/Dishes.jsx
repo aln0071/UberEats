@@ -85,7 +85,6 @@ export default function Dishes() {
             onClick={() => {
               setIsOpen(true);
             }}
-            $style={{ marginTop: '10px', marginLeft: '10px' }}
           >
             Add Dish
           </Button>
