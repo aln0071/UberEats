@@ -138,7 +138,7 @@ function updateDish(dish) {}
 
 function addDish(dish) {
   const {
-    restaurantid, dishname, description, category, price,
+    restaurantid, dishname, description, category, price, pictures,
   } = dish;
   const values = {
     restaurantid,
@@ -146,11 +146,11 @@ function addDish(dish) {
     description,
     category,
     price,
+    pictures,
   };
   const query = _addDishQuery
     .replace(':optionalfields', optionalFields(values))
     .replace(':optionalvalues', optionalFields(values, ':'));
-  console.log(query);
   return executeQuery(query, values);
 }
 

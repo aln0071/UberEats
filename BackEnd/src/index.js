@@ -88,9 +88,9 @@ app.post('/register', async (req, res) => {
     res.status(200).send({
       status: true,
       message:
-        req.body.type === 'c'
-          ? 'User registered successfully'
-          : 'Restaurant registered successfully',
+                req.body.type === 'c'
+                  ? 'User registered successfully'
+                  : 'Restaurant registered successfully',
     });
   } catch (error) {
     res.status(400).send({
@@ -147,9 +147,9 @@ app.post('/update-profile', async (req, res) => {
     res.status(400).send({
       status: false,
       message:
-        error.code === 'ER_DUP_ENTRY'
-          ? 'User with this email already exists'
-          : error.message,
+                error.code === 'ER_DUP_ENTRY'
+                  ? 'User with this email already exists'
+                  : error.message,
     });
   }
 });
@@ -169,9 +169,12 @@ app.post('/update-dishes', async (req, res) => {
   }
 });
 
-app.post('/add-dish', async (req, res) => {
+app.post('/add-dish', upload.array('image', 12), async (req, res) => {
   try {
-    await addDish(req.body);
+    await addDish({
+      ...req.body,
+      pictures: JSON.stringify(req.files.map((file) => file.filename)),
+    });
     res.status(200).send({
       status: true,
       message: 'Dish added successfully',
@@ -199,10 +202,12 @@ app.get('/get-dishes', authMiddleware, async (req, res) => {
 app.get('/get-restaurants', authMiddleware, async (req, res) => {
   try {
     const restaurantList = await getAllRestaurants(req.query);
-    res.json(restaurantList.map((restaurant) => {
-      delete restaurant.password;
-      return restaurant;
-    }));
+    res.json(
+      restaurantList.map((restaurant) => {
+        delete restaurant.password;
+        return restaurant;
+      }),
+    );
   } catch (error) {
     res.status(400).send({
       status: false,
@@ -212,6 +217,7 @@ app.get('/get-restaurants', authMiddleware, async (req, res) => {
 });
 
 app.post('/images', upload.array('image', 12), (req, res) => {
+  console.log(req.body.username);
   const { files } = req;
   console.log(files);
   res.send('got it!');
