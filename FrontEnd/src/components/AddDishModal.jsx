@@ -21,14 +21,22 @@ import { createToastBody, toastOptions } from '../utils';
 import { isValid, validations } from '../utils/validations';
 import { setDishesAction } from '../store/actions';
 
+const initialValues = {
+  dishname: '',
+  description: '',
+  category: [{ id: 1, label: 'Veg' }],
+  price: 1,
+};
+
 export default function AddDishModal({ isOpen, setIsOpen }) {
-  const [values, setValues] = React.useState({
-    dishname: '',
-    description: '',
-    category: [{ id: 1, label: 'Veg' }],
-    price: 1,
-  });
+  const [values, setValues] = React.useState({ ...initialValues });
   const [pictures, setPictures] = React.useState([]);
+
+  const resetValues = () => {
+    setValues({ ...initialValues });
+    setPictures([]);
+  };
+
   const handleChange = (e) => {
     setValues({
       ...values,
@@ -73,6 +81,7 @@ export default function AddDishModal({ isOpen, setIsOpen }) {
       dispatch(setDishesAction(newDishesList));
       toast.success(`Success: ${response.message}`, toastOptions);
       setIsOpen(false);
+      resetValues();
     } catch (error) {
       console.log(error);
       toast.error(createToastBody(error), toastOptions);
@@ -144,7 +153,6 @@ export default function AddDishModal({ isOpen, setIsOpen }) {
               onDrop={(acceptedFiles, rejectedFiles) => {
                 console.log(rejectedFiles);
                 setPictures(acceptedFiles);
-                // uploadFilesEndpoint(acceptedFiles);
               }}
               accept=".jpg,.png"
             />
@@ -154,7 +162,10 @@ export default function AddDishModal({ isOpen, setIsOpen }) {
       <ModalFooter>
         <ModalButton
           kind={ButtonKind.tertiary}
-          onClick={() => setIsOpen(false)}
+          onClick={() => {
+            setIsOpen(false);
+            resetValues();
+          }}
         >
           Cancel
         </ModalButton>

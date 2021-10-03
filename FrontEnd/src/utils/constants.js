@@ -12,6 +12,7 @@ export const urls = {
   getDishes: 'get-dishes',
   getAllRestaurants: 'get-restaurants',
   uploadImage: 'images',
+  uploadsFolder: 'uploads',
 };
 
 export const dishCategories = [
