@@ -3,7 +3,7 @@ const {
   executeQuery,
   paramsToQuery,
   optionalFields,
-  optionalConditions,
+  // optionalConditions,
 } = require('./utils');
 const {
   _login,
@@ -81,35 +81,34 @@ async function register(params) {
 
 async function updateProfile(params) {
   const {
-    email, name, phone, nickname, dob, location, citycode, zip, userid,
-  } = params;
-  const updateQuery = _updateProfile.replace(
-    ':optionalfields',
-    paramsToQuery({
-      email,
-      name,
-      phone,
-      nickname,
-      dob,
-    }),
-  );
-  executeQuery(updateQuery, params);
-  const locationData = await executeQuery(_getLocation, {
+    email,
+    name,
+    phone,
+    nickname,
+    dob,
     location,
     citycode,
     zip,
-  });
+    userid,
+    pictures,
+  } = params;
+  const values = {
+    name, email, phone, nickname, dob, pictures,
+  };
+  const updateQuery = _updateProfile.replace(
+    ':optionalfields',
+    paramsToQuery(values),
+  );
+  executeQuery(updateQuery, { ...values, userid });
+  const locationValues = { location, citycode, zip };
+  const locationData = await executeQuery(_getLocation, locationValues);
   if (locationData.length !== 0) {
     // use existing data
     const { locationid } = locationData[0];
     await executeQuery(_updateLocationInUserTable, { locationid, userid });
   } else {
     // add new entry to locaion table
-    const response = await executeQuery(_addLocation, {
-      location,
-      citycode,
-      zip,
-    });
+    const response = await executeQuery(_addLocation, locationValues);
     const locationid = response.insertId;
     await executeQuery(_updateLocationInUserTable, { locationid, userid });
   }

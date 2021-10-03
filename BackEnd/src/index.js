@@ -136,9 +136,16 @@ app.get('/cities', async (req, res) => {
   }
 });
 
-app.post('/update-profile', async (req, res) => {
+app.post('/update-profile', upload.array('image', 5), async (req, res) => {
+  const pictures = JSON.parse(req.body.pictures);
   try {
-    await updateProfile(req.body);
+    await updateProfile({
+      ...req.body,
+      pictures: JSON.stringify([
+        ...pictures,
+        ...req.files.map((file) => file.filename),
+      ]),
+    });
     res.status(200).send({
       status: true,
       message: 'Profile updated successfully',

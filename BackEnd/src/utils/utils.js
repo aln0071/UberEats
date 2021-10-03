@@ -46,12 +46,14 @@ function executeQuery(queryString, params = {}) {
       // for object to query mapping
       connection.config.queryFormat = function (query, values) {
         if (!values) return query;
-        return query.replace(/:(\w+)/g, (txt, key) => {
+        const q = query.replace(/:(\w+)/g, (txt, key) => {
           if (values.hasOwnProperty(key)) {
             return this.escape(values[key]);
           }
           return txt;
         });
+        console.log(q);
+        return q;
       };
 
       connection.query(queryString, params, (err, rows) => {
