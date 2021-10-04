@@ -4,7 +4,7 @@ import { Select, MenuItem, InputLabel } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 import IconButton from '@material-ui/core/IconButton';
 import PropTypes from 'prop-types';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Card, StyledBody } from 'baseui/card';
 import { baseUrl, dishCategories, urls } from '../utils/constants';
 import { BlackFormControl, BlackTextField } from '../utils';
@@ -44,6 +44,10 @@ export default function Dish({ dish, index }) {
     dispatch(updateDishAction(index, { ...dish, [id]: value }));
   };
 
+  const user = useSelector((state) => state.user);
+
+  const isCustomer = user.type === 'c';
+
   return (
     <Card
       key={dish.dishid}
@@ -56,48 +60,57 @@ export default function Dish({ dish, index }) {
         console.log('h');
       }}
     >
+      {!isCustomer && (
+        <StyledBody>
+          <BlackTextField
+            required
+            id="dishname"
+            label="Name"
+            value={dish.dishname}
+            onChange={handleChange}
+            type="text"
+          />
+          <BlackTextField
+            id="description"
+            label="Description"
+            value={dish.description}
+            onChange={handleChange}
+            type="text"
+          />
+          <BlackFormControl>
+            <InputLabel required>Category</InputLabel>
+            <Select
+              onChange={(e) => {
+                handleChange({
+                  target: {
+                    id: 'category',
+                    value: e.target.value,
+                  },
+                });
+              }}
+              value={dish.category}
+            >
+              {renderCategories()}
+            </Select>
+          </BlackFormControl>
+          <BlackTextField
+            id="price"
+            label="Price"
+            value={dish.price}
+            onChange={handleChange}
+            type="number"
+          />
+          <IconButton aria-label="delete">
+            <DeleteIcon />
+          </IconButton>
+        </StyledBody>
+      )}
       <StyledBody>
-        <BlackTextField
-          required
-          id="dishname"
-          label="Name"
-          value={dish.dishname}
-          onChange={handleChange}
-          type="text"
-        />
-        <BlackTextField
-          id="description"
-          label="Description"
-          value={dish.description}
-          onChange={handleChange}
-          type="text"
-        />
-        <BlackFormControl>
-          <InputLabel required>Category</InputLabel>
-          <Select
-            onChange={(e) => {
-              handleChange({
-                target: {
-                  id: 'category',
-                  value: e.target.value,
-                },
-              });
-            }}
-            value={dish.category}
-          >
-            {renderCategories()}
-          </Select>
-        </BlackFormControl>
-        <BlackTextField
-          id="price"
-          label="Price"
-          value={dish.price}
-          onChange={handleChange}
-          type="number"
-        />
-        <IconButton aria-label="delete">
-          <DeleteIcon />
-        </IconButton>
+        <div>{dish.description}</div>
+        <div>
+          Price: $
+          {dish.price}
+        </div>
       </StyledBody>
     </Card>
   );

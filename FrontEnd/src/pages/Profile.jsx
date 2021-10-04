@@ -214,11 +214,11 @@ export default function Profile() {
       </div>
       <div>
         <BlackTextField
-          id="about"
+          id="description"
           label="About"
           multiline
           maxRows={4}
-          value={profileData.about}
+          value={profileData.description}
           onChange={handleChange}
         />
         <BlackTextField

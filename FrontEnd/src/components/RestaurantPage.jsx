@@ -87,6 +87,7 @@ export default function RestaurantPage() {
           <span className="carousel-control-next-icon" />
         </button>
       </div>
+      <div>{restaurant.description}</div>
       <Grid gridGaps={[2, 6, 12]}>{renderDishList()}</Grid>
     </div>
   );
