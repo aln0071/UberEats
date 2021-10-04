@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 // import { makeStyles } from '@material-ui/core/styles';
 import { Select, MenuItem, InputLabel } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -9,6 +9,7 @@ import { Card, StyledBody } from 'baseui/card';
 import { baseUrl, dishCategories, urls } from '../utils/constants';
 import { BlackFormControl, BlackTextField } from '../utils';
 import { updateDishAction } from '../store/actions';
+import PlaceOrderModal from './PlaceOrderModal';
 
 // const useStyles = makeStyles((theme) => ({
 //   root: {
@@ -46,73 +47,78 @@ export default function Dish({ dish, index }) {
 
   const user = useSelector((state) => state.user);
 
+  const [isOpen, setIsOpen] = useState(false);
+
   const isCustomer = user.type === 'c';
 
   return (
-    <Card
-      key={dish.dishid}
-      overrides={{ Root: { style: { width: '328px', cursor: 'pointer' } } }}
-      headerImage={`${baseUrl}${urls.uploadsFolder}/${
-        JSON.parse(dish.pictures)[0] || '/no-image'
-      }`}
-      title={dish.dishname}
-      onClick={() => {
-        console.log('h');
-      }}
-    >
-      {!isCustomer && (
+    <div>
+      <Card
+        key={dish.dishid}
+        overrides={{ Root: { style: { width: '328px', cursor: 'pointer' } } }}
+        headerImage={`${baseUrl}${urls.uploadsFolder}/${
+          JSON.parse(dish.pictures)[0] || '/no-image'
+        }`}
+        title={dish.dishname}
+        onClick={() => {
+          setIsOpen(true);
+        }}
+      >
+        {!isCustomer && (
+          <StyledBody>
+            <BlackTextField
+              required
+              id="dishname"
+              label="Name"
+              value={dish.dishname}
+              onChange={handleChange}
+              type="text"
+            />
+            <BlackTextField
+              id="description"
+              label="Description"
+              value={dish.description}
+              onChange={handleChange}
+              type="text"
+            />
+            <BlackFormControl>
+              <InputLabel required>Category</InputLabel>
+              <Select
+                onChange={(e) => {
+                  handleChange({
+                    target: {
+                      id: 'category',
+                      value: e.target.value,
+                    },
+                  });
+                }}
+                value={dish.category}
+              >
+                {renderCategories()}
+              </Select>
+            </BlackFormControl>
+            <BlackTextField
+              id="price"
+              label="Price"
+              value={dish.price}
+              onChange={handleChange}
+              type="number"
+            />
+            <IconButton aria-label="delete">
+              <DeleteIcon />
+            </IconButton>
+          </StyledBody>
+        )}
         <StyledBody>
-          <BlackTextField
-            required
-            id="dishname"
-            label="Name"
-            value={dish.dishname}
-            onChange={handleChange}
-            type="text"
-          />
-          <BlackTextField
-            id="description"
-            label="Description"
-            value={dish.description}
-            onChange={handleChange}
-            type="text"
-          />
-          <BlackFormControl>
-            <InputLabel required>Category</InputLabel>
-            <Select
-              onChange={(e) => {
-                handleChange({
-                  target: {
-                    id: 'category',
-                    value: e.target.value,
-                  },
-                });
-              }}
-              value={dish.category}
-            >
-              {renderCategories()}
-            </Select>
-          </BlackFormControl>
-          <BlackTextField
-            id="price"
-            label="Price"
-            value={dish.price}
-            onChange={handleChange}
-            type="number"
-          />
-          <IconButton aria-label="delete">
-            <DeleteIcon />
-          </IconButton>
+          <div>{dish.description}</div>
+          <div>
+            Price: $
+            {dish.price}
+          </div>
         </StyledBody>
-      )}
-      <StyledBody>
-        <div>{dish.description}</div>
-        <div>
-          Price: $
-          {dish.price}
-        </div>
-      </StyledBody>
-    </Card>
+      </Card>
+      <PlaceOrderModal dish={dish} isOpen={isOpen} setIsOpen={setIsOpen} />
+    </div>
   );
 }
 

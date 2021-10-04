@@ -58,3 +58,24 @@ body {
     }
   }
 }
+
+.placeOrder {
+  &__modal {
+    height: 300px;
+    &__image {
+      height: 300px;
+    }
+    &__footer {
+      display: flex;
+      justify-content: space-between;
+      &__button {
+        flex-grow: 1;
+        margin-left: 5px;
+        &__price {
+          position: absolute;
+          right: 40px;
+        }
+      }
+    }
+  }
+}

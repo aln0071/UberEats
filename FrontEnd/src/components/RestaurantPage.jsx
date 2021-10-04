@@ -35,7 +35,7 @@ export default function RestaurantPage() {
         className={`carousel slide ${styles.restaurantCarousel}`}
         data-bs-ride="carousel"
       >
-        <div className="carousel-indicators">
+        {/* <div className="carousel-indicators">
           {JSON.parse(restaurant.pictures).map((pic, index) => (
             <button
               type="button"
@@ -44,7 +44,7 @@ export default function RestaurantPage() {
               className={index === 0 ? 'active' : ''}
             />
           ))}
-        </div>
+        </div> */}
 
         <div className="carousel-inner">
           {JSON.parse(restaurant.pictures).map((pic, index) => (
