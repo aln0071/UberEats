@@ -4,7 +4,10 @@ import { Card, StyledBody, StyledAction } from 'baseui/card';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 import { baseUrl, urls } from '../utils/constants';
-import { setCurrentTabAction } from '../store/actions';
+import {
+  setCurrentRestaurantAction,
+  setCurrentTabAction,
+} from '../store/actions';
 
 export default function RestaurantCard({ restaurant }) {
   const dispatch = useDispatch();
@@ -18,6 +21,7 @@ export default function RestaurantCard({ restaurant }) {
       title={`${restaurant.name} - ${restaurant.city}`}
       onClick={() => {
         dispatch(setCurrentTabAction(4));
+        dispatch(setCurrentRestaurantAction(restaurant));
       }}
     >
       <StyledBody>{restaurant.description}</StyledBody>

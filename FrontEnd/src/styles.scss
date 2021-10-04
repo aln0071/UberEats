@@ -40,3 +40,21 @@ body {
     margin-top: 10px;
   }
 }
+
+.restaurant {
+  &__carousel {
+    height: 240px;
+    width: 100%;
+    margin-bottom: 10px;
+    overflow: hidden;
+    &__image {
+      transform: translate(0, -40%);
+    }
+    &_name {
+      position: absolute;
+      color: white;
+      top: 190px;
+      left: 10px;
+    }
+  }
+}
