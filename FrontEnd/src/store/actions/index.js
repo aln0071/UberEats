@@ -5,6 +5,7 @@ import {
   SET_DISHES,
   UPDATE_DISH,
   SET_RESTAURANTS,
+  SET_CURRENT_TAB,
 } from './types';
 
 export const loginAction = (userDetails) => ({
@@ -58,4 +59,9 @@ export const setDishesAction = (dishes) => ({
 export const setRestaurantsAction = (restaurants) => ({
   type: SET_RESTAURANTS,
   payload: restaurants,
+});
+
+export const setCurrentTabAction = (tabid) => ({
+  type: SET_CURRENT_TAB,
+  payload: tabid,
 });

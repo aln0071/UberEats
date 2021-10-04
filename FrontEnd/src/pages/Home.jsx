@@ -1,12 +1,15 @@
+import React from 'react';
 import { Box, AppBar, Toolbar } from '@material-ui/core';
-import React, { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import Dashboard from './Dashboard';
 import ProfileMenu from '../components/ProfileMenu';
 import NavTabs from '../components/NavTabs';
+import { setCurrentTabAction } from '../store/actions';
 
 export default function Home() {
-  const [currentTab, setCurrentTab] = useState(0);
-
+  const currentTab = useSelector((state) => state.currentTab);
+  const dispatch = useDispatch();
+  const setCurrentTab = (tabid) => dispatch(setCurrentTabAction(tabid));
   return (
     <div>
       <Box sx={{ flexGrow: 1 }}>

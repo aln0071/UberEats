@@ -5,6 +5,7 @@ import Restaurants from '../components/Restaurants';
 import Profile from './Profile';
 import Dishes from '../components/Dishes';
 import Orders from '../components/Orders';
+import RestaurantPage from '../components/RestaurantPage';
 
 function TabPanel({ value, index, children }) {
   if (value === index) {
@@ -43,6 +44,9 @@ export default function Dashboard({ currentTab }) {
           </TabPanel>
           <TabPanel value={currentTab} index={3}>
             <Profile />
+          </TabPanel>
+          <TabPanel value={currentTab} index={4}>
+            <RestaurantPage />
           </TabPanel>
         </div>
       )}
