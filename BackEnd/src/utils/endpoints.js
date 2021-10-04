@@ -91,9 +91,16 @@ async function updateProfile(params) {
     zip,
     userid,
     pictures,
+    description,
   } = params;
   const values = {
-    name, email, phone, nickname, dob, pictures,
+    name,
+    email,
+    phone,
+    nickname,
+    dob,
+    pictures,
+    description,
   };
   const updateQuery = _updateProfile.replace(
     ':optionalfields',
