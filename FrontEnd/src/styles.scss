@@ -78,6 +78,56 @@ body {
       }
     }
   }
+
+  &__body {
+    margin: 10px;
+    height: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    &__left {
+      flex-basis: 50%;
+      padding-right: 10px;
+      &__item {
+        &__header {
+          font-weight: bold;
+        }
+        &__body {
+        }
+        &__footer {
+          display: flex;
+          justify-content: space-between;
+        }
+      }
+    }
+    &__right {
+      min-height: 100%;
+      background-color: #f6f6f6;
+      flex-basis: 50%;
+      &__header {
+        display: flex;
+        flex-wrap: wrap;
+        text-align: center;
+        justify-content: center;
+        margin-top: 20px;
+        &__button {
+          width: 150px;
+        }
+        &__description {
+          padding: 10px 80px;
+          font-size: small;
+          color: darkgray;
+        }
+      }
+      &__table {
+        display: flex;
+        justify-content: center;
+        padding-top: 60px;
+        table {
+          width: 400px;
+        }
+      }
+    }
+  }
 }
 
 .cart {

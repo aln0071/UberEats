@@ -6,9 +6,57 @@ import {
   UPDATE_CART,
 } from '../actions/types';
 
+// const initialState = {
+//   items: {},
+//   restaurantid: undefined,
+// };
+
 const initialState = {
-  items: {},
-  restaurantid: undefined,
+  restaurantid: 17,
+  items: {
+    22: {
+      dishid: 22,
+      restaurantid: 17,
+      dishname: 'Hello World',
+      description: '',
+      category: 1,
+      price: 1,
+      pictures: '[]',
+      count: 1,
+    },
+    23: {
+      dishid: 23,
+      restaurantid: 17,
+      dishname: 'test',
+      description: '',
+      category: 1,
+      price: 1,
+      pictures: '[]',
+      count: 3,
+    },
+    25: {
+      dishid: 25,
+      restaurantid: 17,
+      dishname: 'New world',
+      description: 'Very good',
+      category: 1,
+      price: 1,
+      pictures:
+        '["67e8382bedd39df8b34004a82e0558b6","cb417bf6cf7fba0668c9bb15a74b2932","fd00c08a334ed77c947b07fda280d725","29191f4072a181bd85a18725789d0558"]',
+      count: 3,
+    },
+    26: {
+      dishid: 26,
+      restaurantid: 17,
+      dishname: 'Curry',
+      description: 'Very cool',
+      category: 1,
+      price: 1,
+      pictures:
+        '["89e0872e8984128432e1ecdc4fe5a8ff","7d312d628fb24b15c5a33522fa145d7e","ed8e6f29605dcb232d11a36b52aefe57"]',
+      count: 2,
+    },
+  },
 };
 
 export default function cart(state = initialState, action) {

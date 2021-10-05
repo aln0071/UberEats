@@ -1,14 +1,17 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import Button from '@material-ui/core/Button';
 import { Menu } from '@material-ui/core';
 import { Button as BaseButton } from 'baseui/button';
 import styles from '../styles.scss';
+import { setCurrentTabAction } from '../store/actions';
 
 export default function CartMenu() {
   const cart = useSelector((state) => state.cart);
   const itemCount = Object.values(cart.items).reduce((t, c) => t + c.count, 0);
+
+  const dispatch = useDispatch();
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
@@ -43,7 +46,7 @@ export default function CartMenu() {
               </div>
               <div className={styles.cartItemDetails}>
                 <span>
-                  Quantiry:
+                  Quantity:
                   {item.count}
                 </span>
                 <span>
@@ -55,7 +58,13 @@ export default function CartMenu() {
             </div>
           );
         })}
-        <BaseButton className={styles.cartButton}>
+        <BaseButton
+          className={styles.cartButton}
+          onClick={() => {
+            handleClose();
+            dispatch(setCurrentTabAction(5));
+          }}
+        >
           Checkout
           <div className={styles.cartTotal}>
             $
