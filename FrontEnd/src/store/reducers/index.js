@@ -4,6 +4,7 @@ import dishes from './dishes';
 import restaurants from './restaurants';
 import currentTab from './currentTab';
 import currentRestaurant from './currentRestaurant';
+import cart from './cart';
 
 export default combineReducers({
   user,
@@ -11,4 +12,5 @@ export default combineReducers({
   restaurants,
   currentTab,
   currentRestaurant,
+  cart,
 });

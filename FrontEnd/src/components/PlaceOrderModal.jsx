@@ -1,4 +1,4 @@
-/* eslint jsx-a11y/control-has-associated-label: 0 */
+/* eslint jsx-a11y/control-has-associated-label: 0, no-prototype-builtins: 0 */
 import * as React from 'react';
 import {
   Modal,
@@ -13,18 +13,30 @@ import PropTypes from 'prop-types';
 import IconButton from '@material-ui/core/IconButton';
 import AddIcon from '@material-ui/icons/Add';
 import SubtractIcon from '@material-ui/icons/Remove';
+import { useSelector, useDispatch } from 'react-redux';
 import styles from '../styles.scss';
 import { baseUrl, urls } from '../utils/constants';
+import { addToCartAction, updateCartAction } from '../store/actions';
 
 const categories = ['Veg', 'Non-Veg', 'Vegan'];
 
 export default function PlaceOrderModal({ isOpen, setIsOpen, dish }) {
-  const [count, setCount] = React.useState(1);
+  const cart = useSelector((state) => state.cart);
+  const dispatch = useDispatch();
+  const inCart = cart.items.hasOwnProperty(dish.dishid);
+  const [count, setCount] = React.useState(
+    inCart ? cart.items[dish.dishid].count : 1,
+  );
+
+  const addToCart = () => {
+    if (!inCart) dispatch(addToCartAction({ ...dish, count }));
+    else dispatch(updateCartAction({ ...dish, count }));
+    setIsOpen(false);
+  };
 
   return (
     <Modal
       onClose={() => {
-        setCount(1);
         setIsOpen(false);
       }}
       closeable
@@ -133,7 +145,10 @@ export default function PlaceOrderModal({ isOpen, setIsOpen, dish }) {
             </IconButton>
           </div>
 
-          <ModalButton className={styles.placeOrderModalFooterButton}>
+          <ModalButton
+            className={styles.placeOrderModalFooterButton}
+            onClick={addToCart}
+          >
             Add
             {' '}
             {count}
@@ -166,5 +181,6 @@ PlaceOrderModal.propTypes = {
     description: PropTypes.string,
     category: PropTypes.number,
     price: PropTypes.number,
+    dishid: PropTypes.number,
   }),
 };

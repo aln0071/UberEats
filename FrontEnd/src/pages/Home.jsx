@@ -5,6 +5,7 @@ import Dashboard from './Dashboard';
 import ProfileMenu from '../components/ProfileMenu';
 import NavTabs from '../components/NavTabs';
 import { setCurrentTabAction } from '../store/actions';
+import CartMenu from '../components/CartMenu';
 
 export default function Home() {
   const currentTab = useSelector((state) => state.currentTab);
@@ -19,6 +20,7 @@ export default function Home() {
             <div style={{ flexGrow: 1 }}>
               <NavTabs setCurrentTab={setCurrentTab} currentTab={currentTab} />
             </div>
+            <CartMenu />
             <ProfileMenu setCurrentTab={setCurrentTab} />
           </Toolbar>
         </AppBar>

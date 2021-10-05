@@ -79,3 +79,35 @@ body {
     }
   }
 }
+
+.cart {
+  &__empty {
+    width: 432px;
+    height: 284px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    text-align: center;
+    padding: 93px 10px;
+  }
+  &__hasItems {
+  }
+  &__item {
+    margin-left: 3px;
+    &__header {
+      font-weight: bold;
+    }
+    &__details {
+      display: flex;
+      justify-content: space-between;
+    }
+  }
+  &__total {
+    position: absolute;
+    right: 25px;
+  }
+  &__button {
+    width: 100%;
+  }
+}
