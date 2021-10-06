@@ -6,6 +6,7 @@ import IconButton from '@material-ui/core/IconButton';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import { Card, StyledBody } from 'baseui/card';
+import { Grid, Cell } from 'baseui/layout-grid';
 import { baseUrl, dishCategories, urls } from '../utils/constants';
 import { BlackFormControl, BlackTextField } from '../utils';
 import { updateDishAction } from '../store/actions';
@@ -61,52 +62,71 @@ export default function Dish({ dish, index }) {
         }`}
         title={dish.dishname}
         onClick={() => {
-          setIsOpen(true);
+          if (isCustomer) setIsOpen(true);
         }}
       >
         {!isCustomer && (
           <StyledBody>
-            <BlackTextField
-              required
-              id="dishname"
-              label="Name"
-              value={dish.dishname}
-              onChange={handleChange}
-              type="text"
-            />
-            <BlackTextField
-              id="description"
-              label="Description"
-              value={dish.description}
-              onChange={handleChange}
-              type="text"
-            />
-            <BlackFormControl>
-              <InputLabel required>Category</InputLabel>
-              <Select
-                onChange={(e) => {
-                  handleChange({
-                    target: {
-                      id: 'category',
-                      value: e.target.value,
-                    },
-                  });
-                }}
-                value={dish.category}
-              >
-                {renderCategories()}
-              </Select>
-            </BlackFormControl>
-            <BlackTextField
-              id="price"
-              label="Price"
-              value={dish.price}
-              onChange={handleChange}
-              type="number"
-            />
-            <IconButton aria-label="delete">
-              <DeleteIcon />
-            </IconButton>
+            <Grid gridMargins={0} gridGaps={[0, 0, 10]}>
+              <Cell span={12}>
+                <BlackTextField
+                  required
+                  id="dishname"
+                  label="Name"
+                  value={dish.dishname}
+                  onChange={handleChange}
+                  type="text"
+                  fullWidth
+                />
+              </Cell>
+
+              <Cell span={12}>
+                <BlackTextField
+                  id="description"
+                  label="Description"
+                  value={dish.description}
+                  onChange={handleChange}
+                  type="text"
+                  fullWidth
+                />
+              </Cell>
+
+              <Cell span={6}>
+                <BlackFormControl fullWidth>
+                  <InputLabel required>Category</InputLabel>
+                  <Select
+                    fullWidth
+                    onChange={(e) => {
+                      handleChange({
+                        target: {
+                          id: 'category',
+                          value: e.target.value,
+                        },
+                      });
+                    }}
+                    value={dish.category}
+                  >
+                    {renderCategories()}
+                  </Select>
+                </BlackFormControl>
+              </Cell>
+
+              <Cell span={6}>
+                <BlackTextField
+                  id="price"
+                  label="Price"
+                  value={dish.price}
+                  onChange={handleChange}
+                  type="number"
+                />
+              </Cell>
+
+              <Cell span={12}>
+                <IconButton aria-label="delete">
+                  <DeleteIcon />
+                </IconButton>
+              </Cell>
+            </Grid>
           </StyledBody>
         )}
         <StyledBody>
