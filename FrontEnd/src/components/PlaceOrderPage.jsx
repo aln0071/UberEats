@@ -2,11 +2,14 @@
 import { Button } from 'baseui/button';
 import React from 'react';
 import { useSelector } from 'react-redux';
+import { RadioGroup, Radio, ALIGN } from 'baseui/radio';
 import styles from '../styles.scss';
 
 export default function PlaceOrderPage() {
   const cart = useSelector((state) => state.cart);
   const restaurant = useSelector((state) => state.restaurants.find((res) => res.userid === cart.restaurantid));
+
+  const [deliveryOption, setDeliveryOption] = React.useState(2);
 
   let total = 0;
   const taxPercent = 0.15;
@@ -49,6 +52,22 @@ export default function PlaceOrderPage() {
     <div className={styles.placeOrderBody}>
       <div className={styles.placeOrderBodyLeft}>
         <h1>{restaurant.name}</h1>
+        <div>
+          Delivery Options:
+          <RadioGroup
+            value={deliveryOption}
+            onChange={(e) => setDeliveryOption(e.currentTarget.value)}
+            name="deliveryOption"
+            align={ALIGN.horizontal}
+          >
+            <Radio value={2}>Delivery</Radio>
+            <Radio value={3}>Pickup</Radio>
+          </RadioGroup>
+        </div>
+        <div>
+          <h4>Address:</h4>
+        </div>
+        <hr />
         {renderItems()}
       </div>
       <div className={styles.placeOrderBodyRight}>

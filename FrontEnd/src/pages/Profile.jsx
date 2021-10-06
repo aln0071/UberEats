@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { useSelector, useDispatch } from 'react-redux';
-import { Select, MenuItem, InputLabel } from '@material-ui/core';
+import {
+  Select, MenuItem, InputLabel, Input,
+} from '@material-ui/core';
 import { toast } from 'react-toastify';
 import { FileUploader } from 'baseui/file-uploader';
 import { FormControl } from 'baseui/form-control';
 import { Button } from 'baseui/button';
+import { Grid, Cell } from 'baseui/layout-grid';
 import { updateUserDetails } from '../store/actions';
 import {
   BlackTextField,
@@ -50,6 +53,21 @@ export default function Profile() {
       {val[label]}
     </MenuItem>
   ));
+
+  const deliveryModes = [
+    {
+      label: 'Both Delivery & Pickup',
+      value: 1,
+    },
+    {
+      label: 'Delivery',
+      value: 2,
+    },
+    {
+      label: 'Pickup',
+      value: 3,
+    },
+  ];
 
   const [countries, setCountries] = useState([]);
   const [states, setStates] = useState([]);
@@ -118,146 +136,224 @@ export default function Profile() {
 
   return (
     <form className={classes.root} noValidate autoComplete="off">
-      <div>
-        <BlackTextField
-          required
-          id="name"
-          label="Name"
-          value={profileData.name}
-          onChange={handleChange}
-          type="text"
-        />
-        <BlackTextField
-          id="nickName"
-          label="Nick Name"
-          value={profileData.nickname}
-          onChange={handleChange}
-          type="text"
-        />
-        <BlackTextField
-          required
-          id="email"
-          label="Email"
-          value={profileData.email}
-          onChange={handleChange}
-          type="email"
-        />
-        <BlackTextField
-          id="dob"
-          label="Date of Birth"
-          value={profileData.dob || ''}
-          type="date"
-          onChange={handleChange}
-        />
-      </div>
-      <div>
-        <BlackFormControl>
-          <InputLabel required>City</InputLabel>
-          <Select
-            onChange={(e) => {
-              const city = cities.find((c) => c.citycode === e.target.value);
-              dispatch(updateUserDetails(city));
-            }}
-            label="City"
-            value={profileData.citycode}
-          >
-            {getMap(
-              cities.filter((city) => city.statecode === profileData.statecode),
-              'citycode',
-              'city',
-            )}
-          </Select>
-        </BlackFormControl>
-        <BlackFormControl>
-          <InputLabel required>State</InputLabel>
-          <Select
-            onChange={(e) => {
-              const s = states.find(
-                (state) => state.statecode === e.target.value,
-              );
-              dispatch(updateUserDetails(s));
-            }}
-            label="State"
-            value={profileData.statecode}
-          >
-            {getMap(
-              states.filter(
-                (state) => state.countrycode === profileData.countrycode,
-              ),
-              'statecode',
-              'state',
-            )}
-          </Select>
-        </BlackFormControl>
-        <BlackFormControl>
-          <InputLabel required>Country</InputLabel>
-          <Select
-            onChange={(e) => {
-              const country = countries.find(
-                (cn) => cn.countrycode === e.target.value,
-              );
-              dispatch(updateUserDetails(country));
-            }}
-            label="Country"
-            value={profileData.countrycode}
-          >
-            {getMap(countries, 'countrycode', 'country')}
-          </Select>
-        </BlackFormControl>
-        <BlackTextField
-          id="phone"
-          label="Phone"
-          value={profileData.phone}
-          type="text"
-          onChange={handleChange}
-        />
-      </div>
-      <div>
-        <BlackTextField
-          id="description"
-          label="About"
-          multiline
-          maxRows={4}
-          value={profileData.description}
-          onChange={handleChange}
-        />
-        <BlackTextField
-          required
-          id="location"
-          label="Address"
-          multiline
-          maxRows={4}
-          value={profileData.location}
-          onChange={handleChange}
-        />
-        <BlackTextField
-          required
-          id="zip"
-          label="Zip Code"
-          value={profileData.zip}
-          type="number"
-          onChange={handleChange}
-        />
-      </div>
-      <div>
-        <FormControl label="Pictures">
-          <span>
-            {pictures.map((pic) => (
-              <span style={{ marginRight: '10px' }}>{pic.path}</span>
-            ))}
-            <FileUploader
-              onDrop={(acceptedFiles, rejectedFiles) => {
-                console.log(rejectedFiles);
-                setPictures(acceptedFiles);
-              }}
-              accept=".jpg,.png"
+      <Grid gridGaps={[2, 6, 12]}>
+        <Cell span={4}>
+          <BlackTextField
+            required
+            id="name"
+            label="Name"
+            value={profileData.name}
+            onChange={handleChange}
+            type="text"
+          />
+        </Cell>
+
+        <Cell span={4}>
+          <BlackTextField
+            id="nickName"
+            label="Nick Name"
+            value={profileData.nickname}
+            onChange={handleChange}
+            type="text"
+          />
+        </Cell>
+
+        <Cell span={4}>
+          <BlackTextField
+            required
+            id="email"
+            label="Email"
+            value={profileData.email}
+            onChange={handleChange}
+            type="email"
+          />
+        </Cell>
+
+        {profileData.type === 'c' && (
+          <Cell span={4}>
+            <BlackTextField
+              id="dob"
+              label="Date of Birth"
+              value={profileData.dob || ''}
+              type="date"
+              onChange={handleChange}
             />
-          </span>
-        </FormControl>
-      </div>
-      <div>
-        <Button onClick={handleSubmit}>Update Profile</Button>
-      </div>
+          </Cell>
+        )}
+
+        <Cell span={4}>
+          <BlackFormControl>
+            <InputLabel required>City</InputLabel>
+            <Select
+              onChange={(e) => {
+                const city = cities.find((c) => c.citycode === e.target.value);
+                dispatch(updateUserDetails(city));
+              }}
+              label="City"
+              value={profileData.citycode}
+            >
+              {getMap(
+                cities.filter(
+                  (city) => city.statecode === profileData.statecode,
+                ),
+                'citycode',
+                'city',
+              )}
+            </Select>
+          </BlackFormControl>
+        </Cell>
+
+        <Cell span={4}>
+          <BlackFormControl>
+            <InputLabel required>State</InputLabel>
+            <Select
+              onChange={(e) => {
+                const s = states.find(
+                  (state) => state.statecode === e.target.value,
+                );
+                dispatch(updateUserDetails(s));
+              }}
+              label="State"
+              value={profileData.statecode}
+            >
+              {getMap(
+                states.filter(
+                  (state) => state.countrycode === profileData.countrycode,
+                ),
+                'statecode',
+                'state',
+              )}
+            </Select>
+          </BlackFormControl>
+        </Cell>
+
+        <Cell span={4}>
+          <BlackFormControl>
+            <InputLabel required>Country</InputLabel>
+            <Select
+              onChange={(e) => {
+                const country = countries.find(
+                  (cn) => cn.countrycode === e.target.value,
+                );
+                dispatch(updateUserDetails(country));
+              }}
+              label="Country"
+              value={profileData.countrycode}
+            >
+              {getMap(countries, 'countrycode', 'country')}
+            </Select>
+          </BlackFormControl>
+        </Cell>
+
+        <Cell span={4}>
+          <BlackTextField
+            id="phone"
+            label="Phone"
+            value={profileData.phone}
+            type="text"
+            onChange={handleChange}
+          />
+        </Cell>
+
+        <Cell span={4}>
+          <BlackTextField
+            id="description"
+            label="About"
+            multiline
+            maxRows={4}
+            value={profileData.description}
+            onChange={handleChange}
+          />
+        </Cell>
+
+        <Cell span={4}>
+          <BlackTextField
+            required
+            id="location"
+            label="Address"
+            multiline
+            maxRows={4}
+            value={profileData.location}
+            onChange={handleChange}
+          />
+        </Cell>
+
+        <Cell span={4}>
+          <BlackTextField
+            required
+            id="zip"
+            label="Zip Code"
+            value={profileData.zip}
+            type="number"
+            onChange={handleChange}
+          />
+        </Cell>
+        {profileData.type === 'r' && (
+          <>
+            <Cell span={4}>
+              <BlackFormControl>
+                <InputLabel required>Delivery Mode</InputLabel>
+                <Select
+                  onChange={(e) => {
+                    dispatch(
+                      updateUserDetails({ deliverymode: e.target.value }),
+                    );
+                  }}
+                  label="Delivery Mode"
+                  value={profileData.deliverymode}
+                >
+                  {getMap(deliveryModes, 'value', 'label')}
+                </Select>
+              </BlackFormControl>
+            </Cell>
+
+            <Cell span={4}>
+              <BlackFormControl>
+                <InputLabel>Open from</InputLabel>
+                <Input
+                  id="hoursfrom"
+                  type="time"
+                  value={profileData.hoursfrom}
+                  onChange={handleChange}
+                />
+              </BlackFormControl>
+            </Cell>
+
+            <Cell span={4}>
+              <BlackFormControl>
+                <InputLabel>Closes at</InputLabel>
+                <Input
+                  id="hoursto"
+                  type="time"
+                  value={profileData.hoursto}
+                  onChange={handleChange}
+                />
+              </BlackFormControl>
+            </Cell>
+          </>
+        )}
+
+        <Cell span={12}>
+          <FormControl label="Pictures">
+            <span>
+              {pictures.map((pic) => (
+                <span style={{ marginRight: '10px' }}>{pic.path}</span>
+              ))}
+              <FileUploader
+                onDrop={(acceptedFiles, rejectedFiles) => {
+                  console.log(rejectedFiles);
+                  setPictures(acceptedFiles);
+                }}
+                accept=".jpg,.png"
+              />
+            </span>
+          </FormControl>
+        </Cell>
+
+        <Cell span={4}>
+          <Button onClick={handleSubmit}>Update Profile</Button>
+        </Cell>
+      </Grid>
     </form>
   );
 }
