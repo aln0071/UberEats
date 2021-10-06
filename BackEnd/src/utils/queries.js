@@ -1,6 +1,6 @@
 module.exports = {
   _login:
-    'select * from users u left join locations l on u.locationid = l.locationid left join cities c on l.citycode = c.citycode left join states s on c.statecode = s.statecode left join countries cn on s.countrycode = cn.countrycode where email = :email',
+    'select * from users u left join locations l on u.locationid = l.locationid left join cities c on l.citycode = c.citycode left join states s on c.statecode = s.statecode left join countries cn on s.countrycode = cn.countrycode left join restaurants r on u.userid = r.restaurantid where email = :email',
   _register:
     'insert into users(email, password, type, name) values( :email, :password, :type, :name )',
   _updateProfile: 'update users set :optionalfields where userid = :userid',
@@ -24,4 +24,8 @@ module.exports = {
     'select * from users u left join locations l on u.locationid = l.locationid left join cities c on l.citycode = c.citycode left join states s on c.statecode = s.statecode left join countries cn on s.countrycode = cn.countrycode where type = "r"',
   _getAllRestaurantsByCity:
     'select * from users u left join locations l on u.locationid = l.locationid left join cities c on l.citycode = c.citycode left join states s on c.statecode = s.statecode left join countries cn on s.countrycode = cn.countrycode left join restaurants r on u.userid = r.restaurantid where type = "r" and c.citycode = :citycode',
+  _addRestaurantDetails:
+    'insert into restaurants ( restaurantid ) values ( :restaurantid )',
+  _updateRestaurantDetails:
+    'update restaurants set :optionalfields where restaurantid = :restaurantid',
 };

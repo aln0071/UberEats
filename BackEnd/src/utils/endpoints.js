@@ -22,6 +22,8 @@ const {
   _getAllDishes,
   _getAllRestaurants,
   _getAllRestaurantsByCity,
+  _updateRestaurantDetails,
+  _addRestaurantDetails,
 } = require('./queries');
 
 function login(username, password) {
@@ -58,15 +60,19 @@ async function register(params) {
       if (type === 'r') {
         const userid = response.insertId;
         const { citycode, location, zip } = params;
-        return executeQuery(_addLocation, { citycode, location, zip }).then(
-          (res) => {
-            const locationid = res.insertId;
-            return executeQuery(_updateLocationInUserTable, {
-              userid,
-              locationid,
-            });
-          },
-        );
+
+        return Promise.all([
+          executeQuery(_addLocation, { citycode, location, zip }).then(
+            (res) => {
+              const locationid = res.insertId;
+              return executeQuery(_updateLocationInUserTable, {
+                userid,
+                locationid,
+              });
+            },
+          ),
+          executeQuery(_addRestaurantDetails, { restaurantid: userid }),
+        ]);
       }
       return response;
     })
@@ -118,6 +124,21 @@ async function updateProfile(params) {
     const response = await executeQuery(_addLocation, locationValues);
     const locationid = response.insertId;
     await executeQuery(_updateLocationInUserTable, { locationid, userid });
+  }
+  // set hours from, hours to, and mode of delivery if restaurant
+  if (params.type === 'r') {
+    const { hoursfrom, hoursto, deliverymode } = params;
+    const val = {
+      hoursfrom,
+      hoursto,
+      deliverymode,
+    };
+    const query = _updateRestaurantDetails.replace(
+      ':optionalfields',
+      paramsToQuery(val),
+    );
+    console.log(query);
+    await executeQuery(query, { ...val, restaurantid: userid });
   }
 }
 
