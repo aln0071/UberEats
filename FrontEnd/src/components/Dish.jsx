@@ -129,13 +129,15 @@ export default function Dish({ dish, index }) {
             </Grid>
           </StyledBody>
         )}
-        <StyledBody>
-          <div>{dish.description}</div>
-          <div>
-            Price: $
-            {dish.price}
-          </div>
-        </StyledBody>
+        {isCustomer && (
+          <StyledBody>
+            <div>{dish.description}</div>
+            <div>
+              Price: $
+              {dish.price}
+            </div>
+          </StyledBody>
+        )}
       </Card>
       <PlaceOrderModal dish={dish} isOpen={isOpen} setIsOpen={setIsOpen} />
     </div>
