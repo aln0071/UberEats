@@ -11,6 +11,7 @@ import {
   REMOVE_FROM_CART,
   UPDATE_CART,
   CLEAR_CART,
+  SET_ADDRESS_LIST,
 } from './types';
 
 export const loginAction = (userDetails) => ({
@@ -93,4 +94,9 @@ export const updateCartAction = (dish) => ({
 
 export const clearCartAction = () => ({
   type: CLEAR_CART,
+});
+
+export const setAddressListAction = (list) => ({
+  type: SET_ADDRESS_LIST,
+  payload: list,
 });

@@ -13,6 +13,7 @@ export const urls = {
   getAllRestaurants: 'get-restaurants',
   uploadImage: 'images',
   uploadsFolder: 'uploads',
+  getAllRelatedAddresses: 'related-addresses',
 };
 
 export const dishCategories = [

@@ -97,6 +97,11 @@ export const getAllRestaurants = ({ citycode, statecode }) => {
   return get(url).then(handleResponse);
 };
 
+export const getAllRelatedAddresses = ({ userid }) => {
+  const url = `${baseUrl}${urls.getAllRelatedAddresses}?userid=${userid}`;
+  return get(url).then(handleResponse);
+};
+
 export const uploadFilesEndpoint = (files) => {
   const formdata = new FormData();
   files.forEach((file) => {
