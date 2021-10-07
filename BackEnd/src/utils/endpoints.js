@@ -219,6 +219,7 @@ async function placeOrder({
   userid,
   items,
   price,
+  deliverymode,
 }) {
   if ([undefined, null, ''].includes(locationid)) {
     // create location or use existing location
@@ -246,6 +247,7 @@ async function placeOrder({
     price,
     locationid,
     created: getCurrentDateTime(),
+    deliverymode,
   });
   const orderid = response.insertId;
   const queryValues = Object.values(items).reduce((t, c) => {
