@@ -28,4 +28,6 @@ module.exports = {
     'insert into restaurants ( restaurantid ) values ( :restaurantid )',
   _updateRestaurantDetails:
     'update restaurants set :optionalfields where restaurantid = :restaurantid',
+  _getAllRelatedAddresses:
+    'select * from (select userid, locationid from users where userid = :userid union select * from locationrel where userid = :userid) as temp natural join locations natural join cities',
 };

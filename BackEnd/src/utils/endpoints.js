@@ -24,6 +24,7 @@ const {
   _getAllRestaurantsByCity,
   _updateRestaurantDetails,
   _addRestaurantDetails,
+  _getAllRelatedAddresses,
 } = require('./queries');
 
 function login(username, password) {
@@ -200,6 +201,10 @@ function findUserWithEmail(email) {
   return executeQuery(_findUserWithEmail, { email });
 }
 
+function getAllRelatedAddresses(userid) {
+  return executeQuery(_getAllRelatedAddresses, { userid });
+}
+
 module.exports = {
   login,
   register,
@@ -211,4 +216,5 @@ module.exports = {
   getAllDishes,
   getAllRestaurants,
   findUserWithEmail,
+  getAllRelatedAddresses,
 };

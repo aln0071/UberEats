@@ -38,6 +38,7 @@ const {
   addDish,
   getAllDishes,
   getAllRestaurants,
+  getAllRelatedAddresses,
 } = require('./utils/endpoints');
 
 // defining an array to work as the database (temporary solution)
@@ -88,9 +89,9 @@ app.post('/register', async (req, res) => {
     res.status(200).send({
       status: true,
       message:
-                req.body.type === 'c'
-                  ? 'User registered successfully'
-                  : 'Restaurant registered successfully',
+        req.body.type === 'c'
+          ? 'User registered successfully'
+          : 'Restaurant registered successfully',
     });
   } catch (error) {
     res.status(400).send({
@@ -154,9 +155,9 @@ app.post('/update-profile', upload.array('image', 5), async (req, res) => {
     res.status(400).send({
       status: false,
       message:
-                error.code === 'ER_DUP_ENTRY'
-                  ? 'User with this email already exists'
-                  : error.message,
+        error.code === 'ER_DUP_ENTRY'
+          ? 'User with this email already exists'
+          : error.message,
     });
   }
 });
@@ -228,6 +229,19 @@ app.post('/images', upload.array('image', 12), (req, res) => {
   const { files } = req;
   console.log(files);
   res.send('got it!');
+});
+
+app.get('/related-addresses', async (req, res) => {
+  const { userid } = req.query;
+  try {
+    const response = await getAllRelatedAddresses(userid);
+    res.json(response);
+  } catch (error) {
+    res.status(400).send({
+      status: false,
+      message: error.message,
+    });
+  }
 });
 
 // starting the server
