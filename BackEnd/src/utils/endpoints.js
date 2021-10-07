@@ -1,8 +1,10 @@
 const bcrypt = require('bcrypt');
+const mysql = require('mysql');
 const {
   executeQuery,
   paramsToQuery,
   optionalFields,
+  getCurrentDateTime,
   // optionalConditions,
 } = require('./utils');
 const {
@@ -25,6 +27,9 @@ const {
   _updateRestaurantDetails,
   _addRestaurantDetails,
   _getAllRelatedAddresses,
+  _placeOrder,
+  _addRelatedAddress,
+  _addOrderDetails,
 } = require('./queries');
 
 function login(username, password) {
@@ -205,6 +210,59 @@ function getAllRelatedAddresses(userid) {
   return executeQuery(_getAllRelatedAddresses, { userid });
 }
 
+async function placeOrder({
+  locationid,
+  location,
+  zip,
+  citycode,
+  restaurantid,
+  userid,
+  items,
+  price,
+}) {
+  if ([undefined, null, ''].includes(locationid)) {
+    // create location or use existing location
+    const locationData = await executeQuery(_getLocation, {
+      citycode,
+      location,
+      zip,
+    });
+    if (locationData.length !== 0) {
+      // use existing data
+      locationid = locationData[0].locationid;
+    } else {
+      const response = await executeQuery(_addLocation, {
+        citycode,
+        location,
+        zip,
+      });
+      locationid = response.insertId;
+      executeQuery(_addRelatedAddress, { userid, locationid });
+    }
+  }
+  const response = await executeQuery(_placeOrder, {
+    userid,
+    restaurantid,
+    price,
+    locationid,
+    created: getCurrentDateTime(),
+  });
+  const orderid = response.insertId;
+  const queryValues = Object.values(items).reduce((t, c) => {
+    if (t === '') {
+      return `(${orderid}, ${mysql.escape(c.dishid)}, ${mysql.escape(
+        c.count,
+      )})`;
+    }
+    return `${t}, (${orderid}, ${mysql.escape(c.dishid)}, ${mysql.escape(
+      c.count,
+    )})`;
+  }, '');
+  const query = _addOrderDetails.replace(':fields', queryValues);
+  await executeQuery(query);
+  return orderid;
+}
+
 module.exports = {
   login,
   register,
@@ -217,4 +275,5 @@ module.exports = {
   getAllRestaurants,
   findUserWithEmail,
   getAllRelatedAddresses,
+  placeOrder,
 };

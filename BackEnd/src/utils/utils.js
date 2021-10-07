@@ -102,6 +102,14 @@ function optionalConditions(params) {
   }, '');
 }
 
+function getCurrentDateTime() {
+  const now = new Date();
+  const result = `${now.getFullYear()}-${
+    now.getMonth() + 1
+  }-${now.getDate()} ${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`;
+  return result;
+}
+
 module.exports = {
   generateAccessToken,
   authMiddleware,
@@ -109,4 +117,5 @@ module.exports = {
   paramsToQuery,
   optionalFields,
   optionalConditions,
+  getCurrentDateTime,
 };

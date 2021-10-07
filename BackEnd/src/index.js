@@ -39,6 +39,7 @@ const {
   getAllDishes,
   getAllRestaurants,
   getAllRelatedAddresses,
+  placeOrder,
 } = require('./utils/endpoints');
 
 // defining an array to work as the database (temporary solution)
@@ -242,6 +243,23 @@ app.get('/related-addresses', async (req, res) => {
       message: error.message,
     });
   }
+});
+
+app.post('/place-order', async (req, res) => {
+  try {
+    const response = await placeOrder(req.body);
+    res.status(200).send({
+      status: true,
+      message: 'Order placed successfully',
+      response,
+    });
+  } catch (error) {
+    res.status(400).send({
+      status: false,
+      message: error.message,
+    });
+  }
+  res.status(200).send();
 });
 
 // starting the server
