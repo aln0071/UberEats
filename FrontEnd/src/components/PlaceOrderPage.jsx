@@ -75,6 +75,7 @@ export default function PlaceOrderPage() {
       placeOrderAction({
         ...values,
         price: (total * (1 + taxPercent + deliveryFeePercent)).toFixed(2),
+        deliverymode: deliveryOption === 'delivery' ? 1 : 2,
       }),
     );
   };
