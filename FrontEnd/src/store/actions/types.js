@@ -11,3 +11,4 @@ export const REMOVE_FROM_CART = 'REMOVE_FROM_CART';
 export const CLEAR_CART = 'CLEAR_CART';
 export const UPDATE_CART = 'UPDATE_CART';
 export const SET_ADDRESS_LIST = 'SET_ADDRESS_LIST';
+export const PLACE_ORDER = 'PLACE_ORDER';

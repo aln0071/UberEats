@@ -114,3 +114,8 @@ export const uploadFilesEndpoint = (files) => {
     body: formdata,
   }).then(handleResponse);
 };
+
+export const placeOrder = (params) => {
+  const url = `${baseUrl}${urls.placeOrder}`;
+  return post(url, { ...params }).then(handleResponse);
+};

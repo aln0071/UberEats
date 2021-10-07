@@ -14,6 +14,7 @@ export const urls = {
   uploadImage: 'images',
   uploadsFolder: 'uploads',
   getAllRelatedAddresses: 'related-addresses',
+  placeOrder: 'place-order',
 };
 
 export const dishCategories = [

@@ -87,4 +87,18 @@ export const validations = {
     //   message: 'Invalid price',
     // },
   },
+  placeOrder: {
+    location: {
+      regex: /[a-zA-Z0-9]+[a-zA-Z0-9, ]*/,
+      message: 'Invalid address',
+    },
+    zip: {
+      regex: /[0-9]{5,6}/,
+      message: 'Invalid zip code',
+    },
+    citycode: {
+      regex: /.+/,
+      message: 'City required',
+    },
+  },
 };
