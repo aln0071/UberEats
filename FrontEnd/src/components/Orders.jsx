@@ -56,7 +56,7 @@ export default function Orders() {
                   <td>
                     {deliveryStatus[order.status].label}
                     {' '}
-                    at
+                    -
                     {' '}
                     {new Date(
                       order[deliveryStatus[order.status].time],

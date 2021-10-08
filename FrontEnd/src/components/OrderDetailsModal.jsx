@@ -12,6 +12,7 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { hideOrderDetailsModalAction } from '../store/actions';
 import styles from '../styles.scss';
+import { cancelOrderAction } from '../store/actions/orderStates';
 
 export default () => {
   const orderDetailsModal = useSelector((state) => state.orderDetailsModal);
@@ -19,9 +20,15 @@ export default () => {
   const closeModal = () => {
     dispatch(hideOrderDetailsModalAction());
   };
+  const user = useSelector((state) => state.user);
   let total = 0;
   const taxPercent = 0.15;
   const deliveryFeePercent = 0.2;
+
+  const cancelOrder = async () => {
+    dispatch(cancelOrderAction());
+  };
+
   return (
     <Modal
       onClose={() => closeModal()}
@@ -80,19 +87,37 @@ export default () => {
           </span>
         </div>
         <hr />
-        {orderDetailsModal.deliverymode === 1 && (
+        <div>
+          {orderDetailsModal.deliverymode === 1
+            ? 'Delivery Address'
+            : 'Pickup Address:'}
           <div>
-            Address:
-            <div>
-              {orderDetailsModal.location}
-              <br />
-              {orderDetailsModal.zip}
-            </div>
+            {orderDetailsModal.location}
+            <br />
+            {orderDetailsModal.zip}
           </div>
-        )}
+        </div>
       </ModalBody>
       <ModalFooter>
-        <ModalButton>Okay</ModalButton>
+        {user.type === 'c' && ![4, 6, 7].includes(orderDetailsModal.status) && (
+          <>
+            <ModalButton onClick={() => cancelOrder()}>
+              Cancel Order
+            </ModalButton>
+          </>
+        )}
+        {user.type === 'r' && (
+          <>
+            <ModalButton>Prepare Order</ModalButton>
+
+            <ModalButton>On Way</ModalButton>
+            <ModalButton>Delivered</ModalButton>
+
+            <ModalButton>Ready for Pickup</ModalButton>
+            <ModalButton>Picked Up</ModalButton>
+          </>
+        )}
+        <ModalButton onClick={() => closeModal()}>Close</ModalButton>
       </ModalFooter>
     </Modal>
   );

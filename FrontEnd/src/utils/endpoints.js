@@ -120,7 +120,15 @@ export const placeOrder = (params) => {
   return post(url, { ...params }).then(handleResponse);
 };
 
-export const getOrderList = async (userid, type) => {
+export const getOrderList = (userid, type) => {
   const url = `${baseUrl}${urls.getOrderList}?userid=${userid}&type=${type}`;
   return get(url).then(handleResponse);
+};
+
+export const cancelOrder = (orderid) => {
+  const url = `${baseUrl}${urls.updateOrder}`;
+  return post(url, {
+    type: 'cancel',
+    orderid,
+  }).then(handleResponse);
 };

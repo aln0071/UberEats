@@ -17,6 +17,7 @@ export const urls = {
   placeOrder: 'place-order',
   getOrderList: 'get-orders',
   getOrderDetails: 'get-orderdetails',
+  updateOrder: 'update-order',
 };
 
 export const dishCategories = [
