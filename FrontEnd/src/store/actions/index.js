@@ -12,6 +12,8 @@ import {
   UPDATE_CART,
   CLEAR_CART,
   SET_ADDRESS_LIST,
+  HIDE_ORDER_CONFIRM_MODAL,
+  SHOW_ORDER_CONFIRM_MODAL,
 } from './types';
 
 export const loginAction = (userDetails) => ({
@@ -99,4 +101,13 @@ export const clearCartAction = () => ({
 export const setAddressListAction = (list) => ({
   type: SET_ADDRESS_LIST,
   payload: list,
+});
+
+export const showOrderConfirmModalAction = ({ orderid }) => ({
+  type: SHOW_ORDER_CONFIRM_MODAL,
+  payload: { orderid },
+});
+
+export const hideOrderConfirmModalAction = () => ({
+  type: HIDE_ORDER_CONFIRM_MODAL,
 });

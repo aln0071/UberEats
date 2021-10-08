@@ -13,6 +13,7 @@ import { getCities } from '../utils/endpoints';
 import { isValid, validations } from '../utils/validations';
 import { toastOptions } from '../utils';
 import { placeOrderAction } from '../store/actions/placeOrder';
+import ConfirmOrderModal from './ConfirmOrderModal';
 
 export default function PlaceOrderPage() {
   const cart = useSelector((state) => state.cart);
@@ -237,6 +238,7 @@ export default function PlaceOrderPage() {
           </table>
         </div>
       </div>
+      <ConfirmOrderModal />
     </div>
   );
 }

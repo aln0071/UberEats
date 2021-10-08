@@ -1,4 +1,5 @@
 import { toast } from 'react-toastify';
+import { showOrderConfirmModalAction } from '.';
 // import { setRestaurantsAction } from '.';
 import { createToastBody, toastOptions } from '../../utils';
 import { placeOrder } from '../../utils/endpoints';
@@ -22,6 +23,7 @@ export const placeOrderAction = ({
     console.log(response);
     toast.success('Success: order placed', toastOptions);
     // dispatch(setRestaurantsAction(response));
+    dispatch(showOrderConfirmModalAction({ orderid: response.orderid }));
   } catch (error) {
     console.log(error);
     toast.error(createToastBody(error), toastOptions);

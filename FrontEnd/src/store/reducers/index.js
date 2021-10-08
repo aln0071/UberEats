@@ -6,6 +6,7 @@ import currentTab from './currentTab';
 import currentRestaurant from './currentRestaurant';
 import cart from './cart';
 import addresses from './addresses';
+import orderConfirmModal from './orderConfirmModal';
 
 export default combineReducers({
   user,
@@ -15,4 +16,5 @@ export default combineReducers({
   currentRestaurant,
   cart,
   addresses,
+  orderConfirmModal,
 });
