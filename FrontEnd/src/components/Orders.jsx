@@ -1,7 +1,9 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { showOrderDetailsModalAction } from '../store/actions';
 import { getOrderListAction } from '../store/actions/getOrders';
 import { deliveryModes, deliveryStatus } from '../utils/constants';
+import OrderDetailsModal from './OrderDetailsModal';
 
 export default function Orders() {
   const dispatch = useDispatch();
@@ -24,7 +26,7 @@ export default function Orders() {
   return (
     <div>
       <div className="container">
-        <h2>Order Details</h2>
+        <h2>{user.type === 'c' ? 'Past Orders' : 'Orders'}</h2>
         <table className="table table-striped table-hover">
           <thead>
             <tr>
@@ -39,7 +41,11 @@ export default function Orders() {
             {orders
               .sort((a, b) => b.orderid - a.orderid)
               .map((order) => (
-                <tr>
+                <tr
+                  onClick={() => {
+                    dispatch(showOrderDetailsModalAction({ order }));
+                  }}
+                >
                   <th scope="row">{order.orderid}</th>
                   {user.type === 'c' && <td>{order.name}</td>}
                   <td>
@@ -61,6 +67,7 @@ export default function Orders() {
           </tbody>
         </table>
       </div>
+      <OrderDetailsModal />
     </div>
   );
 }

@@ -49,27 +49,33 @@ export default function PlaceOrderPage() {
 
   const placeOrder = () => {
     let values = {};
-    if (deliveryAddress === 'new') {
-      // validate address
-      const locationProfile = validations.placeOrder;
-      const errors = {};
-      const { city, zip, location } = address;
-      values = {
-        zip,
-        location,
-        citycode: city && city[0] && city[0].id,
-      };
-      Object.keys(locationProfile).forEach((key) => {
-        if (!isValid(locationProfile[key].regex, values[key] || '')) {
-          errors[key] = locationProfile[key].message;
+    if (deliveryOption === 'delivery') {
+      if (deliveryAddress === 'new') {
+        // validate address
+        const locationProfile = validations.placeOrder;
+        const errors = {};
+        const { city, zip, location } = address;
+        values = {
+          zip,
+          location,
+          citycode: city && city[0] && city[0].id,
+        };
+        Object.keys(locationProfile).forEach((key) => {
+          if (!isValid(locationProfile[key].regex, values[key] || '')) {
+            errors[key] = locationProfile[key].message;
+          }
+        });
+        if (Object.keys(errors).length > 0) {
+          toast.error('Error: Invalid address', toastOptions);
+          return;
         }
-      });
-      if (Object.keys(errors).length > 0) {
-        toast.error('Error: Invalid address', toastOptions);
-        return;
+      } else {
+        values = JSON.parse(deliveryAddress);
       }
     } else {
-      values = JSON.parse(deliveryAddress);
+      values = {
+        locationid: restaurant.locationid,
+      };
     }
     // place order
     dispatch(
@@ -140,52 +146,54 @@ export default function PlaceOrderPage() {
             <Radio value="pickup">Pickup</Radio>
           </RadioGroup>
         </div>
-        <div>
-          Address:
+        {deliveryOption === 'delivery' && (
           <div>
-            <RadioGroup
-              value={deliveryAddress}
-              onChange={(event) => {
-                setDeliveryAddress(event.target.value);
-              }}
-              name="deliveryAddress"
-              align={ALIGN.vertical}
-            >
-              {renderAddresses()}
-            </RadioGroup>
-            <fieldset>
-              <FormControl label="Address">
-                <Input
-                  type="text"
-                  onChange={(e) => {
-                    setAddress({ ...address, location: e.target.value });
-                  }}
-                />
-              </FormControl>
-              <FormControl label="City">
-                <Select
-                  id="city"
-                  onChange={(params) => {
-                    setAddress({ ...address, city: params.value });
-                  }}
-                  options={cities.map((city) => ({
-                    label: city.city,
-                    id: city.citycode,
-                  }))}
-                  value={address.city}
-                />
-              </FormControl>
-              <FormControl label="Zip">
-                <Input
-                  type="number"
-                  onChange={(e) => {
-                    setAddress({ ...address, zip: e.target.value });
-                  }}
-                />
-              </FormControl>
-            </fieldset>
+            Address:
+            <div>
+              <RadioGroup
+                value={deliveryAddress}
+                onChange={(event) => {
+                  setDeliveryAddress(event.target.value);
+                }}
+                name="deliveryAddress"
+                align={ALIGN.vertical}
+              >
+                {renderAddresses()}
+              </RadioGroup>
+              <fieldset>
+                <FormControl label="Address">
+                  <Input
+                    type="text"
+                    onChange={(e) => {
+                      setAddress({ ...address, location: e.target.value });
+                    }}
+                  />
+                </FormControl>
+                <FormControl label="City">
+                  <Select
+                    id="city"
+                    onChange={(params) => {
+                      setAddress({ ...address, city: params.value });
+                    }}
+                    options={cities.map((city) => ({
+                      label: city.city,
+                      id: city.citycode,
+                    }))}
+                    value={address.city}
+                  />
+                </FormControl>
+                <FormControl label="Zip">
+                  <Input
+                    type="number"
+                    onChange={(e) => {
+                      setAddress({ ...address, zip: e.target.value });
+                    }}
+                  />
+                </FormControl>
+              </fieldset>
+            </div>
           </div>
-        </div>
+        )}
         <hr />
         {renderItems()}
       </div>

@@ -14,6 +14,8 @@ import {
   SET_ADDRESS_LIST,
   HIDE_ORDER_CONFIRM_MODAL,
   SHOW_ORDER_CONFIRM_MODAL,
+  SHOW_ORDER_DETAILS_MODAL,
+  HIDE_ORDER_DETAILS_MODAL,
 } from './types';
 
 export const loginAction = (userDetails) => ({
@@ -110,4 +112,13 @@ export const showOrderConfirmModalAction = ({ orderid }) => ({
 
 export const hideOrderConfirmModalAction = () => ({
   type: HIDE_ORDER_CONFIRM_MODAL,
+});
+
+export const showOrderDetailsModalAction = ({ order }) => ({
+  type: SHOW_ORDER_DETAILS_MODAL,
+  payload: { ...order },
+});
+
+export const hideOrderDetailsModalAction = () => ({
+  type: HIDE_ORDER_DETAILS_MODAL,
 });

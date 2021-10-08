@@ -41,7 +41,10 @@ export const deliveryModes = {
 
 export const deliveryStatus = {
   1: { label: 'Ordered', time: 'created' },
-  2: { label: 'Picked Up', time: 'pickedup' },
-  3: { label: 'Delivered', time: 'delivered' },
-  4: { label: 'Canceled', time: 'canceled' },
+  2: { label: 'Preparing', time: 'preparing' },
+  3: { label: 'On Way', time: 'onway' },
+  4: { label: 'Delivered', time: 'delivered' },
+  5: { label: 'Ready', time: 'ready' },
+  6: { label: 'Picked Up', time: 'pickedup' },
+  7: { label: 'Canceled', time: 'canceled' },
 };

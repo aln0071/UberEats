@@ -8,6 +8,7 @@ import cart from './cart';
 import addresses from './addresses';
 import orderConfirmModal from './orderConfirmModal';
 import orders from './orders';
+import orderDetailsModal from './orderDetailsModal';
 
 export default combineReducers({
   user,
@@ -19,4 +20,5 @@ export default combineReducers({
   addresses,
   orderConfirmModal,
   orders,
+  orderDetailsModal,
 });
