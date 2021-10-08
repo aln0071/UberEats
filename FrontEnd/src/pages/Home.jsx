@@ -9,6 +9,7 @@ import CartMenu from '../components/CartMenu';
 
 export default function Home() {
   const currentTab = useSelector((state) => state.currentTab);
+  const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const setCurrentTab = (tabid) => dispatch(setCurrentTabAction(tabid));
   return (
@@ -20,7 +21,7 @@ export default function Home() {
             <div style={{ flexGrow: 1 }}>
               <NavTabs setCurrentTab={setCurrentTab} currentTab={currentTab} />
             </div>
-            <CartMenu />
+            {user.type === 'c' && <CartMenu />}
             <ProfileMenu setCurrentTab={setCurrentTab} />
           </Toolbar>
         </AppBar>

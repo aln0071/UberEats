@@ -15,6 +15,8 @@ export const urls = {
   uploadsFolder: 'uploads',
   getAllRelatedAddresses: 'related-addresses',
   placeOrder: 'place-order',
+  getOrderList: 'get-orders',
+  getOrderDetails: 'get-orderdetails',
 };
 
 export const dishCategories = [
@@ -31,3 +33,15 @@ export const dishCategories = [
     label: 'Vegan',
   },
 ];
+
+export const deliveryModes = {
+  1: 'Delivery',
+  2: 'Pickup',
+};
+
+export const deliveryStatus = {
+  1: 'Ordered',
+  2: 'Picked Up',
+  3: 'Canceled',
+  4: 'Delivered',
+};

@@ -41,7 +41,7 @@ export default function Dashboard({ currentTab }) {
             Favourites
           </TabPanel>
           <TabPanel value={currentTab} index={2}>
-            Orders
+            <Orders />
           </TabPanel>
           <TabPanel value={currentTab} index={3}>
             <Profile />

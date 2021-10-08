@@ -119,3 +119,8 @@ export const placeOrder = (params) => {
   const url = `${baseUrl}${urls.placeOrder}`;
   return post(url, { ...params }).then(handleResponse);
 };
+
+export const getOrderList = async (userid, type) => {
+  const url = `${baseUrl}${urls.getOrderList}?userid=${userid}&type=${type}`;
+  return get(url).then(handleResponse);
+};

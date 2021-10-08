@@ -7,6 +7,7 @@ import currentRestaurant from './currentRestaurant';
 import cart from './cart';
 import addresses from './addresses';
 import orderConfirmModal from './orderConfirmModal';
+import orders from './orders';
 
 export default combineReducers({
   user,
@@ -17,4 +18,5 @@ export default combineReducers({
   cart,
   addresses,
   orderConfirmModal,
+  orders,
 });
