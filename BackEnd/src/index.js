@@ -251,7 +251,7 @@ app.post('/place-order', async (req, res) => {
     res.status(200).send({
       status: true,
       message: 'Order placed successfully',
-      response,
+      orderid: response,
     });
   } catch (error) {
     res.status(400).send({
