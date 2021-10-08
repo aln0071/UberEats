@@ -1,12 +1,12 @@
-const bcrypt = require('bcrypt');
-const mysql = require('mysql');
+const bcrypt = require("bcrypt");
+const mysql = require("mysql");
 const {
   executeQuery,
   paramsToQuery,
   optionalFields,
   getCurrentDateTime,
   // optionalConditions,
-} = require('./utils');
+} = require("./utils");
 const {
   _login,
   _register,
@@ -34,12 +34,12 @@ const {
   _getOrderDetails,
   _getOrderListOfRestaurant,
   _getOrderDetailsOfRestaurant,
-} = require('./queries');
+} = require("./queries");
 
 function login(username, password) {
   return executeQuery(_login, { email: username }).then(async (response) => {
     if (response.length === 0) {
-      throw new Error('Invalid credentials');
+      throw new Error("Invalid credentials");
     } else {
       const userData = response[0];
       const isValidUser = await bcrypt.compare(password, userData.password);
@@ -47,15 +47,13 @@ function login(username, password) {
         delete userData.password;
         return userData;
       }
-      throw new Error('Invalid credentials');
+      throw new Error("Invalid credentials");
     }
   });
 }
 
 async function register(params) {
-  const {
-    email, password, type, name,
-  } = params;
+  const { email, password, type, name } = params;
 
   const saltRounds = 10;
   const hashedPassword = await bcrypt.hash(password, saltRounds);
@@ -67,7 +65,7 @@ async function register(params) {
     type,
   })
     .then((response) => {
-      if (type === 'r') {
+      if (type === "r") {
         const userid = response.insertId;
         const { citycode, location, zip } = params;
 
@@ -79,7 +77,7 @@ async function register(params) {
                 userid,
                 locationid,
               });
-            },
+            }
           ),
           executeQuery(_addRestaurantDetails, { restaurantid: userid }),
         ]);
@@ -87,8 +85,8 @@ async function register(params) {
       return response;
     })
     .catch((error) => {
-      if (String(error.message).startsWith('ER_DUP_ENTRY')) {
-        throw new Error('User with this email already exists');
+      if (String(error.message).startsWith("ER_DUP_ENTRY")) {
+        throw new Error("User with this email already exists");
       } else {
         throw error;
       }
@@ -119,8 +117,8 @@ async function updateProfile(params) {
     description,
   };
   const updateQuery = _updateProfile.replace(
-    ':optionalfields',
-    paramsToQuery(values),
+    ":optionalfields",
+    paramsToQuery(values)
   );
   executeQuery(updateQuery, { ...values, userid });
   const locationValues = { location, citycode, zip };
@@ -136,7 +134,7 @@ async function updateProfile(params) {
     await executeQuery(_updateLocationInUserTable, { locationid, userid });
   }
   // set hours from, hours to, and mode of delivery if restaurant
-  if (params.type === 'r') {
+  if (params.type === "r") {
     const { hoursfrom, hoursto, deliverymode } = params;
     const val = {
       hoursfrom,
@@ -144,8 +142,8 @@ async function updateProfile(params) {
       deliverymode,
     };
     const query = _updateRestaurantDetails.replace(
-      ':optionalfields',
-      paramsToQuery(val),
+      ":optionalfields",
+      paramsToQuery(val)
     );
     console.log(query);
     await executeQuery(query, { ...val, restaurantid: userid });
@@ -174,9 +172,8 @@ function getCities(statecode) {
 function updateDish(dish) {}
 
 function addDish(dish) {
-  const {
-    restaurantid, dishname, description, category, price, pictures,
-  } = dish;
+  const { restaurantid, dishname, description, category, price, pictures } =
+    dish;
   const values = {
     restaurantid,
     dishname,
@@ -186,8 +183,8 @@ function addDish(dish) {
     pictures,
   };
   const query = _addDishQuery
-    .replace(':optionalfields', optionalFields(values))
-    .replace(':optionalvalues', optionalFields(values, ':'));
+    .replace(":optionalfields", optionalFields(values))
+    .replace(":optionalvalues", optionalFields(values, ":"));
   return executeQuery(query, values);
 }
 
@@ -199,7 +196,7 @@ function getAllRestaurants({ citycode, statecode }) {
   // return executeQuery(
   //   _getAllRestaurants+` ${optionalConditions(
   //     {'c.citycode': citycode})}`, {'c.citycode': citycode});
-  if ([undefined, null, ''].includes(citycode)) {
+  if ([undefined, null, ""].includes(citycode)) {
     return executeQuery(_getAllRestaurants);
   }
   return executeQuery(_getAllRestaurantsByCity, { citycode, statecode });
@@ -214,8 +211,8 @@ function getAllRelatedAddresses(userid) {
   return executeQuery(_getAllRelatedAddresses, { userid });
 }
 
-function getOrderList(userid, type = 'c') {
-  if (type === 'r') {
+function getOrderList(userid, type = "c") {
+  if (type === "r") {
     return Promise.all([
       executeQuery(_getOrderListOfRestaurant, { restaurantid: userid }),
       executeQuery(_getOrderDetailsOfRestaurant, { restaurantid: userid }),
@@ -238,26 +235,29 @@ async function placeOrder({
   price,
   deliverymode,
 }) {
-  if ([undefined, null, ''].includes(locationid)) {
-    // create location or use existing location
-    const locationData = await executeQuery(_getLocation, {
-      citycode,
-      location,
-      zip,
-    });
-    if (locationData.length !== 0) {
-      // use existing data
-      locationid = locationData[0].locationid;
-    } else {
-      const response = await executeQuery(_addLocation, {
+  if (deliverymode === 1) {
+    if ([undefined, null, ""].includes(locationid)) {
+      // create location or use existing location
+      const locationData = await executeQuery(_getLocation, {
         citycode,
         location,
         zip,
       });
-      locationid = response.insertId;
-      executeQuery(_addRelatedAddress, { userid, locationid });
+      if (locationData.length !== 0) {
+        // use existing data
+        locationid = locationData[0].locationid;
+      } else {
+        const response = await executeQuery(_addLocation, {
+          citycode,
+          location,
+          zip,
+        });
+        locationid = response.insertId;
+        executeQuery(_addRelatedAddress, { userid, locationid });
+      }
     }
   }
+
   const response = await executeQuery(_placeOrder, {
     userid,
     restaurantid,
@@ -268,16 +268,16 @@ async function placeOrder({
   });
   const orderid = response.insertId;
   const queryValues = Object.values(items).reduce((t, c) => {
-    if (t === '') {
+    if (t === "") {
       return `(${orderid}, ${mysql.escape(c.dishid)}, ${mysql.escape(
-        c.count,
+        c.count
       )})`;
     }
     return `${t}, (${orderid}, ${mysql.escape(c.dishid)}, ${mysql.escape(
-      c.count,
+      c.count
     )})`;
-  }, '');
-  const query = _addOrderDetails.replace(':fields', queryValues);
+  }, "");
+  const query = _addOrderDetails.replace(":fields", queryValues);
   await executeQuery(query);
   return orderid;
 }

@@ -40,7 +40,7 @@ module.exports = {
   _getOrderDetails:
     'select * from orderdetails natural join dishes where orderid in (select orderid from orders where userid = :userid)',
   _getOrderListOfRestaurant:
-    'select * from orders where restaurantid = :restaurantid',
+    'select * from orders o left join locations l on o.locationid = l.locationid  where restaurantid = :restaurantid',
   _getOrderDetailsOfRestaurant:
     'select * from orderdetails natural join dishes where restaurantid = :restaurantid',
 };
