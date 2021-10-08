@@ -287,18 +287,24 @@ async function placeOrder({
 }
 
 function updateOrder({ type, orderid }) {
-  let query = '';
-  let values = {};
-  switch (type) {
-    case 'cancel':
-      values = { status: 7, canceled: getCurrentDateTime() };
-      query = _updateOrders.replace(':optionalfields', paramsToQuery(values));
-      break;
-    default:
-      return {
-        message: 'Invalid update type',
-      };
+  const statuses = {
+    preparing: 2,
+    onway: 3,
+    delivered: 4,
+    ready: 5,
+    pickedup: 6,
+    canceled: 7,
+  };
+  if (statuses[type] === undefined) {
+    return {
+      message: 'Invalid update type',
+    };
   }
+  const values = {
+    [type]: getCurrentDateTime(),
+    status: statuses[type],
+  };
+  const query = _updateOrders.replace(':optionalfields', paramsToQuery(values));
   return executeQuery(query, { ...values, orderid });
 }
 
