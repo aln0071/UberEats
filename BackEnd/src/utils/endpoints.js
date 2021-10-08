@@ -30,6 +30,10 @@ const {
   _placeOrder,
   _addRelatedAddress,
   _addOrderDetails,
+  _getOrderList,
+  _getOrderDetails,
+  _getOrderListOfRestaurant,
+  _getOrderDetailsOfRestaurant,
 } = require('./queries');
 
 function login(username, password) {
@@ -210,6 +214,19 @@ function getAllRelatedAddresses(userid) {
   return executeQuery(_getAllRelatedAddresses, { userid });
 }
 
+function getOrderList(userid, type = 'c') {
+  if (type === 'r') {
+    return Promise.all([
+      executeQuery(_getOrderListOfRestaurant, { restaurantid: userid }),
+      executeQuery(_getOrderDetailsOfRestaurant, { restaurantid: userid }),
+    ]);
+  }
+  return Promise.all([
+    executeQuery(_getOrderList, { userid }),
+    executeQuery(_getOrderDetails, { userid }),
+  ]);
+}
+
 async function placeOrder({
   locationid,
   location,
@@ -278,4 +295,5 @@ module.exports = {
   findUserWithEmail,
   getAllRelatedAddresses,
   placeOrder,
+  getOrderList,
 };

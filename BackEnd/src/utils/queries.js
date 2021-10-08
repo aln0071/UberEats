@@ -35,4 +35,12 @@ module.exports = {
   _addRelatedAddress:
     'insert into locationrel (userid, locationid) values ( :userid, :locationid )',
   _addOrderDetails: 'insert into orderdetails values :fields',
+  _getOrderList:
+    'select * from orders o left join users u on o.restaurantid = u.userid where o.userid = :userid',
+  _getOrderDetails:
+    'select * from orderdetails natural join dishes where orderid in (select orderid from orders where userid = :userid)',
+  _getOrderListOfRestaurant:
+    'select * from orders where restaurantid = :restaurantid',
+  _getOrderDetailsOfRestaurant:
+    'select * from orderdetails natural join dishes where restaurantid = :restaurantid',
 };

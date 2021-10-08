@@ -40,6 +40,7 @@ const {
   getAllRestaurants,
   getAllRelatedAddresses,
   placeOrder,
+  getOrderList,
 } = require('./utils/endpoints');
 
 // defining an array to work as the database (temporary solution)
@@ -260,6 +261,25 @@ app.post('/place-order', async (req, res) => {
     });
   }
   res.status(200).send();
+});
+
+app.get('/get-orders', async (req, res) => {
+  const { userid, type } = req.query;
+  try {
+    const response = await getOrderList(userid, type);
+    const orders = response[0].map((order) => ({
+      ...order,
+      orderDetails: response[1].filter(
+        (detail) => detail.orderid === order.orderid,
+      ),
+    }));
+    res.json(orders);
+  } catch (error) {
+    res.status(400).send({
+      status: false,
+      message: error.message,
+    });
+  }
 });
 
 // starting the server
