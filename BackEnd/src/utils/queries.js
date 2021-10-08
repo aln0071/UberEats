@@ -1,3 +1,4 @@
+/* eslint max-len: 0 */
 module.exports = {
   _login:
     'select * from users u left join locations l on u.locationid = l.locationid left join cities c on l.citycode = c.citycode left join states s on c.statecode = s.statecode left join countries cn on s.countrycode = cn.countrycode left join restaurants r on u.userid = r.restaurantid where email = :email',
@@ -44,4 +45,10 @@ module.exports = {
   _getOrderDetailsOfRestaurant:
     'select * from orderdetails natural join dishes where restaurantid = :restaurantid',
   _updateOrders: 'update orders set :optionalfields where orderid = :orderid',
+  _addFavorite:
+    'insert into favorites(userid, restaurantid) values ( :userid, :restaurantid )',
+  _removeFavorite:
+    'delete from favorites where userid = :userid and restaurantid = :restaurantid',
+  // _getFavorites: 'select * from favorites f left join (select * from users u left join locations l on u.locationid = l.locationid left join cities c on l.citycode = c.citycode left join states s on c.statecode = s.statecode left join countries cn on s.countrycode = cn.countrycode where type = "r") as a on a.userid = f.restaurantid where f.userid = :userid'
+  _getFavorites: 'select restaurantid from favorites where userid = :userid',
 };

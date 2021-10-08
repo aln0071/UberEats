@@ -35,6 +35,9 @@ const {
   _getOrderListOfRestaurant,
   _getOrderDetailsOfRestaurant,
   _updateOrders,
+  _addFavorite,
+  _removeFavorite,
+  _getFavorites,
 } = require('./queries');
 
 function login(username, password) {
@@ -308,6 +311,17 @@ function updateOrder({ type, orderid }) {
   return executeQuery(query, { ...values, orderid });
 }
 
+function toggleFavorite({ userid, restaurantid, isFavorite }) {
+  if (isFavorite) {
+    return executeQuery(_addFavorite, { userid, restaurantid });
+  }
+  return executeQuery(_removeFavorite, { userid, restaurantid });
+}
+
+function getFavorites(userid) {
+  return executeQuery(_getFavorites, { userid });
+}
+
 module.exports = {
   login,
   register,
@@ -323,4 +337,6 @@ module.exports = {
   placeOrder,
   getOrderList,
   updateOrder,
+  toggleFavorite,
+  getFavorites,
 };
