@@ -17,9 +17,7 @@ export const getFavoritesListAction = () => async (dispatch, getState) => {
 export const toggleFavoriteAction = (restaurantid) => async (dispatch, getState) => {
   const { user } = getState();
   const { favorites } = getState();
-  const isFavorite = favorites.findIndex(
-    (restaurant) => restaurant.restaurantid === restaurantid,
-  ) !== -1;
+  const isFavorite = favorites.includes(restaurantid);
   try {
     const response = await toggleFavorite({
       userid: user.userid,

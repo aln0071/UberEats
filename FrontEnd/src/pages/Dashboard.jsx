@@ -7,6 +7,7 @@ import Dishes from '../components/Dishes';
 import Orders from '../components/Orders';
 import RestaurantPage from '../components/RestaurantPage';
 import PlaceOrderPage from '../components/PlaceOrderPage';
+import Favorites from '../components/Favorites';
 
 function TabPanel({ value, index, children }) {
   if (value === index) {
@@ -38,7 +39,7 @@ export default function Dashboard({ currentTab }) {
             <Restaurants />
           </TabPanel>
           <TabPanel value={currentTab} index={1}>
-            Favorites
+            <Favorites />
           </TabPanel>
           <TabPanel value={currentTab} index={2}>
             <Orders />

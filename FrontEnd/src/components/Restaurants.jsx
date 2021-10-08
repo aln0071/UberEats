@@ -1,12 +1,13 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Grid, Cell } from 'baseui/layout-grid';
+import PropTypes from 'prop-types';
 import { getAllRestaurantsAction } from '../store/actions/restaurants';
 import RestaurantCard from './RestaurantCard';
 import styles from '../styles.scss';
 import { getFavoritesListAction } from '../store/actions/favorites';
 
-export default function Restaurants() {
+export default function Restaurants({ onlyFavorites }) {
   const dispatch = useDispatch();
 
   const restaurants = useSelector((state) => state.restaurants);
@@ -18,11 +19,21 @@ export default function Restaurants() {
     }
   }, []);
 
-  const renderRestaurants = () => restaurants.map((restaurant) => (
-    <Cell span={4}>
-      <RestaurantCard restaurant={restaurant} />
-    </Cell>
-  ));
+  const favorites = useSelector((state) => state.favorites);
+
+  const renderRestaurants = () => restaurants
+    .filter((restaurant) => {
+      console.log(favorites);
+      if (onlyFavorites && !favorites.includes(restaurant.restaurantid)) {
+        return null;
+      }
+      return restaurant;
+    })
+    .map((restaurant) => (
+      <Cell span={4}>
+        <RestaurantCard restaurant={restaurant} />
+      </Cell>
+    ));
 
   return (
     <div className={styles.restaurantsContainer}>
@@ -30,3 +41,11 @@ export default function Restaurants() {
     </div>
   );
 }
+
+Restaurants.defaultProps = {
+  onlyFavorites: false,
+};
+
+Restaurants.propTypes = {
+  onlyFavorites: PropTypes.bool,
+};
