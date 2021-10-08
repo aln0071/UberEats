@@ -16,6 +16,8 @@ import {
   SHOW_ORDER_CONFIRM_MODAL,
   SHOW_ORDER_DETAILS_MODAL,
   HIDE_ORDER_DETAILS_MODAL,
+  SET_FAVORITES_LIST,
+  ADD_FAVORITE,
 } from './types';
 
 export const loginAction = (userDetails) => ({
@@ -121,4 +123,19 @@ export const showOrderDetailsModalAction = ({ order }) => ({
 
 export const hideOrderDetailsModalAction = () => ({
   type: HIDE_ORDER_DETAILS_MODAL,
+});
+
+export const setFavoritesListAction = (favoritesList) => ({
+  type: SET_FAVORITES_LIST,
+  payload: favoritesList,
+});
+
+export const addFavoritesAction = (restaurantid) => ({
+  type: ADD_FAVORITE,
+  payload: restaurantid,
+});
+
+export const removeFavoriteAction = (restaurantid) => ({
+  type: HIDE_ORDER_DETAILS_MODAL,
+  payload: restaurantid,
 });

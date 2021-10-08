@@ -18,6 +18,8 @@ export const urls = {
   getOrderList: 'get-orders',
   getOrderDetails: 'get-orderdetails',
   updateOrder: 'update-order',
+  toggleFavorite: 'toggle-favorite',
+  getFavorites: 'get-favorites',
 };
 
 export const dishCategories = [

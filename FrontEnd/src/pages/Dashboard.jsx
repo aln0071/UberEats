@@ -38,7 +38,7 @@ export default function Dashboard({ currentTab }) {
             <Restaurants />
           </TabPanel>
           <TabPanel value={currentTab} index={1}>
-            Favourites
+            Favorites
           </TabPanel>
           <TabPanel value={currentTab} index={2}>
             <Orders />

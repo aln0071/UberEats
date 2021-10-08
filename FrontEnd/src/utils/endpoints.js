@@ -132,3 +132,17 @@ export const updateOrder = (orderid, type) => {
     orderid,
   }).then(handleResponse);
 };
+
+export const toggleFavorite = ({ userid, restaurantid, isFavorite }) => {
+  const url = `${baseUrl}${urls.toggleFavorite}`;
+  return post(url, {
+    restaurantid,
+    userid,
+    isFavorite,
+  }).then(handleResponse);
+};
+
+export const getFavorites = (userid) => {
+  const url = `${baseUrl}${urls.getFavorites}?userid=${userid}`;
+  return get(url).then(handleResponse);
+};

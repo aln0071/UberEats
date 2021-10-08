@@ -52,7 +52,7 @@ export default function NavTabs({ setCurrentTab, currentTab }) {
               {...a11yProps(0)}
             />
             <Tab
-              label="Favourites"
+              label="Favorites"
               icon={<FavoriteIcon />}
               aria-label="favorite"
               {...a11yProps(1)}

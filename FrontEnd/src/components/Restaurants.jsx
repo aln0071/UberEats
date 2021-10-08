@@ -4,6 +4,7 @@ import { Grid, Cell } from 'baseui/layout-grid';
 import { getAllRestaurantsAction } from '../store/actions/restaurants';
 import RestaurantCard from './RestaurantCard';
 import styles from '../styles.scss';
+import { getFavoritesListAction } from '../store/actions/favorites';
 
 export default function Restaurants() {
   const dispatch = useDispatch();
@@ -11,6 +12,7 @@ export default function Restaurants() {
   const restaurants = useSelector((state) => state.restaurants);
 
   useEffect(() => {
+    dispatch(getFavoritesListAction());
     if (JSON.stringify(restaurants) === '[]') {
       dispatch(getAllRestaurantsAction());
     }

@@ -9,6 +9,7 @@ import addresses from './addresses';
 import orderConfirmModal from './orderConfirmModal';
 import orders from './orders';
 import orderDetailsModal from './orderDetailsModal';
+import favorites from './favorites';
 
 export default combineReducers({
   user,
@@ -21,4 +22,5 @@ export default combineReducers({
   orderConfirmModal,
   orders,
   orderDetailsModal,
+  favorites,
 });
