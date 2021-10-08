@@ -40,8 +40,8 @@ export const deliveryModes = {
 };
 
 export const deliveryStatus = {
-  1: 'Ordered',
-  2: 'Picked Up',
-  3: 'Canceled',
-  4: 'Delivered',
+  1: { label: 'Ordered', time: 'created' },
+  2: { label: 'Picked Up', time: 'pickedup' },
+  3: { label: 'Delivered', time: 'delivered' },
+  4: { label: 'Canceled', time: 'canceled' },
 };

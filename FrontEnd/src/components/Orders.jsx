@@ -13,6 +13,14 @@ export default function Orders() {
     dispatch(getOrderListAction());
   }, []);
 
+  const dateOptions = {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
+  };
+
   return (
     <div>
       <div className="container">
@@ -28,15 +36,28 @@ export default function Orders() {
             </tr>
           </thead>
           <tbody>
-            {orders.map((order) => (
-              <tr>
-                <th scope="row">{order.orderid}</th>
-                {user.type === 'c' && <td>{order.name}</td>}
-                <td>{order.price}</td>
-                <td>{deliveryModes[order.deliverymode]}</td>
-                <td>{deliveryStatus[order.status]}</td>
-              </tr>
-            ))}
+            {orders
+              .sort((a, b) => b.orderid - a.orderid)
+              .map((order) => (
+                <tr>
+                  <th scope="row">{order.orderid}</th>
+                  {user.type === 'c' && <td>{order.name}</td>}
+                  <td>
+                    $
+                    {order.price}
+                  </td>
+                  <td>{deliveryModes[order.deliverymode]}</td>
+                  <td>
+                    {deliveryStatus[order.status].label}
+                    {' '}
+                    at
+                    {' '}
+                    {new Date(
+                      order[deliveryStatus[order.status].time],
+                    ).toLocaleDateString('en-US', dateOptions)}
+                  </td>
+                </tr>
+              ))}
           </tbody>
         </table>
       </div>
