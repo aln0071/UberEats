@@ -12,7 +12,10 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { hideOrderDetailsModalAction } from '../store/actions';
 import styles from '../styles.scss';
-import { cancelOrderAction } from '../store/actions/orderStates';
+import {
+  cancelOrderAction,
+  changeOrderStatusAction,
+} from '../store/actions/orderStates';
 
 export default () => {
   const orderDetailsModal = useSelector((state) => state.orderDetailsModal);
@@ -27,6 +30,77 @@ export default () => {
 
   const cancelOrder = async () => {
     dispatch(cancelOrderAction());
+  };
+
+  const prepareOrder = () => (
+    <ModalButton
+      onClick={() => {
+        dispatch(changeOrderStatusAction('preparing'));
+      }}
+    >
+      Prepare Order
+    </ModalButton>
+  );
+
+  const onWay = () => (
+    <ModalButton
+      onClick={() => {
+        dispatch(changeOrderStatusAction('onway'));
+      }}
+    >
+      On Way
+    </ModalButton>
+  );
+
+  const delivered = () => (
+    <ModalButton
+      onClick={() => {
+        dispatch(changeOrderStatusAction('delivered'));
+      }}
+    >
+      Delivered
+    </ModalButton>
+  );
+
+  const ready = () => (
+    <ModalButton
+      onClick={() => {
+        dispatch(changeOrderStatusAction('ready'));
+      }}
+    >
+      Ready for Pickup
+    </ModalButton>
+  );
+
+  const picked = () => (
+    <ModalButton
+      onClick={() => {
+        dispatch(changeOrderStatusAction('pickedup'));
+      }}
+    >
+      Picked Up
+    </ModalButton>
+  );
+
+  const renderRestaurantFooterButtons = () => {
+    switch (orderDetailsModal.status) {
+      case 1:
+        return prepareOrder();
+      case 2:
+        if (orderDetailsModal.deliverymode === 1) {
+          // delivery mode
+          return onWay();
+        }
+        // pickup mode
+        return ready();
+
+      case 3:
+        return delivered();
+      case 5:
+        return picked();
+      default:
+        return null;
+    }
   };
 
   return (
@@ -106,17 +180,7 @@ export default () => {
             </ModalButton>
           </>
         )}
-        {user.type === 'r' && (
-          <>
-            <ModalButton>Prepare Order</ModalButton>
-
-            <ModalButton>On Way</ModalButton>
-            <ModalButton>Delivered</ModalButton>
-
-            <ModalButton>Ready for Pickup</ModalButton>
-            <ModalButton>Picked Up</ModalButton>
-          </>
-        )}
+        {user.type === 'r' && <>{renderRestaurantFooterButtons()}</>}
         <ModalButton onClick={() => closeModal()}>Close</ModalButton>
       </ModalFooter>
     </Modal>

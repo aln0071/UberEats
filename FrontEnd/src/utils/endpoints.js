@@ -125,10 +125,10 @@ export const getOrderList = (userid, type) => {
   return get(url).then(handleResponse);
 };
 
-export const cancelOrder = (orderid) => {
+export const updateOrder = (orderid, type) => {
   const url = `${baseUrl}${urls.updateOrder}`;
   return post(url, {
-    type: 'cancel',
+    type,
     orderid,
   }).then(handleResponse);
 };
