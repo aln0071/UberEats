@@ -36,11 +36,12 @@ module.exports = {
     'insert into locationrel (userid, locationid) values ( :userid, :locationid )',
   _addOrderDetails: 'insert into orderdetails values :fields',
   _getOrderList:
-    'select * from orders o left join users u on o.restaurantid = u.userid where o.userid = :userid',
+    'select o.*, l.*, u.name from orders o left join users u on o.restaurantid = u.userid left join locations l on o.locationid = l.locationid where o.userid = :userid',
   _getOrderDetails:
     'select * from orderdetails natural join dishes where orderid in (select orderid from orders where userid = :userid)',
   _getOrderListOfRestaurant:
     'select * from orders o left join locations l on o.locationid = l.locationid  where restaurantid = :restaurantid',
   _getOrderDetailsOfRestaurant:
     'select * from orderdetails natural join dishes where restaurantid = :restaurantid',
+  _updateOrders: 'update orders set :optionalfields where orderid = :orderid',
 };

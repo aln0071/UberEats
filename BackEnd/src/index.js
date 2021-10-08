@@ -41,6 +41,7 @@ const {
   getAllRelatedAddresses,
   placeOrder,
   getOrderList,
+  updateOrder,
 } = require('./utils/endpoints');
 
 // defining an array to work as the database (temporary solution)
@@ -260,7 +261,6 @@ app.post('/place-order', async (req, res) => {
       message: error.message,
     });
   }
-  res.status(200).send();
 });
 
 app.get('/get-orders', async (req, res) => {
@@ -274,6 +274,21 @@ app.get('/get-orders', async (req, res) => {
       ),
     }));
     res.json(orders);
+  } catch (error) {
+    res.status(400).send({
+      status: false,
+      message: error.message,
+    });
+  }
+});
+
+app.post('/update-order', async (req, res) => {
+  try {
+    const response = await updateOrder(req.body);
+    res.status(200).send({
+      status: true,
+      message: response.message,
+    });
   } catch (error) {
     res.status(400).send({
       status: false,
