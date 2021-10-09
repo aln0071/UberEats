@@ -345,6 +345,7 @@ export default function Profile() {
                 <span style={{ marginRight: '10px' }}>{pic.path}</span>
               ))}
               <FileUploader
+                multiple={profileData.type === 'r'}
                 onDrop={(acceptedFiles, rejectedFiles) => {
                   console.log(rejectedFiles);
                   setPictures(acceptedFiles);

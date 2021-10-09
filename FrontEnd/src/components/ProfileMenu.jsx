@@ -4,7 +4,9 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import { Menu, MenuItem } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
+import Avatar from '@material-ui/core/Avatar';
 import { logoutAction, setCurrentTabAction } from '../store/actions';
+import { baseUrl, urls } from '../utils/constants';
 
 export default function ProfileMenu({ setCurrentTab }) {
   const dispatch = useDispatch();
@@ -20,6 +22,7 @@ export default function ProfileMenu({ setCurrentTab }) {
   const handleClose = () => {
     setAnchorEl(null);
   };
+  const pictures = JSON.parse(user.pictures);
   return (
     <div>
       <IconButton
@@ -29,11 +32,19 @@ export default function ProfileMenu({ setCurrentTab }) {
         onClick={handleMenu}
         color="inherit"
       >
-        <AccountCircle />
+        {pictures.length > 0 ? (
+          <Avatar
+            alt={user.name}
+            src={`${baseUrl}${urls.uploadsFolder}/${pictures[0]}`}
+          />
+        ) : (
+          <AccountCircle />
+        )}
       </IconButton>
       <Menu
         id="menu-appbar"
         anchorEl={anchorEl}
+        style={{ top: 42 }}
         anchorOrigin={{
           vertical: 'top',
           horizontal: 'right',
