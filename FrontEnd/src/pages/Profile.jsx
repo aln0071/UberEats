@@ -23,6 +23,7 @@ import {
   updateProfile,
 } from '../utils/endpoints';
 import { validations, isValid } from '../utils/validations';
+import { getAllRestaurantsAction } from '../store/actions/restaurants';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -125,9 +126,13 @@ export default function Profile() {
       try {
         const response = await updateProfile(profileData, pictures);
         toast.success(`Success: ${response.message}`, toastOptions);
+        console.log(response);
+        dispatch(updateUserDetails(response.data));
       } catch (error) {
         console.log(error);
         toast.error(createToastBody(error), toastOptions);
+      } finally {
+        dispatch(getAllRestaurantsAction());
       }
     } else {
       toast.error('Please enter valid data!', toastOptions);

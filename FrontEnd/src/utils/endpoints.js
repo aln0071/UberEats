@@ -92,8 +92,10 @@ export const getAllDishes = ({ userid }) => {
   return get(url).then(handleResponse);
 };
 
-export const getAllRestaurants = ({ citycode, statecode }) => {
-  const url = `${baseUrl}${urls.getAllRestaurants}?citycode=${citycode}&statecode=${statecode}`;
+export const getAllRestaurants = ({ citycode, statecode, countrycode }) => {
+  const url = `${baseUrl}${urls.getAllRestaurants}?citycode=${
+    citycode || ''
+  }&statecode=${statecode || ''}&countrycode=${countrycode || ''}`;
   return get(url).then(handleResponse);
 };
 

@@ -14,16 +14,13 @@ export default function Restaurants({ onlyFavorites }) {
 
   useEffect(() => {
     dispatch(getFavoritesListAction());
-    if (JSON.stringify(restaurants) === '[]') {
-      dispatch(getAllRestaurantsAction());
-    }
+    dispatch(getAllRestaurantsAction());
   }, []);
 
   const favorites = useSelector((state) => state.favorites);
 
   const renderRestaurants = () => restaurants
     .filter((restaurant) => {
-      console.log(favorites);
       if (onlyFavorites && !favorites.includes(restaurant.restaurantid)) {
         return null;
       }

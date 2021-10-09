@@ -38,6 +38,7 @@ const {
   _addFavorite,
   _removeFavorite,
   _getFavorites,
+  _getAllRestaurantsByCountry,
 } = require('./queries');
 
 function login(username, password) {
@@ -100,6 +101,7 @@ async function register(params) {
 }
 
 async function updateProfile(params) {
+  const result = {};
   const {
     email,
     name,
@@ -133,11 +135,13 @@ async function updateProfile(params) {
     // use existing data
     const { locationid } = locationData[0];
     await executeQuery(_updateLocationInUserTable, { locationid, userid });
+    result.locationid = locationid;
   } else {
     // add new entry to locaion table
     const response = await executeQuery(_addLocation, locationValues);
     const locationid = response.insertId;
     await executeQuery(_updateLocationInUserTable, { locationid, userid });
+    result.locationid = locationid;
   }
   // set hours from, hours to, and mode of delivery if restaurant
   if (params.type === 'r') {
@@ -154,6 +158,7 @@ async function updateProfile(params) {
     console.log(query);
     await executeQuery(query, { ...val, restaurantid: userid });
   }
+  return result;
 }
 
 function getCountries() {
@@ -199,14 +204,17 @@ function getAllDishes(restaurantid) {
   return executeQuery(_getAllDishes, { restaurantid });
 }
 
-function getAllRestaurants({ citycode, statecode }) {
+function getAllRestaurants({ citycode, statecode, countrycode }) {
   // return executeQuery(
   //   _getAllRestaurants+` ${optionalConditions(
   //     {'c.citycode': citycode})}`, {'c.citycode': citycode});
-  if ([undefined, null, ''].includes(citycode)) {
-    return executeQuery(_getAllRestaurants);
-  }
-  return executeQuery(_getAllRestaurantsByCity, { citycode, statecode });
+
+  // if ([undefined, null, ''].includes(citycode)) {
+  //   return executeQuery(_getAllRestaurants);
+  // }
+  // return executeQuery(_getAllRestaurantsByCity, { citycode, statecode });
+  if ([undefined, null, ''].includes(countrycode)) return executeQuery(_getAllRestaurants);
+  return executeQuery(_getAllRestaurantsByCountry, { countrycode });
 }
 
 /* eslint no-unused-vars: 0 */

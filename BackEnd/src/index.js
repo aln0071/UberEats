@@ -145,7 +145,7 @@ app.get('/cities', async (req, res) => {
 app.post('/update-profile', upload.array('image', 5), async (req, res) => {
   const pictures = JSON.parse(req.body.pictures);
   try {
-    await updateProfile({
+    const response = await updateProfile({
       ...req.body,
       pictures: JSON.stringify([
         ...pictures,
@@ -155,6 +155,7 @@ app.post('/update-profile', upload.array('image', 5), async (req, res) => {
     res.status(200).send({
       status: true,
       message: 'Profile updated successfully',
+      data: response,
     });
   } catch (error) {
     res.status(400).send({
@@ -214,6 +215,7 @@ app.get('/get-dishes', authMiddleware, async (req, res) => {
 
 app.get('/get-restaurants', authMiddleware, async (req, res) => {
   try {
+    console.log(req.query);
     const restaurantList = await getAllRestaurants(req.query);
     res.json(
       restaurantList.map((restaurant) => {

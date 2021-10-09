@@ -22,7 +22,9 @@ module.exports = {
   _getAllDishes: 'select * from dishes where restaurantid = :restaurantid',
   _getAllDishesFromAllRestaurants: 'select * from dishes',
   _getAllRestaurants:
-    'select * from users u left join locations l on u.locationid = l.locationid left join cities c on l.citycode = c.citycode left join states s on c.statecode = s.statecode left join countries cn on s.countrycode = cn.countrycode where type = "r"',
+    'select * from users u left join locations l on u.locationid = l.locationid left join cities c on l.citycode = c.citycode left join states s on c.statecode = s.statecode left join countries cn on s.countrycode = cn.countrycode left join restaurants r on u.userid = r.restaurantid where type = "r"',
+  _getAllRestaurantsByCountry:
+    'select * from users u left join locations l on u.locationid = l.locationid left join cities c on l.citycode = c.citycode left join states s on c.statecode = s.statecode left join countries cn on s.countrycode = cn.countrycode left join restaurants r on u.userid = r.restaurantid where type = "r" and cn.countrycode = :countrycode',
   _getAllRestaurantsByCity:
     'select * from users u left join locations l on u.locationid = l.locationid left join cities c on l.citycode = c.citycode left join states s on c.statecode = s.statecode left join countries cn on s.countrycode = cn.countrycode left join restaurants r on u.userid = r.restaurantid where type = "r" and c.citycode = :citycode',
   _addRestaurantDetails:
