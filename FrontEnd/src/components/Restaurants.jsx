@@ -28,10 +28,28 @@ export default function Restaurants({ onlyFavorites }) {
         return null;
       }
       // apply filters
-      const { deliverymode } = filters;
+      const {
+        deliverymode, country, state, city, name,
+      } = filters;
       if (deliverymode === 'delivery' && restaurant.deliverymode === 3) {
         return null;
       } if (deliverymode === 'pickup' && restaurant.deliverymode === 2) {
+        return null;
+      }
+
+      if (country.length > 0 && country[0].id !== restaurant.countrycode) {
+        return null;
+      } if (state.length > 0 && state[0].id !== restaurant.statecode) {
+        return null;
+      } if (city.length > 0 && city[0].id !== restaurant.citycode) {
+        return null;
+      }
+      if (
+        name !== ''
+          && !String(restaurant.name + restaurant.city)
+            .toLowerCase()
+            .includes(name)
+      ) {
         return null;
       }
       return restaurant;

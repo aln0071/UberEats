@@ -7,7 +7,7 @@ import { alpha, makeStyles } from '@material-ui/core/styles';
 import Dashboard from './Dashboard';
 import ProfileMenu from '../components/ProfileMenu';
 import NavTabs from '../components/NavTabs';
-import { setCurrentTabAction } from '../store/actions';
+import { addFiltersAction, setCurrentTabAction } from '../store/actions';
 import CartMenu from '../components/CartMenu';
 
 const useStyles = makeStyles((theme) => ({
@@ -95,12 +95,19 @@ export default function Home() {
                   <SearchIcon />
                 </div>
                 <InputBase
-                  placeholder="Search…"
+                  placeholder="Search Name or City"
                   classes={{
                     root: classes.inputRoot,
                     input: classes.inputInput,
                   }}
                   inputProps={{ 'aria-label': 'search' }}
+                  onChange={(e) => {
+                    dispatch(
+                      addFiltersAction({
+                        name: String(e.target.value).toLowerCase(),
+                      }),
+                    );
+                  }}
                 />
               </div>
             )}

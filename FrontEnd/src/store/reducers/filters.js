@@ -2,6 +2,10 @@ import { ADD_FILTERS, CLEAR_FILTERS, SET_FILTERS } from '../actions/types';
 
 const initialState = {
   deliverymode: 'both',
+  country: [],
+  state: [],
+  city: [],
+  name: '',
 };
 
 const filters = (state = { ...initialState }, action) => {
