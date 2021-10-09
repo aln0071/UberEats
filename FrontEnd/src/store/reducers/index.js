@@ -10,6 +10,7 @@ import orderConfirmModal from './orderConfirmModal';
 import orders from './orders';
 import orderDetailsModal from './orderDetailsModal';
 import favorites from './favorites';
+import filters from './filters';
 
 export default combineReducers({
   user,
@@ -23,4 +24,5 @@ export default combineReducers({
   orders,
   orderDetailsModal,
   favorites,
+  filters,
 });

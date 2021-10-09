@@ -6,6 +6,7 @@ import { getAllRestaurantsAction } from '../store/actions/restaurants';
 import RestaurantCard from './RestaurantCard';
 import styles from '../styles.scss';
 import { getFavoritesListAction } from '../store/actions/favorites';
+import Filters from './Filters';
 
 export default function Restaurants({ onlyFavorites }) {
   const dispatch = useDispatch();
@@ -17,11 +18,20 @@ export default function Restaurants({ onlyFavorites }) {
     dispatch(getAllRestaurantsAction());
   }, []);
 
+  const filters = useSelector((state) => state.filters);
+
   const favorites = useSelector((state) => state.favorites);
 
   const renderRestaurants = () => restaurants
     .filter((restaurant) => {
       if (onlyFavorites && !favorites.includes(restaurant.restaurantid)) {
+        return null;
+      }
+      // apply filters
+      const { deliverymode } = filters;
+      if (deliverymode === 'delivery' && restaurant.deliverymode === 3) {
+        return null;
+      } if (deliverymode === 'pickup' && restaurant.deliverymode === 2) {
         return null;
       }
       return restaurant;
@@ -34,7 +44,27 @@ export default function Restaurants({ onlyFavorites }) {
 
   return (
     <div className={styles.restaurantsContainer}>
-      <Grid gridGaps={[2, 6, 12]}>{renderRestaurants()}</Grid>
+      <Grid
+        gridGaps={[0, 0, 0]}
+        gridGutters={[0, 0, 10]}
+        gridMargins={[0, 0, 0]}
+      >
+        <Cell span={2}>
+          <div className={styles.filters}>
+            <h4>Filters</h4>
+            <Filters />
+          </div>
+        </Cell>
+        <Cell span={10}>
+          <Grid
+            gridGaps={[2, 6, 12]}
+            gridGutters={[0, 0, 0]}
+            gridMargins={[0, 0, 0]}
+          >
+            {renderRestaurants()}
+          </Grid>
+        </Cell>
+      </Grid>
     </div>
   );
 }

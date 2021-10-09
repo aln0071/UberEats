@@ -18,6 +18,10 @@ import {
   HIDE_ORDER_DETAILS_MODAL,
   SET_FAVORITES_LIST,
   ADD_FAVORITE,
+  SET_FILTERS,
+  REMOVE_FILTERS,
+  ADD_FILTERS,
+  CLEAR_FILTERS,
 } from './types';
 
 export const loginAction = (userDetails) => ({
@@ -138,4 +142,22 @@ export const addFavoritesAction = (restaurantid) => ({
 export const removeFavoriteAction = (restaurantid) => ({
   type: HIDE_ORDER_DETAILS_MODAL,
   payload: restaurantid,
+});
+
+export const setFiltersAction = (filters) => ({
+  type: SET_FILTERS,
+  payload: filters,
+});
+
+export const addFiltersAction = (filters) => ({
+  type: ADD_FILTERS,
+  payload: filters,
+});
+
+export const removeFiltersAction = () => ({
+  type: REMOVE_FILTERS,
+});
+
+export const clearFiltersAction = () => ({
+  type: CLEAR_FILTERS,
 });
