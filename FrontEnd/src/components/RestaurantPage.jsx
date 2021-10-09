@@ -25,12 +25,20 @@ export default function RestaurantPage() {
   }, []);
 
   const renderDishList = () => dishes.map((dish, index) => {
-    const { mealtype } = filters;
+    const { mealtype, name } = filters;
     if (mealtype === 'veg' && dish.category !== 1) {
       return null;
-    } if (mealtype === 'non-veg' && dish.category !== 2) {
+    }
+    if (mealtype === 'non-veg' && dish.category !== 2) {
       return null;
-    } if (mealtype === 'vegan' && dish.category !== 3) {
+    }
+    if (mealtype === 'vegan' && dish.category !== 3) {
+      return null;
+    }
+    if (
+      name !== ''
+        && !String(dish.dishname).toLocaleLowerCase().startsWith(name)
+    ) {
       return null;
     }
     return (

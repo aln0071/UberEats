@@ -80,6 +80,11 @@ export default function Home() {
   const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const setCurrentTab = (tabid) => dispatch(setCurrentTabAction(tabid));
+  const getSearchPlaceholder = () => {
+    if (currentTab === 0 || currentTab === 1) return 'Search Name or City';
+    if (currentTab === 4) return 'Search Dish Name';
+    return 'Search...';
+  };
   return (
     <div>
       <Box sx={{ flexGrow: 1 }}>
@@ -95,7 +100,7 @@ export default function Home() {
                   <SearchIcon />
                 </div>
                 <InputBase
-                  placeholder="Search Name or City"
+                  placeholder={getSearchPlaceholder()}
                   classes={{
                     root: classes.inputRoot,
                     input: classes.inputInput,
