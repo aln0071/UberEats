@@ -23,7 +23,7 @@ import {
 } from '../store/actions';
 import NewRestaurantConfirmationModal from './NewRestaurantConfirmationModal';
 
-const categories = ['Veg', 'Non-Veg', 'Vegan'];
+const categories = ['', 'Veg', 'Non-Veg', 'Vegan'];
 
 export default function PlaceOrderModal({ isOpen, setIsOpen, dish }) {
   const cart = useSelector((state) => state.cart);
