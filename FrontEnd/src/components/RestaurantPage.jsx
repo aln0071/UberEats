@@ -7,10 +7,12 @@ import { getAllDishes } from '../utils/endpoints';
 import { baseUrl, urls } from '../utils/constants';
 import Dish from './Dish';
 import styles from '../styles.scss';
+import Filters from './Filters';
 
 export default function RestaurantPage() {
   const restaurant = useSelector((state) => state.currentRestaurant);
   const dishes = useSelector((state) => state.dishes);
+  const filters = useSelector((state) => state.filters);
 
   const dispatch = useDispatch();
   useEffect(async () => {
@@ -22,11 +24,21 @@ export default function RestaurantPage() {
     }
   }, []);
 
-  const renderDishList = () => dishes.map((dish, index) => (
-    <Cell span={4}>
-      <Dish dish={dish} index={index} />
-    </Cell>
-  ));
+  const renderDishList = () => dishes.map((dish, index) => {
+    const { mealtype } = filters;
+    if (mealtype === 'veg' && dish.category !== 1) {
+      return null;
+    } if (mealtype === 'non-veg' && dish.category !== 2) {
+      return null;
+    } if (mealtype === 'vegan' && dish.category !== 3) {
+      return null;
+    }
+    return (
+      <Cell span={4}>
+        <Dish dish={dish} index={index} />
+      </Cell>
+    );
+  });
 
   return (
     <div>
@@ -88,7 +100,28 @@ export default function RestaurantPage() {
         </button>
       </div>
       <div>{restaurant.description}</div>
-      <Grid gridGaps={[2, 6, 12]}>{renderDishList()}</Grid>
+      <hr />
+      <Grid
+        gridGaps={[0, 0, 0]}
+        gridGutters={[0, 0, 10]}
+        gridMargins={[0, 0, 0]}
+      >
+        <Cell span={2}>
+          <div className={styles.filters}>
+            <h4>Filters</h4>
+            <Filters />
+          </div>
+        </Cell>
+        <Cell span={10}>
+          <Grid
+            gridGaps={[2, 6, 12]}
+            gridGutters={[0, 0, 10]}
+            gridMargins={[0, 0, 0]}
+          >
+            {renderDishList()}
+          </Grid>
+        </Cell>
+      </Grid>
     </div>
   );
 }

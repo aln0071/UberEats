@@ -7,9 +7,40 @@ import { getCountries, getCities, getStates } from '../utils/endpoints';
 
 export default function Filters() {
   const {
-    deliverymode, country, state, city,
-  } = useSelector((s) => s.filters);
+    deliverymode, country, state, city, mealtype,
+  } = useSelector(
+    (s) => s.filters,
+  );
+
+  const currentTab = useSelector((s) => s.currentTab);
   const dispatch = useDispatch();
+
+  if (currentTab === 4) {
+    return (
+      <div>
+        <hr />
+        Type:
+        <RadioGroup
+          value={mealtype}
+          onChange={(e) => {
+            dispatch(
+              addFiltersAction({
+                mealtype: e.currentTarget.value,
+              }),
+            );
+          }}
+          name="number"
+          align={ALIGN.vertical}
+        >
+          <Radio value="all">All</Radio>
+          <Radio value="veg">Veg</Radio>
+          <Radio value="non-veg">Non-Veg</Radio>
+          <Radio value="vegan">Vegan</Radio>
+        </RadioGroup>
+        <hr />
+      </div>
+    );
+  }
 
   const [countries, setCountries] = useState([]);
   const [states, setStates] = useState([]);

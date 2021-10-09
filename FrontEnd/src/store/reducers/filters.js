@@ -6,6 +6,7 @@ const initialState = {
   state: [],
   city: [],
   name: '',
+  mealtype: 'all',
 };
 
 const filters = (state = { ...initialState }, action) => {
