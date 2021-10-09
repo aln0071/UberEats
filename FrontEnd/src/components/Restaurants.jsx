@@ -12,6 +12,7 @@ export default function Restaurants({ onlyFavorites }) {
   const dispatch = useDispatch();
 
   const restaurants = useSelector((state) => state.restaurants);
+  const user = useSelector((state) => state.user);
 
   useEffect(() => {
     dispatch(getFavoritesListAction());
@@ -33,15 +34,18 @@ export default function Restaurants({ onlyFavorites }) {
       } = filters;
       if (deliverymode === 'delivery' && restaurant.deliverymode === 3) {
         return null;
-      } if (deliverymode === 'pickup' && restaurant.deliverymode === 2) {
+      }
+      if (deliverymode === 'pickup' && restaurant.deliverymode === 2) {
         return null;
       }
 
       if (country.length > 0 && country[0].id !== restaurant.countrycode) {
         return null;
-      } if (state.length > 0 && state[0].id !== restaurant.statecode) {
+      }
+      if (state.length > 0 && state[0].id !== restaurant.statecode) {
         return null;
-      } if (city.length > 0 && city[0].id !== restaurant.citycode) {
+      }
+      if (city.length > 0 && city[0].id !== restaurant.citycode) {
         return null;
       }
       if (
@@ -53,6 +57,17 @@ export default function Restaurants({ onlyFavorites }) {
         return null;
       }
       return restaurant;
+    })
+    .sort((a, b) => {
+      if (user.citycode === null) {
+        return 0;
+      }
+      if (a.citycode === user.citycode && b.citycode === user.citycode) {
+        return 0;
+      } if (b.citycode !== user.citycode) {
+        return -1;
+      }
+      return 1;
     })
     .map((restaurant) => (
       <Cell span={4}>
