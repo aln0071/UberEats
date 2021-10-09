@@ -9,26 +9,36 @@ import {
   ROLE,
 } from 'baseui/modal';
 import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
 
-const NewRestaurantConfirmationModal = ({ isOpen, setIsOpen, onConfirm }) => (
-  <Modal
-    onClose={() => setIsOpen(false)}
-    closeable
-    isOpen={isOpen}
-    animate
-    autoFocus
-    size={SIZE.default}
-    role={ROLE.dialog}
-  >
-    <ModalHeader>Create new order?</ModalHeader>
-    <ModalBody>
-      Your order contains items from another restaurant. Create a new order?
-    </ModalBody>
-    <ModalFooter>
-      <ModalButton onClick={() => onConfirm()}>New Order</ModalButton>
-    </ModalFooter>
-  </Modal>
-);
+const NewRestaurantConfirmationModal = ({ isOpen, setIsOpen, onConfirm }) => {
+  const newRestaurantName = useSelector(
+    (state) => state.currentRestaurant.name,
+  );
+  return (
+    <Modal
+      onClose={() => setIsOpen(false)}
+      closeable
+      isOpen={isOpen}
+      animate
+      autoFocus
+      size={SIZE.default}
+      role={ROLE.dialog}
+    >
+      <ModalHeader>Create new order?</ModalHeader>
+      <ModalBody>
+        Your order contains items from another restaurant. Create a new order to
+        add items from
+        {' '}
+        {newRestaurantName}
+        .
+      </ModalBody>
+      <ModalFooter>
+        <ModalButton onClick={() => onConfirm()}>New Order</ModalButton>
+      </ModalFooter>
+    </Modal>
+  );
+};
 
 export default NewRestaurantConfirmationModal;
 
