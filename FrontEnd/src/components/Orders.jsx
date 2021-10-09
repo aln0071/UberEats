@@ -9,7 +9,7 @@ export default function Orders() {
   const dispatch = useDispatch();
 
   // const restaurants = useSelector(state => state.restaurants);
-  const { orders, user } = useSelector((state) => state);
+  const { orders, user, filters } = useSelector((state) => state);
 
   useEffect(() => {
     dispatch(getOrderListAction());
@@ -21,6 +21,19 @@ export default function Orders() {
     day: 'numeric',
     hour: 'numeric',
     minute: 'numeric',
+  };
+
+  const applyFilter = (order) => {
+    const { name } = filters;
+    if (
+      name !== ''
+      && !String(deliveryStatus[order.status].label)
+        .toLocaleLowerCase()
+        .startsWith(name)
+    ) {
+      return null;
+    }
+    return order;
   };
 
   return (
@@ -40,6 +53,7 @@ export default function Orders() {
           <tbody>
             {orders
               .sort((a, b) => b.orderid - a.orderid)
+              .filter((order) => applyFilter(order))
               .map((order) => (
                 <tr
                   onClick={() => {

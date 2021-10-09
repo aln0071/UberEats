@@ -83,6 +83,7 @@ export default function Home() {
   const getSearchPlaceholder = () => {
     if (currentTab === 0 || currentTab === 1) return 'Search Name or City';
     if (currentTab === 4) return 'Search Dish Name';
+    if (currentTab === 2) return 'Search Order Status';
     return 'Search...';
   };
   return (
