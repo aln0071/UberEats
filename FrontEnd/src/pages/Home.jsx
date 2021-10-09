@@ -86,6 +86,7 @@ export default function Home() {
     if (currentTab === 2) return 'Search Order Status';
     return 'Search...';
   };
+  const filters = useSelector((state) => state.filters);
   return (
     <div>
       <Box sx={{ flexGrow: 1 }}>
@@ -107,6 +108,7 @@ export default function Home() {
                     input: classes.inputInput,
                   }}
                   inputProps={{ 'aria-label': 'search' }}
+                  value={filters.name}
                   onChange={(e) => {
                     dispatch(
                       addFiltersAction({
