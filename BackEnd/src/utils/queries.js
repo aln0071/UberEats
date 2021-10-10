@@ -44,7 +44,7 @@ module.exports = {
   _getOrderDetails:
     'select * from orderdetails left join dishes on orderdetails.dishid = dishes.dishid where orderid in (select orderid from orders where userid = :userid )',
   _getOrderListOfRestaurant:
-    'select * from orders o left join locations l on o.locationid = l.locationid left join cities c on c.citycode = l.citycode left join states s on s.statecode = c.statecode left join countries cn on cn.countrycode = s.countrycode where restaurantid = :restaurantid',
+    'select o.*, l.*, c.*, s.*, cn.*, u.name as customername, u.email as customeremail, u.phone as customerphone from orders o left join locations l on o.locationid = l.locationid left join cities c on c.citycode = l.citycode left join states s on s.statecode = c.statecode left join countries cn on cn.countrycode = s.countrycode left join users u on u.userid = o.userid where restaurantid = :restaurantid',
   _getOrderDetailsOfRestaurant:
     'select * from orderdetails left join dishes on orderdetails.dishid = dishes.dishid where restaurantid = :restaurantid',
   _updateOrders: 'update orders set :optionalfields where orderid = :orderid',
