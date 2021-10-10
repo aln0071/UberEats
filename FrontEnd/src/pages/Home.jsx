@@ -97,7 +97,7 @@ export default function Home() {
             <div style={{ flexGrow: 1 }}>
               <NavTabs setCurrentTab={setCurrentTab} currentTab={currentTab} />
             </div>
-            {user.type === 'c' && (
+            {(user.type === 'c' || (user.type === 'r' && currentTab === 2)) && (
               <div className={classes.search}>
                 <div className={classes.searchIcon}>
                   <SearchIcon />
