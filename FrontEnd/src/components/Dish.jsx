@@ -7,10 +7,18 @@ import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import { Card, StyledBody } from 'baseui/card';
 import { Grid, Cell } from 'baseui/layout-grid';
+import CloudUploadIcon from '@material-ui/icons/CloudUpload';
+import { toast } from 'react-toastify';
 import { baseUrl, dishCategories, urls } from '../utils/constants';
-import { BlackFormControl, BlackTextField } from '../utils';
+import {
+  BlackFormControl,
+  BlackTextField,
+  createToastBody,
+  toastOptions,
+} from '../utils';
 import { updateDishAction } from '../store/actions';
 import PlaceOrderModal from './PlaceOrderModal';
+import { updateDishes } from '../utils/endpoints';
 
 // const useStyles = makeStyles((theme) => ({
 //   root: {
@@ -43,7 +51,7 @@ export default function Dish({ dish, index }) {
   const handleChange = (e) => {
     const { id } = e.target;
     const { value } = e.target;
-    dispatch(updateDishAction(index, { ...dish, [id]: value }));
+    dispatch(updateDishAction({ ...dish, [id]: value }));
   };
 
   const user = useSelector((state) => state.user);
@@ -51,6 +59,18 @@ export default function Dish({ dish, index }) {
   const [isOpen, setIsOpen] = useState(false);
 
   const isCustomer = user.type === 'c';
+
+  const updateDatabase = async () => {
+    console.log(index);
+    try {
+      const response = await updateDishes(dish);
+      console.log(response);
+      toast.success('Success: Data updated', toastOptions);
+    } catch (error) {
+      console.log(error);
+      toast.error(createToastBody(error), toastOptions);
+    }
+  };
 
   return (
     <div>
@@ -124,6 +144,12 @@ export default function Dish({ dish, index }) {
               <Cell span={12}>
                 <IconButton aria-label="delete">
                   <DeleteIcon />
+                </IconButton>
+                <IconButton
+                  aria-label="delete"
+                  onClick={() => updateDatabase()}
+                >
+                  <CloudUploadIcon />
                 </IconButton>
               </Cell>
             </Grid>

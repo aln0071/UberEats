@@ -59,12 +59,9 @@ export const addDishAction = () => {
   };
 };
 
-export const updateDishAction = (index, value) => ({
+export const updateDishAction = (dish) => ({
   type: UPDATE_DISH,
-  payload: {
-    index,
-    value,
-  },
+  payload: dish,
 });
 
 export const setDishesAction = (dishes) => ({
