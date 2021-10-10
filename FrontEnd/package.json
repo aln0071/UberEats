@@ -10,7 +10,7 @@
     "build:dev": "cross-env NODE_ENV=development webpack --mode development",
     "lint:fix": "eslint . --fix --ext .js,.jsx",
     "prettier": "prettier --write .",
-    "test": "jest",
+    "test": "jest --coverage",
     "prepare": "cd .. && husky install"
   },
   "repository": {

@@ -1,6 +1,6 @@
 import { SET_CURRENT_TAB } from '../actions/types';
 
-const initialState = 3;
+const initialState = 0;
 
 const currentTab = (state = initialState, action) => {
   switch (action.type) {

@@ -19,9 +19,16 @@ export default function PlaceOrderPage() {
   const cart = useSelector((state) => state.cart);
   const restaurant = useSelector((state) => state.restaurants.find((res) => res.userid === cart.restaurantid));
 
+  const deliveryOnly = restaurant.deliverymode === 2;
+  const pickupOnly = restaurant.deliveryMode === 3;
+
+  const initialDeliveryOptionValue = pickupOnly ? 'pickup' : 'delivery';
+
   const user = useSelector((state) => state.user);
 
-  const [deliveryOption, setDeliveryOption] = React.useState('delivery');
+  const [deliveryOption, setDeliveryOption] = React.useState(
+    initialDeliveryOptionValue,
+  );
 
   const [deliveryAddress, setDeliveryAddress] = React.useState('new');
 
@@ -142,8 +149,8 @@ export default function PlaceOrderPage() {
             name="deliveryOption"
             align={ALIGN.horizontal}
           >
-            <Radio value="delivery">Delivery</Radio>
-            <Radio value="pickup">Pickup</Radio>
+            {!pickupOnly && <Radio value="delivery">Delivery</Radio>}
+            {!deliveryOnly && <Radio value="pickup">Pickup</Radio>}
           </RadioGroup>
         </div>
         {deliveryOption === 'delivery' && (
@@ -226,7 +233,12 @@ export default function PlaceOrderPage() {
               <th>Subtotal</th>
               <td>
                 $
-                {(total * (1 + taxPercent + deliveryFeePercent)).toFixed(2)}
+                {(
+                  total
+                  * (1
+                    + taxPercent
+                    + (deliveryOption === 'delivery' ? deliveryFeePercent : 0))
+                ).toFixed(2)}
               </td>
             </tr>
             <tr>
@@ -236,13 +248,15 @@ export default function PlaceOrderPage() {
                 {(total * taxPercent).toFixed(2)}
               </td>
             </tr>
-            <tr>
-              <th>Delivery Fee</th>
-              <td>
-                $
-                {(total * deliveryFeePercent).toFixed(2)}
-              </td>
-            </tr>
+            {deliveryOption === 'delivery' && (
+              <tr>
+                <th>Delivery Fee</th>
+                <td>
+                  $
+                  {(total * deliveryFeePercent).toFixed(2)}
+                </td>
+              </tr>
+            )}
           </table>
         </div>
       </div>
