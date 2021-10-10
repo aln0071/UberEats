@@ -15,6 +15,14 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    // background-color: #ffd7d2;
+    // background-color: #cde9ff;
+    background-color: #eeee;
+    &__logo {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+    }
   }
 
   &__input {

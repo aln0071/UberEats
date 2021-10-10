@@ -37,7 +37,11 @@ export default function NavTabs({ setCurrentTab, currentTab }) {
 
   return (
     <div className={classes.root}>
-      <AppBar position="static" style={{ boxShadow: 'none' }}>
+      <AppBar
+        position="static"
+        style={{ boxShadow: 'none' }}
+        color="transparent"
+      >
         {user.type === 'c' && (
           <Tabs
             value={currentTab}

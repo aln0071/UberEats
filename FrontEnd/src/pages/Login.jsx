@@ -12,6 +12,7 @@ import {
 } from '../utils';
 import { login } from '../utils/endpoints';
 import { loginAction } from '../store/actions';
+import Logo from '../images/Logo';
 
 export default function Login() {
   const dispatch = useDispatch();
@@ -34,6 +35,9 @@ export default function Login() {
   }
   return (
     <div className={styles.loginContainer}>
+      <div className={styles.loginContainerLogo}>
+        <Logo />
+      </div>
       <Paper elevation={3} style={{ padding: '10px' }}>
         <Typography variant="h4">Login</Typography>
         <div className={styles.loginInput}>

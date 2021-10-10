@@ -20,6 +20,7 @@ import {
 import { register } from '../utils/endpoints';
 import { isValid, validations } from '../utils/validations';
 import Location from '../components/Location';
+import Logo from '../images/Logo';
 
 export default function Register() {
   const history = useHistory();
@@ -96,6 +97,9 @@ export default function Register() {
 
   return (
     <div className={styles.loginContainer}>
+      <div className={styles.loginContainerLogo}>
+        <Logo />
+      </div>
       <Paper elevation={3} style={{ padding: '10px' }}>
         <Typography variant="h4">Register</Typography>
         <div className={styles.loginInput}>
