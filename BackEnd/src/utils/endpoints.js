@@ -40,6 +40,7 @@ const {
   _getFavorites,
   _getAllRestaurantsByCountry,
   _getAllDishesFromAllRestaurants,
+  _updateDishQuery,
 } = require('./queries');
 
 function login(username, password) {
@@ -182,7 +183,30 @@ function getCities(statecode) {
   return executeQuery(_getCities, { statecode });
 }
 
-function updateDish(dish) {}
+function updateDish(dish) {
+  const {
+    restaurantid,
+    dishname,
+    description,
+    category,
+    price,
+    pictures,
+    dishid,
+  } = dish;
+  const values = {
+    restaurantid,
+    dishname,
+    description,
+    category,
+    price,
+    pictures,
+  };
+  const query = _updateDishQuery.replace(
+    ':optionalfields',
+    paramsToQuery(values),
+  );
+  return executeQuery(query, { ...values, dishid });
+}
 
 function addDish(dish) {
   const {
@@ -354,4 +378,5 @@ module.exports = {
   updateOrder,
   toggleFavorite,
   getFavorites,
+  updateDish,
 };

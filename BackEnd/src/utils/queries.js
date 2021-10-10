@@ -19,6 +19,7 @@ module.exports = {
     'select * from locations where citycode = :citycode and location = :location and zip = :zip',
   _addDishQuery:
     'insert into dishes ( :optionalfields ) values( :optionalvalues )',
+  _updateDishQuery: 'update dishes set :optionalfields where dishid = :dishid',
   _getAllDishes: 'select * from dishes where restaurantid = :restaurantid',
   _getAllDishesFromAllRestaurants: 'select * from dishes',
   _getAllRestaurants:
