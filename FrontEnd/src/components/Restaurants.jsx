@@ -7,6 +7,7 @@ import RestaurantCard from './RestaurantCard';
 import styles from '../styles.scss';
 import { getFavoritesListAction } from '../store/actions/favorites';
 import Filters from './Filters';
+import { getAllDishesAction } from '../store/actions/allDishes';
 
 export default function Restaurants({ onlyFavorites }) {
   const dispatch = useDispatch();
@@ -15,6 +16,7 @@ export default function Restaurants({ onlyFavorites }) {
   const user = useSelector((state) => state.user);
 
   useEffect(() => {
+    dispatch(getAllDishesAction());
     dispatch(getFavoritesListAction());
     dispatch(getAllRestaurantsAction());
   }, []);
@@ -23,6 +25,8 @@ export default function Restaurants({ onlyFavorites }) {
 
   const favorites = useSelector((state) => state.favorites);
 
+  const allDishes = useSelector((state) => state.allDishes);
+
   const renderRestaurants = () => restaurants
     .filter((restaurant) => {
       if (onlyFavorites && !favorites.includes(restaurant.restaurantid)) {
@@ -30,7 +34,7 @@ export default function Restaurants({ onlyFavorites }) {
       }
       // apply filters
       const {
-        deliverymode, country, state, city, name,
+        deliverymode, country, state, city, name, mealtype,
       } = filters;
       if (deliverymode === 'delivery' && restaurant.deliverymode === 3) {
         return null;
@@ -56,6 +60,35 @@ export default function Restaurants({ onlyFavorites }) {
       ) {
         return null;
       }
+      if (mealtype !== 'all') {
+        if (mealtype === 'veg') {
+          const hasVeg = allDishes.findIndex(
+            (dish) => dish.restaurantid === restaurant.restaurantid
+                  && dish.category === 1,
+          ) !== -1;
+          if (!hasVeg) {
+            return null;
+          }
+        }
+        if (mealtype === 'non-veg') {
+          const hasNonVeg = allDishes.findIndex(
+            (dish) => dish.restaurantid === restaurant.restaurantid
+                  && dish.category === 2,
+          ) !== -1;
+          if (!hasNonVeg) {
+            return null;
+          }
+        }
+        if (mealtype === 'vegan') {
+          const hasVegan = allDishes.findIndex(
+            (dish) => dish.restaurantid === restaurant.restaurantid
+                  && dish.category === 3,
+          ) !== -1;
+          if (!hasVegan) {
+            return null;
+          }
+        }
+      }
       return restaurant;
     })
     .sort((a, b) => {
@@ -64,7 +97,8 @@ export default function Restaurants({ onlyFavorites }) {
       }
       if (a.citycode === user.citycode && b.citycode === user.citycode) {
         return 0;
-      } if (b.citycode !== user.citycode) {
+      }
+      if (b.citycode !== user.citycode) {
         return -1;
       }
       return 1;

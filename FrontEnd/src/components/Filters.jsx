@@ -152,6 +152,25 @@ export default function Filters() {
         />
       )}
       <hr />
+      Type:
+      <RadioGroup
+        value={mealtype}
+        onChange={(e) => {
+          dispatch(
+            addFiltersAction({
+              mealtype: e.currentTarget.value,
+            }),
+          );
+        }}
+        name="number"
+        align={ALIGN.vertical}
+      >
+        <Radio value="all">All</Radio>
+        <Radio value="veg">Veg</Radio>
+        <Radio value="non-veg">Non-Veg</Radio>
+        <Radio value="vegan">Vegan</Radio>
+      </RadioGroup>
+      <hr />
     </div>
   );
 }
