@@ -39,6 +39,7 @@ const {
   _removeFavorite,
   _getFavorites,
   _getAllRestaurantsByCountry,
+  _getAllDishesFromAllRestaurants,
 } = require('./queries');
 
 function login(username, password) {
@@ -202,6 +203,7 @@ function addDish(dish) {
 }
 
 function getAllDishes(restaurantid) {
+  if ([undefined, null, ''].includes(restaurantid)) return executeQuery(_getAllDishesFromAllRestaurants);
   return executeQuery(_getAllDishes, { restaurantid });
 }
 
