@@ -51,7 +51,7 @@ export default function CartMenu() {
                 </span>
                 <span>
                   Price: $
-                  {item.price * item.count}
+                  {parseFloat(item.price * item.count).toFixed(2)}
                 </span>
               </div>
               <hr />
@@ -68,7 +68,7 @@ export default function CartMenu() {
           Checkout
           <div className={styles.cartTotal}>
             $
-            {total}
+            {parseFloat(total).toFixed(2)}
           </div>
         </BaseButton>
       </div>
