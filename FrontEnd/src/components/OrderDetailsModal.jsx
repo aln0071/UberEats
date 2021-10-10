@@ -84,7 +84,7 @@ export default () => {
       case 1:
         return prepareOrder();
       case 2:
-        if (orderDetailsModal.deliverymode === 1) {
+        if (orderDetailsModal.deliverymode === 2) {
           // delivery mode
           return onWay();
         }
