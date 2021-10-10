@@ -43,7 +43,7 @@ export const deliveryModes = {
 };
 
 export const deliveryStatus = {
-  1: { label: 'Ordered', time: 'created' },
+  1: { label: 'New', time: 'created' },
   2: { label: 'Preparing', time: 'preparing' },
   3: { label: 'On Way', time: 'onway' },
   4: { label: 'Delivered', time: 'delivered' },
