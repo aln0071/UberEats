@@ -59,6 +59,7 @@ export default function Orders() {
                   onClick={() => {
                     dispatch(showOrderDetailsModalAction({ order }));
                   }}
+                  style={{ cursor: 'pointer' }}
                 >
                   <th scope="row">{order.orderid}</th>
                   {user.type === 'c' && <td>{order.name}</td>}

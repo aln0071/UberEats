@@ -158,7 +158,26 @@ export default () => {
         </div>
         <hr />
         <div>
-          {orderDetailsModal.deliverymode === 1
+          {user.type === 'r' && (
+            <>
+              Customer Name:
+              {' '}
+              {orderDetailsModal.customername}
+              <br />
+              Customer Email:
+              {' '}
+              {orderDetailsModal.customeremail}
+              <br />
+              {orderDetailsModal.customerphone && (
+                <>
+                  Customer Phone:
+                  {orderDetailsModal.customerphone}
+                </>
+              )}
+              <hr />
+            </>
+          )}
+          {orderDetailsModal.deliverymode === 2
             ? 'Delivery Address'
             : 'Pickup Address:'}
           <div>
