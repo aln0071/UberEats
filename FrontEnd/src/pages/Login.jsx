@@ -41,6 +41,7 @@ export default function Login() {
             value={username}
             label="Email"
             type="email"
+            inputProps={{ 'data-testid': 'email-input' }}
             onChange={(e) => setUsername(handleChange(e))}
           />
         </div>
@@ -49,6 +50,7 @@ export default function Login() {
             value={password}
             label="Password"
             type="password"
+            inputProps={{ 'data-testid': 'password-input' }}
             onChange={(e) => setPassword(handleChange(e))}
           />
         </div>
@@ -56,6 +58,7 @@ export default function Login() {
           <BlackButton
             variant="contained"
             fullWidth
+            data-testid="login"
             onClick={() => {
               loginUser(username, password);
             }}

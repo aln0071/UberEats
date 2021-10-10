@@ -7,6 +7,9 @@ import {
   Radio,
   FormControl,
 } from '@material-ui/core';
+import { applyMiddleware, createStore } from 'redux';
+import { middlewares } from '../store';
+import rootReducer from '../store/reducers';
 
 // this object stores the options applied to toasts in the project
 export const toastOptions = {
@@ -83,3 +86,11 @@ export const createToastBody = (error) => (
     {error.message}
   </div>
 );
+
+// for testing
+export const testStore = (initialState) => {
+  const createStoreWithMiddleware = applyMiddleware(...middlewares)(
+    createStore,
+  );
+  return createStoreWithMiddleware(rootReducer, initialState);
+};
