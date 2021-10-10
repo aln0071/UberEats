@@ -20,7 +20,7 @@ export default function PlaceOrderPage() {
   const restaurant = useSelector((state) => state.restaurants.find((res) => res.userid === cart.restaurantid));
 
   const deliveryOnly = restaurant.deliverymode === 2;
-  const pickupOnly = restaurant.deliveryMode === 3;
+  const pickupOnly = restaurant.deliverymode === 3;
 
   const initialDeliveryOptionValue = pickupOnly ? 'pickup' : 'delivery';
 
@@ -88,8 +88,16 @@ export default function PlaceOrderPage() {
     dispatch(
       placeOrderAction({
         ...values,
-        price: (total * (1 + taxPercent + deliveryFeePercent)).toFixed(2),
-        deliverymode: deliveryOption === 'delivery' ? 1 : 2,
+        price: (
+          total
+          * (1
+            + taxPercent
+            + (deliveryOption === 'delivery' ? deliveryFeePercent : 0))
+        ).toFixed(2),
+        tax: total * taxPercent,
+        deliveryfee:
+          deliveryOption === 'delivery' ? total * deliveryFeePercent : 0,
+        deliverymode: deliveryOption === 'delivery' ? 2 : 3,
       }),
     );
   };

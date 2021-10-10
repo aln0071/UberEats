@@ -5,7 +5,14 @@ import { createToastBody, toastOptions } from '../../utils';
 import { placeOrder } from '../../utils/endpoints';
 
 export const placeOrderAction = ({
-  locationid, zip, location, citycode, price, deliverymode,
+  locationid,
+  zip,
+  location,
+  citycode,
+  price,
+  deliverymode,
+  tax,
+  deliveryfee,
 }) => async (dispatch, getState) => {
   const { userid } = getState().user;
   const { cart } = getState();
@@ -19,6 +26,8 @@ export const placeOrderAction = ({
       ...cart,
       price,
       deliverymode,
+      tax,
+      deliveryfee,
     });
     console.log(response);
     toast.success('Success: order placed', toastOptions);

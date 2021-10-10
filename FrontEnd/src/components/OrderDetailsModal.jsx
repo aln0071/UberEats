@@ -24,9 +24,6 @@ export default () => {
     dispatch(hideOrderDetailsModalAction());
   };
   const user = useSelector((state) => state.user);
-  let total = 0;
-  const taxPercent = 0.15;
-  const deliveryFeePercent = 0.2;
 
   const cancelOrder = async () => {
     dispatch(cancelOrderAction());
@@ -115,43 +112,42 @@ export default () => {
     >
       <ModalHeader>Order Details</ModalHeader>
       <ModalBody>
-        {Object.values(orderDetailsModal.orderDetails).map((item) => {
-          total += item.quantity * item.price;
-          return (
-            <div>
-              <div className={styles.placeOrderBodyLeftItemHeader}>
-                {item.dishname}
-              </div>
-              <div className={styles.placeOrderBodyLeftItemFooter}>
-                <span>
-                  Quantity:&nbsp;
-                  {item.quantity}
-                </span>
-                <span>
-                  $
-                  {item.quantity * item.price}
-                </span>
-              </div>
-              <hr />
+        {Object.values(orderDetailsModal.orderDetails).map((item) => (
+          <div>
+            <div className={styles.placeOrderBodyLeftItemHeader}>
+              {item.dishname}
             </div>
-          );
-        })}
+            <div className={styles.placeOrderBodyLeftItemFooter}>
+              <span>
+                Quantity:&nbsp;
+                {item.quantity}
+              </span>
+              <span>
+                $
+                {item.quantity * item.price}
+              </span>
+            </div>
+            <hr />
+          </div>
+        ))}
 
         <div className={styles.placeOrderBodyLeftItemFooter}>
           <span>Taxes:</span>
           <span>
             $
-            {(total * taxPercent).toFixed(2)}
+            {orderDetailsModal.tax}
           </span>
         </div>
 
-        <div className={styles.placeOrderBodyLeftItemFooter}>
-          <span>Delivery Fee:</span>
-          <span>
-            $
-            {(total * deliveryFeePercent).toFixed(2)}
-          </span>
-        </div>
+        {orderDetailsModal.deliverymode === 2 && (
+          <div className={styles.placeOrderBodyLeftItemFooter}>
+            <span>Delivery Fee:</span>
+            <span>
+              $
+              {orderDetailsModal.deliveryfee}
+            </span>
+          </div>
+        )}
 
         <div className={styles.placeOrderBodyLeftItemFooter}>
           <span>Subtotal:</span>

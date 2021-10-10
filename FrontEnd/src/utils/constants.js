@@ -38,8 +38,8 @@ export const dishCategories = [
 ];
 
 export const deliveryModes = {
-  1: 'Delivery',
-  2: 'Pickup',
+  2: 'Delivery',
+  3: 'Pickup',
 };
 
 export const deliveryStatus = {
