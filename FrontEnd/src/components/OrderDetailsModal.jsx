@@ -164,6 +164,13 @@ export default () => {
           <div>
             {orderDetailsModal.location}
             <br />
+            {orderDetailsModal.city}
+            ,
+            {orderDetailsModal.state}
+            <br />
+            {orderDetailsModal.country}
+            {' '}
+            -
             {orderDetailsModal.zip}
           </div>
         </div>
