@@ -26,7 +26,7 @@ export const changeOrderStatusAction = (type) => async (dispatch, getState) => {
   try {
     const response = await updateOrder(orderid, type);
     if (response.status === true) {
-      toast.success('Success: Order status updated');
+      toast.success('Success: Order status updated', toastOptions);
       dispatch(hideOrderDetailsModalAction());
       dispatch(getOrderListAction());
     } else {
