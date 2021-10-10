@@ -34,14 +34,15 @@ module.exports = {
   _getAllRelatedAddresses:
     'select * from (select userid, locationid from users where userid = :userid union select * from locationrel where userid = :userid) as temp natural join locations natural join cities',
   _placeOrder:
-    'insert into orders (userid, restaurantid, locationid, status, created, price, deliverymode) values( :userid, :restaurantid, :locationid, 1, :created, :price, :deliverymode )',
+    'insert into orders (userid, restaurantid, locationid, status, created, price, deliverymode, tax, deliveryfee) values( :userid, :restaurantid, :locationid, 1, :created, :price, :deliverymode, :tax, :deliveryfee )',
   _addRelatedAddress:
     'insert into locationrel (userid, locationid) values ( :userid, :locationid )',
-  _addOrderDetails: 'insert into orderdetails values :fields',
+  _addOrderDetails:
+    'insert into orderdetails (orderid, dishid, quantity, price) values :fields',
   _getOrderList:
     'select o.*, l.*, u.name from orders o left join users u on o.restaurantid = u.userid left join locations l on o.locationid = l.locationid where o.userid = :userid',
   _getOrderDetails:
-    'select * from orderdetails natural join dishes where orderid in (select orderid from orders where userid = :userid)',
+    'select * from orderdetails left join dishes on orderdetails.dishid = dishes.dishid where orderid in (select orderid from orders where userid = :userid )',
   _getOrderListOfRestaurant:
     'select * from orders o left join locations l on o.locationid = l.locationid  where restaurantid = :restaurantid',
   _getOrderDetailsOfRestaurant:
