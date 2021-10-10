@@ -15,6 +15,14 @@ const NewRestaurantConfirmationModal = ({ isOpen, setIsOpen, onConfirm }) => {
   const newRestaurantName = useSelector(
     (state) => state.currentRestaurant.name,
   );
+  const restaurants = useSelector((state) => state.restaurants);
+  const oldRestaurantId = useSelector((state) => state.cart.restaurantid);
+  let oldRestaurantName = '';
+  if (oldRestaurantId !== undefined) {
+    oldRestaurantName = restaurants.find(
+      (restaurant) => restaurant.restaurantid === oldRestaurantId,
+    ).name;
+  }
   return (
     <Modal
       onClose={() => setIsOpen(false)}
@@ -27,8 +35,11 @@ const NewRestaurantConfirmationModal = ({ isOpen, setIsOpen, onConfirm }) => {
     >
       <ModalHeader>Create new order?</ModalHeader>
       <ModalBody>
-        Your order contains items from another restaurant. Create a new order to
-        add items from
+        Your order contains items from
+        {' '}
+        {oldRestaurantName}
+        . Create a new order
+        to add items from
         {' '}
         {newRestaurantName}
         .
