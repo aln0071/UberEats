@@ -49,4 +49,9 @@ describe('Render Login Screen', () => {
     userEvent.type(inputEl, 'helloworld');
     expect(screen.getByTestId('password-input')).toHaveValue('helloworld');
   });
+
+  test('Submit form', () => {
+    expect(screen.getByRole('button', { name: 'Login' })).not.toBeNull();
+    fireEvent.click(screen.getByRole('button', { name: 'Login' }));
+  });
 });

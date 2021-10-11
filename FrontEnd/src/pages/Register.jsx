@@ -119,16 +119,19 @@ export default function Register() {
                   },
                 });
               }}
+              data-testid="radio-input"
             >
               <FormControlLabel
                 value="c"
                 control={<BlackRadio />}
                 label="Customer"
+                data-testid="radio-input-1"
               />
               <FormControlLabel
                 value="r"
                 control={<BlackRadio />}
                 label="Restaurant"
+                data-testid="radio-input-2"
               />
             </RadioGroup>
           </FormControl>
@@ -143,6 +146,7 @@ export default function Register() {
             required
             error={errors.name}
             helperText={errors.name}
+            inputProps={{ 'data-testid': 'name-input' }}
           />
         </div>
         <div className={styles.loginInput}>
@@ -155,6 +159,7 @@ export default function Register() {
             required
             error={errors.email}
             helperText={errors.email}
+            inputProps={{ 'data-testid': 'email-input' }}
           />
         </div>
         <div className={styles.loginInput}>
@@ -167,6 +172,7 @@ export default function Register() {
             required
             error={errors.password}
             helperText={errors.password}
+            inputProps={{ 'data-testid': 'password-input' }}
           />
         </div>
         {registerDetails.type === 'r' && (
