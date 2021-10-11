@@ -2,16 +2,7 @@
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 
-const assert = require('assert');
 const server = require('../src/index');
-
-describe('Array', () => {
-  describe('#indexOf()', () => {
-    it('should return -1 when the value is not present', () => {
-      assert.equal([1, 2, 3].indexOf(4), -1);
-    });
-  });
-});
 
 chai.should();
 chai.use(chaiHttp);
@@ -67,6 +58,22 @@ describe('Login User', () => {
       .end((err, response) => {
         response.should.have.status(200);
         response.body.should.be.a('object');
+        done();
+      });
+  });
+});
+
+const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJpYXQiOjE2MzM5MjYyNDAsImV4cCI6MTYzMzkyOTg0MH0.L6faWmR18Y5eIc0WMyoHTtVd29gHlTpuZXALqF_bizw';
+
+describe('Get Restaurants List', () => {
+  it('should return list of restaurants', (done) => {
+    chai
+      .request(server)
+      .get('/get-restaurants')
+      .set({ Authorization: `Bearer ${token}` })
+      .end((err, response) => {
+        response.should.have.status(200);
+        response.body.should.be.a('array');
         done();
       });
   });
