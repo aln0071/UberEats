@@ -5,3 +5,5 @@ cd FrontEnd
 npx lint-staged
 cd ../BackEnd
 npx lint-staged
+cd ../kafka-mongo
+npx lint-staged
