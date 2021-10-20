@@ -5,8 +5,8 @@ async function test() {
         useNewUrlParser: true,
         useUnifiedTopology: true,
         ssl: true,
-        sslKey: 'cert.pem', 
-        sslCert: 'cert.pem'
+        sslKey: '../cert.pem', 
+        sslCert: '../cert.pem'
     })
     const Cat = mongoose.model('Cat', { name: String });
 
