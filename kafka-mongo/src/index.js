@@ -1,4 +1,5 @@
-const mongoose = require('mongoose');
+// index -> service -> api
+
 // import express
 const express = require('express');
 
@@ -29,10 +30,14 @@ app.use(cors());
 // adding morgan to log HTTP requests
 app.use(morgan('combined'));
 
-// import mongodb configurations
-const config = require('./utils/config');
+// connect to mongo db
+const connect = require('./utils/connect');
+
+connect();
 
 const User = require('./models/UserModel');
+
+const userService = require('./services/user');
 
 // async function test() {
 //   await mongoose.connect(
@@ -53,21 +58,6 @@ const User = require('./models/UserModel');
 
 // test();
 
-// connect to mongo
-async function connect() {
-  return mongoose.connect(config.connectionURL, config.options, (err, res) => {
-    if (err) {
-      console.log(err);
-      console.log('MongoDB Connection Failed');
-    } else {
-      console.log(res);
-      console.log('MongoDB Connected');
-    }
-  });
-}
-
-connect();
-
 // hi message
 app.get('/', async (req, res) => {
   try {
@@ -80,37 +70,26 @@ app.get('/', async (req, res) => {
   }
 });
 
-// register user
-app.post('/register', async (req, res) => {
+// handle all requests
+app.post('/request', async (req, res) => {
+  const { type } = req.query;
+  console.log(type);
+  console.log(req.body);
   try {
-    res.sendStatus(200);
+    const response = await userService(type, req.body);
+    res.send(response);
   } catch (error) {
-    res.sendStatus(500);
-  }
-});
-
-// register temp user
-app.get('/reg', async (req, res) => {
-  try {
-    const user = new User({
-      name: 'alan',
-      email: 'aln0071@gmail.com',
-      password: 'hello',
-      type: 'c',
+    console.log('inside catch');
+    console.log('status:', error.status, 'message:', error.message);
+    res.status(error.status || 500).send({
+      message: error.message,
     });
-    await user.save();
-    res.json({
-      status: 'success',
-    });
-  } catch (error) {
-    console.log(error);
-    res.sendStatus(500);
   }
 });
 
 // starting the server
-const server = app.listen(3001, () => {
-  console.log('listening on port 3001');
+const server = app.listen(3002, () => {
+  console.log('listening on port 3002');
 });
 
 module.exports = server;
