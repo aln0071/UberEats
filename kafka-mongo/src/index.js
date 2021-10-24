@@ -60,8 +60,7 @@ app.post('/request', async (req, res) => {
     const response = await userService(type, req.body);
     res.send(response);
   } catch (error) {
-    console.log('inside catch');
-    console.log('status:', error.status, 'message:', error.message);
+    console.log(error);
     res.status(error.status || 500).send({
       message: error.message,
     });
