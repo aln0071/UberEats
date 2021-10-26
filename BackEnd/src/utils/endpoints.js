@@ -1,5 +1,6 @@
 const bcrypt = require('bcrypt');
 const mysql = require('mysql');
+const kafka = require('../kafka/client');
 const {
   executeQuery,
   paramsToQuery,
@@ -60,46 +61,63 @@ function login(username, password) {
 }
 
 async function register(params) {
-  const {
-    email, password, type, name,
-  } = params;
-
-  const saltRounds = 10;
-  const hashedPassword = await bcrypt.hash(password, saltRounds);
-
-  return executeQuery(_register, {
-    email,
-    password: hashedPassword,
-    name,
-    type,
-  })
-    .then((response) => {
-      if (type === 'r') {
-        const userid = response.insertId;
-        const { citycode, location, zip } = params;
-
-        return Promise.all([
-          executeQuery(_addLocation, { citycode, location, zip }).then(
-            (res) => {
-              const locationid = res.insertId;
-              return executeQuery(_updateLocationInUserTable, {
-                userid,
-                locationid,
-              });
-            },
-          ),
-          executeQuery(_addRestaurantDetails, { restaurantid: userid }),
-        ]);
+  return kafka.make_request(
+    'user_topic',
+    'REGISTER_USER',
+    params,
+    (err, result) => {
+      console.log('inside kafka');
+      if (err) {
+        console.log(err);
+        return {
+          message: 'Failed',
+        };
       }
-      return response;
-    })
-    .catch((error) => {
-      if (String(error.message).startsWith('ER_DUP_ENTRY')) {
-        throw new Error('User with this email already exists');
-      } else {
-        throw error;
-      }
-    });
+      console.log(result);
+      return result;
+    },
+  );
+
+  // const {
+  //   email, password, type, name,
+  // } = params;
+
+  // const saltRounds = 10;
+  // const hashedPassword = await bcrypt.hash(password, saltRounds);
+
+  // return executeQuery(_register, {
+  //   email,
+  //   password: hashedPassword,
+  //   name,
+  //   type,
+  // })
+  //   .then((response) => {
+  //     if (type === 'r') {
+  //       const userid = response.insertId;
+  //       const { citycode, location, zip } = params;
+
+  //       return Promise.all([
+  //         executeQuery(_addLocation, { citycode, location, zip }).then(
+  //           (res) => {
+  //             const locationid = res.insertId;
+  //             return executeQuery(_updateLocationInUserTable, {
+  //               userid,
+  //               locationid,
+  //             });
+  //           },
+  //         ),
+  //         executeQuery(_addRestaurantDetails, { restaurantid: userid }),
+  //       ]);
+  //     }
+  //     return response;
+  //   })
+  //   .catch((error) => {
+  //     if (String(error.message).startsWith('ER_DUP_ENTRY')) {
+  //       throw new Error('User with this email already exists');
+  //     } else {
+  //       throw error;
+  //     }
+  //   });
 }
 
 async function updateProfile(params) {
