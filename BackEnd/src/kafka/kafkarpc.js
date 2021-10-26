@@ -5,8 +5,6 @@ const conn = require('./connection');
 const TIMEOUT = 8000; // time to wait for response in ms
 let self;
 
-exports = module.exports = KafkaRPC;
-
 function KafkaRPC() {
   self = this;
   this.connection = conn;
@@ -111,3 +109,5 @@ KafkaRPC.prototype.setupResponseQueue = function (producer, topic_name, next) {
   console.log('returning next');
   return next();
 };
+
+module.exports = KafkaRPC;
