@@ -1,6 +1,6 @@
 // import user model
 const CustomError = require('../errors');
-const User = require('../models/UserModel');
+const { User } = require('../models/UserModel');
 
 // handle register user
 async function registerUser(body) {
@@ -23,7 +23,7 @@ async function registerUser(body) {
 
 async function getUserByEmail({ email }) {
   try {
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email }).populate('location');
     if (user !== null) {
       // send success response
       return user;
