@@ -21,11 +21,26 @@ async function registerUser(body) {
   }
 }
 
+async function getUserByEmail({ email }) {
+  try {
+    const user = await User.findOne({ email });
+    if (user !== null) {
+      // send success response
+      return user;
+    }
+    throw new Error('User Not Found');
+  } catch (error) {
+    console.log(error);
+    throw new CustomError(400, error.message);
+  }
+}
+
 // handle login user
 async function loginUser({ email, password }) {
   // process request
+  console.log(password);
   try {
-    const user = await User.findOne({ email, password });
+    const user = await User.findOne({ email });
     if (user !== null) {
       // send success response
       return user;
@@ -40,4 +55,5 @@ async function loginUser({ email, password }) {
 module.exports = {
   registerUser,
   loginUser,
+  getUserByEmail,
 };
