@@ -1,7 +1,7 @@
 /* eslint camelcase: 0 */
-const Connection = require('./kafka/Connection');
+const ConnectionProvider = require('./kafka/Connection');
 
-const connection = new Connection();
+const connection = new ConnectionProvider();
 // topics files
 // var signin = require('./services/signin.js');
 const Users = require('./services/user');
