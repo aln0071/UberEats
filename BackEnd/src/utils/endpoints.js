@@ -43,6 +43,7 @@ const {
   _getAllDishesFromAllRestaurants,
   _updateDishQuery,
 } = require('./queries');
+const kafkaRequest = require('../kafka/request');
 
 function login(username, password) {
   return executeQuery(_login, { email: username }).then(async (response) => {
@@ -61,22 +62,30 @@ function login(username, password) {
 }
 
 async function register(params) {
-  return kafka.make_request(
-    'user_topic',
-    'REGISTER_USER',
-    params,
-    (err, result) => {
-      console.log('inside kafka');
-      if (err) {
-        console.log(err);
-        return {
-          message: 'Failed',
-        };
-      }
-      console.log(result);
-      return result;
-    },
-  );
+  const { password } = params;
+  const saltRounds = 10;
+  const hashedPassword = await bcrypt.hash(password, saltRounds);
+
+  return kafkaRequest('user_topic', 'REGISTER_USER', {
+    ...params,
+    password: hashedPassword,
+  });
+  // return kafka.make_request(
+  //   'user_topic',
+  //   'REGISTER_USER',
+  //   params,
+  //   (err, result) => {
+  //     console.log('inside kafka');
+  //     if (err) {
+  //       console.log(err);
+  //       return {
+  //         message: 'Failed',
+  //       };
+  //     }
+  //     console.log(result);
+  //     return result;
+  //   },
+  // );
 
   // const {
   //   email, password, type, name,
@@ -183,7 +192,8 @@ async function updateProfile(params) {
 }
 
 function getCountries() {
-  return executeQuery(_getCountries);
+  return kafkaRequest('location_topic', 'GET_COUNTRIES', {});
+  // return executeQuery(_getCountries);
 }
 
 function getStates(countrycode) {
