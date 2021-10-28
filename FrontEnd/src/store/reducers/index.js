@@ -12,6 +12,7 @@ import orderDetailsModal from './orderDetailsModal';
 import favorites from './favorites';
 import filters from './filters';
 import allDishes from './allDishes';
+import registerErrors from './registerErrors';
 
 export default combineReducers({
   user,
@@ -28,4 +29,5 @@ export default combineReducers({
   filters,
   allDishes,
   updatedDishes,
+  registerErrors,
 });

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   FormControl,
   Paper,
@@ -21,9 +22,16 @@ import { register } from '../utils/endpoints';
 import { isValid, validations } from '../utils/validations';
 import Location from '../components/Location';
 import Logo from '../images/Logo';
+import {
+  clearRegisterErrorsAction,
+  setRegisterErrorsAction,
+} from '../store/actions/register';
 
 export default function Register() {
   const history = useHistory();
+
+  const dispatch = useDispatch();
+
   const defaultLocation = {
     country: '',
     state: '',
@@ -39,11 +47,15 @@ export default function Register() {
     location: { ...defaultLocation },
   });
 
-  const [errors, setErrors] = useState({});
+  const errors = useSelector((state) => state.registerErrors);
+
+  // const [errors, setErrors] = useState({});
   const [locationErrors, setLocationErrors] = useState({});
 
   const handleChange = (event) => {
-    setErrors({});
+    if (JSON.stringify(errors) !== '{}') {
+      dispatch(clearRegisterErrorsAction());
+    }
     setLocationErrors({});
     if (event.target.id === 'type') {
       registerDetails.location = { ...defaultLocation };
@@ -62,7 +74,7 @@ export default function Register() {
         localErrors[key] = customerProfile[key].message;
       }
     });
-    setErrors(localErrors);
+    dispatch(setRegisterErrorsAction(localErrors));
 
     const localLocationErrors = {};
     if (registerDetails.type === 'r') {
@@ -195,7 +207,12 @@ export default function Register() {
           </BlackButton>
         </div>
         <div className={styles.loginNoAccount}>
-          <Link to="/login">Already have an account?</Link>
+          <Link
+            onClick={() => dispatch(clearRegisterErrorsAction())}
+            to="/login"
+          >
+            Already have an account?
+          </Link>
         </div>
       </Paper>
     </div>
