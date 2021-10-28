@@ -35,7 +35,7 @@ export default function Register() {
   const defaultLocation = {
     country: '',
     state: '',
-    citycode: '',
+    // citycode: '',
     location: '',
     zip: '',
   };
