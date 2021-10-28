@@ -1,4 +1,9 @@
-const { registerUser, loginUser, getUserByEmail } = require('../apis/users');
+const {
+  registerUser,
+  loginUser,
+  getUserByEmail,
+  getLocation,
+} = require('../apis/users');
 const types = require('./types');
 
 function handleRequest(type, body) {
@@ -11,6 +16,8 @@ function handleRequest(type, body) {
       return loginUser(body);
     case types.GET_USER_BY_EMAIL:
       return getUserByEmail(body);
+    case types.GET_LOCATION:
+      return getLocation();
     default:
       return {};
   }

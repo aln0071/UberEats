@@ -5,6 +5,7 @@ const connection = new ConnectionProvider();
 // topics files
 // var signin = require('./services/signin.js');
 const Users = require('./services/user');
+const Locations = require('./services/location');
 
 // connect to mongoose
 const connect = require('./utils/connect');
@@ -28,17 +29,13 @@ function handleTopicRequest(topic_name, fname) {
     };
 
     try {
-      const response = await fname.handleRequest(
-        data.subtype,
-        data.data,
-        () => {},
-      );
+      const response = await fname.handleRequest(data.subtype, data.data);
       payload.messages = JSON.stringify({
         correlationId: data.correlationId,
         data: response,
       });
     } catch (error) {
-      payload.message = JSON.stringify({
+      payload.messages = JSON.stringify({
         correlationId: data.correlationId,
         data: {
           error: error.message,
@@ -46,11 +43,13 @@ function handleTopicRequest(topic_name, fname) {
       });
       console.log(error);
     } finally {
+      console.log('payload', payload);
       producer.send([payload], (err, res) => {
         if (err) {
-          console.log(err);
+          console.log('error', err);
+        } else {
+          console.log('resp', res);
         }
-        console.log(res);
       });
     }
   });
@@ -59,3 +58,4 @@ function handleTopicRequest(topic_name, fname) {
 // first argument is topic name
 // second argument is a function that will handle this topic request
 handleTopicRequest('user_topic', Users);
+handleTopicRequest('location_topic', Locations);
