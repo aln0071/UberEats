@@ -14,14 +14,17 @@ import { getCities, getCountries, getStates } from '../utils/endpoints';
 export default function Location({ errors, onChange, value }) {
   const defaultValues = {
     country: '',
+    countrycode: '',
     state: '',
+    statecode: '',
+    city: '',
     citycode: '',
     location: '',
     zip: '',
   };
 
   const getMap = (values = [], code, label) => values.map((val) => (
-    <MenuItem key={`${code}${val[code]}`} value={val[code]}>
+    <MenuItem key={`${code}${val[code]}`} value={val[code]} name={val[label]}>
       {val[label]}
     </MenuItem>
   ));
@@ -60,21 +63,39 @@ export default function Location({ errors, onChange, value }) {
   const handleChange = (e, id) => {
     const newValue = e.target.value;
     switch (id) {
-      case 'country':
+      case 'country': {
+        const { country } = countries.find(
+          (c) => c.countrycode === newValue,
+        );
         onChange({
           ...defaultValues,
-          [id]: newValue,
+          countrycode: newValue,
+          country,
         });
         fetchStateList(newValue);
         break;
-      case 'state':
+      }
+      case 'state': {
+        const { state } = states.find((c) => c.statecode === newValue);
         onChange({
           ...defaultValues,
           country: value.country,
-          [id]: newValue,
+          countrycode: value.countrycode,
+          statecode: newValue,
+          state,
         });
         fetchCityList(newValue);
         break;
+      }
+      case 'city': {
+        const { city } = cities.find((c) => c.citycode === newValue);
+        onChange({
+          ...value,
+          city,
+          citycode: newValue,
+        });
+        break;
+      }
       default:
         onChange({
           ...value,
@@ -93,7 +114,7 @@ export default function Location({ errors, onChange, value }) {
           <Select
             onChange={(e) => handleChange(e, 'country')}
             label="Country"
-            value={value.country}
+            value={value.countrycode}
           >
             {getMap(countries, 'countrycode', 'country')}
           </Select>
@@ -108,7 +129,7 @@ export default function Location({ errors, onChange, value }) {
               <Select
                 onChange={(e) => handleChange(e, 'state')}
                 label="State"
-                value={value.state}
+                value={value.statecode}
               >
                 {getMap(states, 'statecode', 'state')}
               </Select>
@@ -121,7 +142,7 @@ export default function Location({ errors, onChange, value }) {
                 <BlackFormControl fullWidth error={errors.citycode}>
                   <InputLabel required>City</InputLabel>
                   <Select
-                    onChange={(e) => handleChange(e, 'citycode')}
+                    onChange={(e) => handleChange(e, 'city')}
                     label="City"
                     value={value.citycode}
                   >
@@ -170,7 +191,10 @@ Location.defaultProps = {
   onChange: () => {},
   value: {
     country: '',
+    countrycode: '',
     state: '',
+    statecode: '',
+    city: '',
     citycode: '',
     location: '',
     zip: '',
