@@ -6,6 +6,10 @@ const { User } = require('../models/UserModel');
 async function registerUser(body) {
   // process request
   try {
+    const userExists = await User.findOne({ email: body.email });
+    if (userExists) {
+      throw new Error('User already exists');
+    }
     const user = new User({
       ...body,
     });
@@ -17,7 +21,7 @@ async function registerUser(body) {
     };
   } catch (error) {
     console.log(error);
-    throw new CustomError(500, 'User creation failed');
+    throw new CustomError(500, error.message);
   }
 }
 
