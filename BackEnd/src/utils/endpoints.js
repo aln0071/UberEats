@@ -44,6 +44,7 @@ const {
   _updateDishQuery,
 } = require('./queries');
 const kafkaRequest = require('../kafka/request');
+const { locationTopic, locationSubTopics } = require('./topicTypes');
 
 function login(username, password) {
   return executeQuery(_login, { email: username }).then(async (response) => {
@@ -192,23 +193,15 @@ async function updateProfile(params) {
 }
 
 function getCountries() {
-  return kafkaRequest('location_topic', 'GET_COUNTRIES', {});
-  // return executeQuery(_getCountries);
+  return kafkaRequest(locationTopic, locationSubTopics.GET_COUNTRIES, {});
 }
 
 function getStates(countrycode) {
-  console.error(countrycode);
-  if (countrycode === undefined) {
-    return executeQuery(_getAllStates);
-  }
-  return executeQuery(_getStates, { countrycode });
+  return kafkaRequest(locationTopic, locationSubTopics.GET_STATES, { countrycode });
 }
 
 function getCities(statecode) {
-  if (statecode === undefined) {
-    return executeQuery(_getAllCities);
-  }
-  return executeQuery(_getCities, { statecode });
+  return kafkaRequest(locationTopic, locationSubTopics.GET_CITIES, { statecode });
 }
 
 function updateDish(dish) {
