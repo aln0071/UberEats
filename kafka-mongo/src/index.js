@@ -68,7 +68,7 @@ app.post('/request', async (req, res) => {
 });
 
 // starting the server
-const server = app.listen(3002, () => {
+const server = app.listen(3003, () => {
   console.log('listening on port 3002');
 });
 

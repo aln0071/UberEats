@@ -27,7 +27,8 @@ async function registerUser(body) {
 
 async function getUserByEmail({ email }) {
   try {
-    const user = await User.findOne({ email }).populate('location');
+    // const user = await User.findOne({ email }).populate('location');
+    const user = await User.findOne({ email });
     if (user !== null) {
       // send success response
       return user;
