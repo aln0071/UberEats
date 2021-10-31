@@ -22,7 +22,7 @@ export default function ProfileMenu({ setCurrentTab }) {
   const handleClose = () => {
     setAnchorEl(null);
   };
-  const pictures = JSON.parse(user.pictures);
+  const { pictures } = user;
   return (
     <div>
       <IconButton
