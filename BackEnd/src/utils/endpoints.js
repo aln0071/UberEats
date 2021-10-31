@@ -44,22 +44,27 @@ const {
   _updateDishQuery,
 } = require('./queries');
 const kafkaRequest = require('../kafka/request');
-const { locationTopic, locationSubTopics } = require('./topicTypes');
+const {
+  locationTopic,
+  locationSubTopics,
+  userTopic,
+  userSubTopics,
+} = require('./topicTypes');
 
-function login(username, password) {
-  return executeQuery(_login, { email: username }).then(async (response) => {
-    if (response.length === 0) {
-      throw new Error('Invalid credentials');
-    } else {
-      const userData = response[0];
-      const isValidUser = await bcrypt.compare(password, userData.password);
-      if (isValidUser) {
-        delete userData.password;
-        return userData;
-      }
-      throw new Error('Invalid credentials');
-    }
+async function login(username, password) {
+  const user = await kafkaRequest(userTopic, userSubTopics.GET_USER_BY_EMAIL, {
+    email: username,
   });
+  if (user.error) {
+    throw new Error(user.error);
+  } else {
+    const isValidUser = await bcrypt.compare(password, user.password);
+    if (isValidUser) {
+      delete user.password;
+      return user;
+    }
+    throw new Error('Invalid credentials');
+  }
 }
 
 async function register(params) {
@@ -197,11 +202,15 @@ function getCountries() {
 }
 
 function getStates(countrycode) {
-  return kafkaRequest(locationTopic, locationSubTopics.GET_STATES, { countrycode });
+  return kafkaRequest(locationTopic, locationSubTopics.GET_STATES, {
+    countrycode,
+  });
 }
 
 function getCities(statecode) {
-  return kafkaRequest(locationTopic, locationSubTopics.GET_CITIES, { statecode });
+  return kafkaRequest(locationTopic, locationSubTopics.GET_CITIES, {
+    statecode,
+  });
 }
 
 function updateDish(dish) {
