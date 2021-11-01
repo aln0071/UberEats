@@ -8,5 +8,6 @@ module.exports = {
   userTopic: 'user_topic',
   userSubTopics: {
     GET_USER_BY_EMAIL: 'GET_USER_BY_EMAIL',
+    UPDATE_USER_PROFILE: 'UPDATE_USER_PROFILE',
   },
 };

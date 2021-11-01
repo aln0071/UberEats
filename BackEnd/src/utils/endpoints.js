@@ -136,7 +136,6 @@ async function register(params) {
 }
 
 async function updateProfile(params) {
-  const result = {};
   const {
     email,
     name,
@@ -145,56 +144,103 @@ async function updateProfile(params) {
     dob,
     location,
     citycode,
+    city,
+    statecode,
+    state,
+    countrycode,
+    country,
     zip,
     userid,
     pictures,
     description,
+    hoursfrom,
+    hoursto,
+    deliverymode,
+    _id,
   } = params;
-  const values = {
-    name,
+
+  return kafkaRequest(userTopic, userSubTopics.UPDATE_USER_PROFILE, {
     email,
+    name,
     phone,
     nickname,
     dob,
+    location,
+    citycode,
+    city,
+    statecode,
+    state,
+    countrycode,
+    country,
+    zip,
+    userid,
     pictures,
     description,
-  };
-  result.pictures = pictures;
-  const updateQuery = _updateProfile.replace(
-    ':optionalfields',
-    paramsToQuery(values),
-  );
-  executeQuery(updateQuery, { ...values, userid });
-  const locationValues = { location, citycode, zip };
-  const locationData = await executeQuery(_getLocation, locationValues);
-  if (locationData.length !== 0) {
-    // use existing data
-    const { locationid } = locationData[0];
-    await executeQuery(_updateLocationInUserTable, { locationid, userid });
-    result.locationid = locationid;
-  } else {
-    // add new entry to locaion table
-    const response = await executeQuery(_addLocation, locationValues);
-    const locationid = response.insertId;
-    await executeQuery(_updateLocationInUserTable, { locationid, userid });
-    result.locationid = locationid;
-  }
-  // set hours from, hours to, and mode of delivery if restaurant
-  if (params.type === 'r') {
-    const { hoursfrom, hoursto, deliverymode } = params;
-    const val = {
-      hoursfrom,
-      hoursto,
-      deliverymode,
-    };
-    const query = _updateRestaurantDetails.replace(
-      ':optionalfields',
-      paramsToQuery(val),
-    );
-    console.log(query);
-    await executeQuery(query, { ...val, restaurantid: userid });
-  }
-  return result;
+    hoursfrom,
+    hoursto,
+    deliverymode,
+    _id,
+  });
+
+  // const result = {};
+  // const {
+  //   email,
+  //   name,
+  //   phone,
+  //   nickname,
+  //   dob,
+  //   location,
+  //   citycode,
+  //   zip,
+  //   userid,
+  //   pictures,
+  //   description,
+  // } = params;
+  // const values = {
+  //   name,
+  //   email,
+  //   phone,
+  //   nickname,
+  //   dob,
+  //   pictures,
+  //   description,
+  // };
+  // result.pictures = pictures;
+  // const updateQuery = _updateProfile.replace(
+  //   ':optionalfields',
+  //   paramsToQuery(values),
+  // );
+  // executeQuery(updateQuery, { ...values, userid });
+  // const locationValues = { location, citycode, zip };
+  // const locationData = await executeQuery(_getLocation, locationValues);
+  // if (locationData.length !== 0) {
+  //   // use existing data
+  //   const { locationid } = locationData[0];
+  //   await executeQuery(_updateLocationInUserTable, { locationid, userid });
+  //   result.locationid = locationid;
+  // } else {
+  //   // add new entry to locaion table
+  //   const response = await executeQuery(_addLocation, locationValues);
+  //   const locationid = response.insertId;
+  //   await executeQuery(_updateLocationInUserTable, { locationid, userid });
+  //   result.locationid = locationid;
+  // }
+  // // set hours from, hours to, and mode of delivery if restaurant
+  // if (params.type === 'r') {
+  //   const { hoursfrom, hoursto, deliverymode } = params;
+  //   const val = {
+  //     hoursfrom,
+  //     hoursto,
+  //     deliverymode,
+  //   };
+  //   const query = _updateRestaurantDetails.replace(
+  //     ':optionalfields',
+  //     paramsToQuery(val),
+  //   );
+  //   console.log(query);
+  //   await executeQuery(query, { ...val, restaurantid: userid });
+  // }
+  // return result;
 }
 
 function getCountries() {
