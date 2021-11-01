@@ -3,12 +3,11 @@ const {
   loginUser,
   getUserByEmail,
   getLocation,
+  updateUserProfile,
 } = require('../apis/users');
 const types = require('./types');
 
 function handleRequest(type, body) {
-  // callback(null, {hello: 'world'})
-  // return;
   switch (type) {
     case types.REGISTER_USER:
       return registerUser(body);
@@ -18,6 +17,8 @@ function handleRequest(type, body) {
       return getUserByEmail(body);
     case types.GET_LOCATION:
       return getLocation();
+    case types.UPDATE_USER_PROFILE:
+      return updateUserProfile(body);
     default:
       return {};
   }

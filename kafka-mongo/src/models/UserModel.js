@@ -38,6 +38,10 @@ const usersSchema = new Schema({
   nickname: { type: String, required: false, default: '' },
   phone: { type: String, required: false, default: '' },
   description: { type: String, required: false, default: '' },
+  deliverymode: { type: Number, default: 1 },
+  hoursfrom: String,
+  hoursto: String,
+  dob: String,
 });
 
 const User = mongoose.model('User', usersSchema);

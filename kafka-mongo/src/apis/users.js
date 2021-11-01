@@ -31,7 +31,7 @@ async function getUserByEmail({ email }) {
     const user = await User.findOne({ email });
     if (user !== null) {
       // send success response
-      return user;
+      return { ...user.toObject(), userid: user._id };
     }
     throw new Error('User Not Found');
   } catch (error) {
@@ -40,25 +40,15 @@ async function getUserByEmail({ email }) {
   }
 }
 
-// handle login user
-async function loginUser({ email, password }) {
-  // process request
-  console.log(password);
-  try {
-    const user = await User.findOne({ email });
-    if (user !== null) {
-      // send success response
-      return user;
-    }
-    throw new Error('Invalid Credentials');
-  } catch (error) {
-    console.log(error);
-    throw new CustomError(400, error.message);
-  }
+async function updateUserProfile(params) {
+  await User.findOneAndUpdate({ _id: params._id }, params);
+  return {
+    message: 'Data updated successfully',
+  };
 }
 
 module.exports = {
   registerUser,
-  loginUser,
   getUserByEmail,
+  updateUserProfile,
 };
