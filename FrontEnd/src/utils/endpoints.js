@@ -26,7 +26,6 @@ export const register = (params) => {
 };
 
 export const updateProfile = (params, pictures = []) => {
-  console.log(params);
   const url = `${baseUrl}${urls.updateProfile}`;
   const formData = new FormData();
   pictures.forEach((pic) => {

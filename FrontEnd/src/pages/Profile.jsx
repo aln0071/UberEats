@@ -216,7 +216,7 @@ export default function Profile() {
                 const s = states.find(
                   (state) => state.statecode === e.target.value,
                 );
-                dispatch(updateUserDetails(s));
+                dispatch(updateUserDetails({ ...s, city: '', citycode: '' }));
               }}
               label="State"
               value={profileData.statecode}
@@ -240,7 +240,15 @@ export default function Profile() {
                 const country = countries.find(
                   (cn) => cn.countrycode === e.target.value,
                 );
-                dispatch(updateUserDetails(country));
+                dispatch(
+                  updateUserDetails({
+                    ...country,
+                    state: '',
+                    statecode: '',
+                    city: '',
+                    citycode: '',
+                  }),
+                );
               }}
               label="Country"
               value={profileData.countrycode}
