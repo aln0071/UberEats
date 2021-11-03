@@ -257,13 +257,13 @@ app.post('/images', upload.array('image', 12), (req, res) => {
 // get image from s3
 app.get('/images/:key', async (req, res) => {
   const { key } = req.params;
-  const readStream = await getFileStream(key)
-  readStream.on('error', () => {
+  const readStream = await getFileStream(key);
+  readStream.on('error', (error) => {
     res.json({
-      error: 'Access denied'
-    })
+      error: error.message,
+    });
     res.end();
-  })
+  });
   return readStream.pipe(res);
 });
 
