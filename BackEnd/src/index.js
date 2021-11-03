@@ -2,6 +2,12 @@
 const express = require('express');
 const path = require('path');
 
+// create unlink function - remove local copy of images
+const fs = require('fs');
+const util = require('util');
+
+const unlink = util.promisify(fs.unlink);
+
 // define app
 const app = express();
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
@@ -46,6 +52,9 @@ const {
   getFavorites,
   updateDish,
 } = require('./utils/endpoints');
+
+// import s3 uploader function
+const { uploadFile, getFileStream } = require('./utils/s3');
 
 // defining an array to work as the database (temporary solution)
 const ads = [{ title: 'Hello, world (again)!' }];
@@ -144,16 +153,17 @@ app.get('/cities', async (req, res) => {
 });
 
 app.post('/update-profile', upload.array('image', 5), async (req, res) => {
-  // const pictures = JSON.parse(req.body.pictures);
-  console.log(req.body);
   try {
+    const pictures = JSON.parse(req.body.pictures) || [];
+    const uploadedFiles = await Promise.all(req.files.map((file) => uploadFile(file)));
+    await Promise.all(req.files.map((file) => unlink(file.path)));
     const response = await updateProfile({
       ...req.body,
-      // pictures: JSON.stringify([
-      //   ...pictures,
-      //   ...req.files.map((file) => file.filename),
-      // ]),
-      pictures: req.files.map((file) => file.filename),
+      // pictures: req.files.map((file) => file.filename),
+      pictures: [
+        ...pictures,
+        ...uploadedFiles.map((file) => file.key),
+      ],
     });
     res.status(200).send({
       status: true,
@@ -239,6 +249,13 @@ app.post('/images', upload.array('image', 12), (req, res) => {
   const { files } = req;
   console.log(files);
   res.send('got it!');
+});
+
+// get image from s3
+app.get('/images/:key', (req, res) => {
+  const { key } = req.params;
+  const readStream = getFileStream(key);
+  readStream.pipe(res);
 });
 
 app.get('/related-addresses', authMiddleware, async (req, res) => {
