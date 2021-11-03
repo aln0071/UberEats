@@ -73,7 +73,7 @@ export default function PlaceOrderModal({ isOpen, setIsOpen, dish }) {
             data-bs-ride="carousel"
           >
             <div className="carousel-indicators">
-              {JSON.parse(dish.pictures).map((pic, index) => (
+              {dish.pictures.map((pic, index) => (
                 <button
                   type="button"
                   data-bs-target="#dish-view"
@@ -84,7 +84,7 @@ export default function PlaceOrderModal({ isOpen, setIsOpen, dish }) {
             </div>
 
             <div className="carousel-inner">
-              {JSON.parse(dish.pictures).map((pic, index) => (
+              {dish.pictures.map((pic, index) => (
                 <div className={`carousel-item ${index === 0 ? 'active' : ''}`}>
                   <img
                     src={`${baseUrl}${urls.uploadsFolder}/${pic}`}
@@ -94,7 +94,7 @@ export default function PlaceOrderModal({ isOpen, setIsOpen, dish }) {
                   />
                 </div>
               ))}
-              {dish.pictures === '[]' && (
+              {dish.pictures.length === 0 && (
                 <div className="carousel-item active">
                   <img
                     src={`${baseUrl}${urls.uploadsFolder}/no-image`}

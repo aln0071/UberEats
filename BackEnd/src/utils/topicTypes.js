@@ -13,5 +13,6 @@ module.exports = {
   dishTopic: 'dish_topic',
   dishSubTopics: {
     ADD_DISH: 'ADD_DISH',
+    GET_ALL_DISHES: 'GET_ALL_DISHES'
   },
 };

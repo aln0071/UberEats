@@ -308,8 +308,9 @@ function addDish(dish) {
 }
 
 function getAllDishes(restaurantid) {
-  if ([undefined, null, ''].includes(restaurantid)) return executeQuery(_getAllDishesFromAllRestaurants);
-  return executeQuery(_getAllDishes, { restaurantid });
+  return kafkaRequest(dishTopic, dishSubTopics.GET_ALL_DISHES, restaurantid)
+  // if ([undefined, null, ''].includes(restaurantid)) return executeQuery(_getAllDishesFromAllRestaurants);
+  // return executeQuery(_getAllDishes, { restaurantid });
 }
 
 function getAllRestaurants({ citycode, statecode, countrycode }) {

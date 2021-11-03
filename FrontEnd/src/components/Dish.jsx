@@ -77,9 +77,9 @@ export default function Dish({ dish, index }) {
       <Card
         key={dish.dishid}
         overrides={{ Root: { style: { width: '328px', cursor: 'pointer' } } }}
-        headerImage={`${baseUrl}${urls.uploadsFolder}/${
-          JSON.parse(dish.pictures)[0] || '/no-image'
-        }`}
+        headerImage={`${baseUrl}${
+          dish.pictures[0] ? 'images' : urls.uploadsFolder
+        }/${dish.pictures[0] || 'no-image'}`}
         title={dish.dishname}
         onClick={() => {
           if (isCustomer) setIsOpen(true);
