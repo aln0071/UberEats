@@ -197,9 +197,13 @@ app.post('/update-dishes', authMiddleware, async (req, res) => {
 
 app.post('/add-dish', upload.array('image', 12), async (req, res) => {
   try {
+    const uploadedFiles = await Promise.all(
+      req.files.map((file) => uploadFile(file)),
+    );
+    await Promise.all(req.files.map((file) => unlink(file.path)));
     await addDish({
       ...req.body,
-      pictures: req.files.map((file) => file.filename),
+      pictures: uploadedFiles.map((file) => file.key),
     });
     res.status(200).send({
       status: true,
