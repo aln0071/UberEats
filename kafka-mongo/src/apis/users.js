@@ -31,7 +31,11 @@ async function getUserByEmail({ email }) {
     const user = await User.findOne({ email });
     if (user !== null) {
       // send success response
-      return { ...user.toObject(), userid: user._id };
+      const response = { ...user.toObject(), userid: user._id };
+      if (user.type === 'r') {
+        response.restaurantid = user._id;
+      }
+      return response;
     }
     throw new Error('User Not Found');
   } catch (error) {
