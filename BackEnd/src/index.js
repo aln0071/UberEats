@@ -155,15 +155,14 @@ app.get('/cities', async (req, res) => {
 app.post('/update-profile', upload.array('image', 5), async (req, res) => {
   try {
     const pictures = JSON.parse(req.body.pictures) || [];
-    const uploadedFiles = await Promise.all(req.files.map((file) => uploadFile(file)));
+    const uploadedFiles = await Promise.all(
+      req.files.map((file) => uploadFile(file)),
+    );
     await Promise.all(req.files.map((file) => unlink(file.path)));
     const response = await updateProfile({
       ...req.body,
       // pictures: req.files.map((file) => file.filename),
-      pictures: [
-        ...pictures,
-        ...uploadedFiles.map((file) => file.key),
-      ],
+      pictures: [...pictures, ...uploadedFiles.map((file) => file.key)],
     });
     res.status(200).send({
       status: true,
@@ -200,7 +199,7 @@ app.post('/add-dish', upload.array('image', 12), async (req, res) => {
   try {
     await addDish({
       ...req.body,
-      pictures: JSON.stringify(req.files.map((file) => file.filename)),
+      pictures: req.files.map((file) => file.filename),
     });
     res.status(200).send({
       status: true,

@@ -10,4 +10,8 @@ module.exports = {
     GET_USER_BY_EMAIL: 'GET_USER_BY_EMAIL',
     UPDATE_USER_PROFILE: 'UPDATE_USER_PROFILE',
   },
+  dishTopic: 'dish_topic',
+  dishSubTopics: {
+    ADD_DISH: 'ADD_DISH',
+  },
 };

@@ -49,6 +49,8 @@ const {
   locationSubTopics,
   userTopic,
   userSubTopics,
+  dishTopic,
+  dishSubTopics,
 } = require('./topicTypes');
 
 async function login(username, password) {
@@ -296,10 +298,13 @@ function addDish(dish) {
     price,
     pictures,
   };
-  const query = _addDishQuery
-    .replace(':optionalfields', optionalFields(values))
-    .replace(':optionalvalues', optionalFields(values, ':'));
-  return executeQuery(query, values);
+
+  return kafkaRequest(dishTopic, dishSubTopics.ADD_DISH, values);
+
+  // const query = _addDishQuery
+  //   .replace(':optionalfields', optionalFields(values))
+  //   .replace(':optionalvalues', optionalFields(values, ':'));
+  // return executeQuery(query, values);
 }
 
 function getAllDishes(restaurantid) {
