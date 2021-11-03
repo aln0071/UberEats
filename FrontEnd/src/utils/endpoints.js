@@ -32,7 +32,9 @@ export const updateProfile = (params, pictures = []) => {
     formData.append('image', pic);
   });
   Object.keys(params).forEach((key) => {
-    if (params[key] !== null) formData.append(key, params[key]);
+    if (key === 'pictures') {
+      formData.append(key, JSON.stringify(params[key] || []));
+    } else if (params[key] !== null) formData.append(key, params[key]);
   });
   return fetch(url, {
     method: 'POST',

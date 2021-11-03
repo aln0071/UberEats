@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import Avatar from '@material-ui/core/Avatar';
 import { logoutAction, setCurrentTabAction } from '../store/actions';
-import { baseUrl, urls } from '../utils/constants';
+import { baseUrl } from '../utils/constants';
 
 export default function ProfileMenu({ setCurrentTab }) {
   const dispatch = useDispatch();
@@ -33,10 +33,7 @@ export default function ProfileMenu({ setCurrentTab }) {
         color="inherit"
       >
         {pictures.length > 0 ? (
-          <Avatar
-            alt={user.name}
-            src={`${baseUrl}${urls.uploadsFolder}/${pictures[0]}`}
-          />
+          <Avatar alt={user.name} src={`${baseUrl}images/${pictures[0]}`} />
         ) : (
           <AccountCircle />
         )}
