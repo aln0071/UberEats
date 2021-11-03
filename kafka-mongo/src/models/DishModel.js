@@ -11,7 +11,7 @@ const dishSchema = new Schema({
   pictures: Array,
 });
 
-const Dish = mongoose.model('Countries', dishSchema);
+const Dish = mongoose.model('Dishes', dishSchema);
 
 module.exports = {
   Dish,

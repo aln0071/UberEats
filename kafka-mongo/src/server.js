@@ -6,6 +6,7 @@ const connection = new ConnectionProvider();
 // var signin = require('./services/signin.js');
 const Users = require('./services/user');
 const Locations = require('./services/location');
+const Dishes = require('./services/dish');
 
 // connect to mongoose
 const connect = require('./utils/connect');
@@ -59,3 +60,4 @@ function handleTopicRequest(topic_name, fname) {
 // second argument is a function that will handle this topic request
 handleTopicRequest('user_topic', Users);
 handleTopicRequest('location_topic', Locations);
+handleTopicRequest('dish_topic', Dishes);
