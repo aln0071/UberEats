@@ -22,9 +22,9 @@ export default function RestaurantCard({ restaurant }) {
     <Card
       key={restaurant.userid}
       overrides={{ Root: { style: { width: '328px', cursor: 'pointer' } } }}
-      headerImage={`${baseUrl}${urls.uploadsFolder}/${
-        JSON.parse(restaurant.pictures)[0] || 'no-image'
-      }`}
+      headerImage={`${baseUrl}${
+        restaurant.pictures[0] ? 'images' : urls.uploadsFolder
+      }/${restaurant.pictures[0] || 'no-image'}`}
       title={`${restaurant.name} - ${restaurant.city}`}
       onClick={() => {
         dispatch(setCurrentTabAction(4));

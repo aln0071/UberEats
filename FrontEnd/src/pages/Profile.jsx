@@ -140,7 +140,12 @@ export default function Profile() {
   };
 
   return (
-    <form className={classes.root} noValidate autoComplete="off">
+    <form
+      className={classes.root}
+      noValidate
+      autoComplete="off"
+      onSubmit={(e) => e.preventDefault()}
+    >
       <Grid gridGaps={[2, 6, 12]}>
         <Cell span={4}>
           <BlackTextField
