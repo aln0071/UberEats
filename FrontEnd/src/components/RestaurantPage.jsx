@@ -67,17 +67,17 @@ export default function RestaurantPage() {
         </div> */}
 
         <div className="carousel-inner">
-          {JSON.parse(restaurant.pictures).map((pic, index) => (
+          {restaurant.pictures.map((pic, index) => (
             <div className={`carousel-item ${index === 0 ? 'active' : ''}`}>
               <img
-                src={`${baseUrl}${urls.uploadsFolder}/${pic}`}
+                src={`${baseUrl}images/${pic}`}
                 alt="Los Angeles"
                 className={`d-block ${styles.restaurantCarouselImage}`}
                 style={{ width: '100%' }}
               />
             </div>
           ))}
-          {restaurant.pictures === '[]' && (
+          {restaurant.pictures.length === 0 && (
             <div className="carousel-item active">
               <img
                 src={`${baseUrl}${urls.uploadsFolder}/no-image`}

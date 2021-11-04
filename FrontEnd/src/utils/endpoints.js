@@ -88,8 +88,8 @@ export const addDish = (dish) => {
   }).then(handleResponse);
 };
 
-export const getAllDishes = ({ userid }) => {
-  const url = `${baseUrl}${urls.getDishes}?restaurantid=${userid}`;
+export const getAllDishes = ({ _id }) => {
+  const url = `${baseUrl}${urls.getDishes}?restaurantid=${_id}`;
   return get(url).then(handleResponse);
 };
 
