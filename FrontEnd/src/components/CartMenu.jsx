@@ -6,8 +6,14 @@ import { Menu } from '@material-ui/core';
 import { Button as BaseButton } from 'baseui/button';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
+import AddIcon from '@material-ui/icons/Add';
+import SubtractIcon from '@material-ui/icons/Remove';
 import styles from '../styles.scss';
-import { removeFromCartAction, setCurrentTabAction } from '../store/actions';
+import {
+  removeFromCartAction,
+  setCurrentTabAction,
+  updateCartAction,
+} from '../store/actions';
 
 export default function CartMenu() {
   const cart = useSelector((state) => state.cart);
@@ -65,7 +71,33 @@ export default function CartMenu() {
               <div className={styles.cartItemDetails}>
                 <span>
                   Quantity:
+                  <IconButton
+                    aria-label="subtract"
+                    onClick={() => {
+                      if (item.count === 1) {
+                        dispatch(removeFromCartAction(item));
+                      } else {
+                        dispatch(
+                          updateCartAction({ ...item, count: item.count - 1 }),
+                        );
+                      }
+                    }}
+                  >
+                    <SubtractIcon />
+                  </IconButton>
+                  &nbsp;
                   {item.count}
+                  &nbsp;
+                  <IconButton
+                    aria-label="add"
+                    onClick={() => {
+                      dispatch(
+                        updateCartAction({ ...item, count: item.count + 1 }),
+                      );
+                    }}
+                  >
+                    <AddIcon />
+                  </IconButton>
                 </span>
                 <span>
                   Price: $
