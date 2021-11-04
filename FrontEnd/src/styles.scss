@@ -158,6 +158,8 @@ body {
     margin-left: 3px;
     &__header {
       font-weight: bold;
+      display: flex;
+      justify-content: space-between;
     }
     &__details {
       display: flex;

@@ -4,12 +4,15 @@ import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import Button from '@material-ui/core/Button';
 import { Menu } from '@material-ui/core';
 import { Button as BaseButton } from 'baseui/button';
+import IconButton from '@material-ui/core/IconButton';
+import DeleteIcon from '@material-ui/icons/Delete';
 import styles from '../styles.scss';
 import { setCurrentTabAction } from '../store/actions';
 
 export default function CartMenu() {
   const cart = useSelector((state) => state.cart);
   const itemCount = Object.values(cart.items).reduce((t, c) => t + c.count, 0);
+  const restaurants = useSelector((state) => state.restaurants);
 
   const dispatch = useDispatch();
 
@@ -33,14 +36,24 @@ export default function CartMenu() {
       );
     }
     let total = 0;
+    const currentRestaurantName = restaurants.find(
+      (restaurant) => restaurant.restaurantid === cart.restaurantid,
+    ).name;
     return (
       <div className={styles.cartHasItems}>
         <h4>Your Order</h4>
+        <h4>{currentRestaurantName}</h4>
+        <hr />
         {Object.values(cart.items).map((item) => {
           total += item.price * item.count;
           return (
             <div className={styles.cartItem}>
-              <div className={styles.cartItemHeader}>{item.dishname}</div>
+              <div className={styles.cartItemHeader}>
+                {item.dishname}
+                <IconButton aria-label="delete">
+                  <DeleteIcon />
+                </IconButton>
+              </div>
               <div className={styles.cartItemDescription}>
                 {item.description}
               </div>

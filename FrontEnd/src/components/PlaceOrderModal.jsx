@@ -191,6 +191,7 @@ export default function PlaceOrderModal({ isOpen, setIsOpen, dish }) {
         onConfirm={() => {
           dispatch(clearCartAction());
           dispatch(addToCartAction({ ...dish, count }));
+          setCount(1);
           setShowConfirmModal(false);
         }}
       />
