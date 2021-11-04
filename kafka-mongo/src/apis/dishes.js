@@ -2,12 +2,13 @@ const CustomError = require('../errors');
 const { Dish } = require('../models/DishModel');
 
 async function getAllDishes({ restaurantid }) {
+  let result = [];
   if (restaurantid === undefined || restaurantid === '') {
-    const result = await Dish.find({});
-    return result;
+    result = await Dish.find({});
+  } else {
+    result = await Dish.find({ restaurantid });
   }
-  const result = await Dish.find({ restaurantid });
-  return result;
+  return result.map((dish) => ({ ...dish.toObject(), dishid: dish._id }));
 }
 
 async function addDiahes(body) {
