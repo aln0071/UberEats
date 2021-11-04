@@ -87,7 +87,7 @@ export default function PlaceOrderModal({ isOpen, setIsOpen, dish }) {
               {dish.pictures.map((pic, index) => (
                 <div className={`carousel-item ${index === 0 ? 'active' : ''}`}>
                   <img
-                    src={`${baseUrl}${urls.uploadsFolder}/${pic}`}
+                    src={`${baseUrl}images/${pic}`}
                     alt="Los Angeles"
                     className={`d-block ${styles.placeOrderModalImage}`}
                     style={{ width: '100%' }}
