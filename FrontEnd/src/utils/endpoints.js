@@ -89,7 +89,7 @@ export const addDish = (dish) => {
 };
 
 export const getAllDishes = ({ _id }) => {
-  const url = `${baseUrl}${urls.getDishes}?restaurantid=${_id}`;
+  const url = `${baseUrl}${urls.getDishes}?restaurantid=${_id || ''}`;
   return get(url).then(handleResponse);
 };
 
