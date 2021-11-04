@@ -9,6 +9,9 @@ module.exports = {
   userSubTopics: {
     GET_USER_BY_EMAIL: 'GET_USER_BY_EMAIL',
     UPDATE_USER_PROFILE: 'UPDATE_USER_PROFILE',
+    ADD_FAVORITE: 'ADD_FAVORITE',
+    REMOVE_FAVORITE: 'REMOVE_FAVORITE',
+    GET_ALL_FAVORITES: 'GET_ALL_FAVORITES',
   },
   dishTopic: 'dish_topic',
   dishSubTopics: {

@@ -444,13 +444,22 @@ function updateOrder({ type, orderid }) {
 
 function toggleFavorite({ userid, restaurantid, isFavorite }) {
   if (isFavorite) {
-    return executeQuery(_addFavorite, { userid, restaurantid });
+    return kafkaRequest(userTopic, userSubTopics.ADD_FAVORITE, {
+      userid,
+      restaurantid,
+    });
+    // return executeQuery(_addFavorite, { userid, restaurantid });
   }
-  return executeQuery(_removeFavorite, { userid, restaurantid });
+  // return executeQuery(_removeFavorite, { userid, restaurantid });
+  return kafkaRequest(userTopic, userSubTopics.REMOVE_FAVORITE, {
+    userid,
+    restaurantid,
+  });
 }
 
 function getFavorites(userid) {
-  return executeQuery(_getFavorites, { userid });
+  return kafkaRequest(userTopic, userSubTopics.GET_ALL_FAVORITES, { userid });
+  // return executeQuery(_getFavorites, { userid });
 }
 
 module.exports = {

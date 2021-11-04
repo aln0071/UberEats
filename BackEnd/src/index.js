@@ -349,7 +349,7 @@ app.get('/get-favorites', authMiddleware, async (req, res) => {
   const { userid } = req.query;
   try {
     const response = await getFavorites(userid);
-    res.json(response.map((rest) => rest.restaurantid));
+    res.json(response);
   } catch (error) {
     res.status(400).send({
       status: false,
