@@ -1,5 +1,6 @@
 // import user model
 const CustomError = require('../errors');
+const { Favorite } = require('../models/FavoriteModel');
 const { User } = require('../models/UserModel');
 
 // handle register user
@@ -55,8 +56,34 @@ async function updateUserProfile(params) {
   };
 }
 
+async function addFavorite({ userid, restaurantid }) {
+  await Favorite.findOneAndUpdate(
+    { userid },
+    { $push: { favorites: restaurantid } },
+    { upsert: true },
+  );
+  return {
+    message: 'Successfully added favorite',
+  };
+}
+
+async function removeFavorite({ userid, restaurantid }) {
+  await Favorite.updateOne({ userid }, { $pull: { favorites: restaurantid } });
+  return {
+    message: 'Removed favorite',
+  };
+}
+
+async function getAllFavorites({ userid }) {
+  const result = await Favorite.findOne({ userid });
+  return (result && result.favorites) || [];
+}
+
 module.exports = {
   registerUser,
   getUserByEmail,
   updateUserProfile,
+  addFavorite,
+  removeFavorite,
+  getAllFavorites,
 };

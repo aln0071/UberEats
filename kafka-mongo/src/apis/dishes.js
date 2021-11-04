@@ -2,7 +2,7 @@ const CustomError = require('../errors');
 const { Dish } = require('../models/DishModel');
 
 async function getAllDishes({ restaurantid }) {
-  if (restaurantid === undefined) {
+  if (restaurantid === undefined || restaurantid === '') {
     const result = await Dish.find({});
     return result;
   }

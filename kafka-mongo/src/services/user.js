@@ -4,6 +4,9 @@ const {
   getUserByEmail,
   getLocation,
   updateUserProfile,
+  addFavorite,
+  removeFavorite,
+  getAllFavorites,
 } = require('../apis/users');
 const types = require('./types');
 
@@ -19,6 +22,12 @@ function handleRequest(type, body) {
       return getLocation();
     case types.UPDATE_USER_PROFILE:
       return updateUserProfile(body);
+    case types.ADD_FAVORITE:
+      return addFavorite(body);
+    case types.REMOVE_FAVORITE:
+      return removeFavorite(body);
+    case types.GET_ALL_FAVORITES:
+      return getAllFavorites(body);
     default:
       throw new Error('No matching type found');
   }

@@ -1,13 +1,17 @@
 const { User } = require('../models/UserModel');
 
 async function getAllRestaurants({ countrycode }) {
-  console.log(countrycode);
+  let result = [];
   if (countrycode === undefined || countrycode === '') {
-    const result = await User.find({ type: 'r' });
-    return result;
+    result = await User.find({ type: 'r' });
+  } else {
+    result = await User.find({ type: 'r', countrycode });
   }
-  const result = await User.find({ type: 'r', countrycode });
-  return result;
+  return result.map((restaurant) => ({
+    ...restaurant.toObject(),
+    userid: restaurant._id,
+    restaurantid: restaurant._id,
+  }));
 }
 
 module.exports = {
