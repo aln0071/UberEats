@@ -20,7 +20,7 @@ function handleRequest(type, body) {
     case types.UPDATE_USER_PROFILE:
       return updateUserProfile(body);
     default:
-      return {};
+      throw new Error('No matching type found');
   }
 }
 

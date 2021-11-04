@@ -7,6 +7,7 @@ const connection = new ConnectionProvider();
 const Users = require('./services/user');
 const Locations = require('./services/location');
 const Dishes = require('./services/dish');
+const Restaurants = require('./services/restaurant');
 
 // connect to mongoose
 const connect = require('./utils/connect');
@@ -61,3 +62,4 @@ function handleTopicRequest(topic_name, fname) {
 handleTopicRequest('user_topic', Users);
 handleTopicRequest('location_topic', Locations);
 handleTopicRequest('dish_topic', Dishes);
+handleTopicRequest('restaurant_topic', Restaurants);

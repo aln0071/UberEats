@@ -45,6 +45,10 @@ async function getUserByEmail({ email }) {
 }
 
 async function updateUserProfile(params) {
+  const existingUser = await User.findOne({ email: params.email });
+  if (existingUser !== null && !existingUser._id.equals(params._id)) {
+    throw new Error('Email already in use');
+  }
   await User.findOneAndUpdate({ _id: params._id }, params);
   return {
     message: 'Data updated successfully',
