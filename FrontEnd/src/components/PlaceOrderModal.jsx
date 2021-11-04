@@ -29,9 +29,7 @@ export default function PlaceOrderModal({ isOpen, setIsOpen, dish }) {
   const cart = useSelector((state) => state.cart);
   const dispatch = useDispatch();
   const inCart = cart.items.hasOwnProperty(dish.dishid);
-  const [count, setCount] = React.useState(
-    inCart ? cart.items[dish.dishid].count : 1,
-  );
+  const [count, setCount] = React.useState(1);
 
   const [showConfirmModal, setShowConfirmModal] = React.useState(false);
 
@@ -47,9 +45,12 @@ export default function PlaceOrderModal({ isOpen, setIsOpen, dish }) {
         dispatch(addToCartAction({ ...dish, count }));
       }
     } else {
-      dispatch(updateCartAction({ ...dish, count }));
+      // update count of an existing item in cart
+      const oldCount = cart.items[dish.dishid].count;
+      dispatch(updateCartAction({ ...dish, count: count + oldCount }));
     }
     setIsOpen(false);
+    setCount(1);
   };
 
   return (
