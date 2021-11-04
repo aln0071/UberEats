@@ -63,10 +63,10 @@ KafkaRPC.prototype.makeRequest = function (
         partition: 0,
       },
     ];
-    console.log('in response1');
-    console.log(self.producer.ready);
+    // console.log('in response1');
+    // console.log(self.producer.ready);
     self.producer.send(payloads, (err, data) => {
-      console.log('in response2');
+      // console.log('in response2');
       if (err) console.log(err);
       console.log(data);
     });
@@ -77,22 +77,22 @@ KafkaRPC.prototype.setupResponseQueue = function (producer, topic_name, next) {
   // don't mess around if we have a queue
   if (this.response_queue) return next();
 
-  console.log('1');
+  // console.log('1');
 
   self = this;
 
   // subscribe to messages
   const consumer = self.connection.getConsumer('response_topic');
   consumer.on('message', (message) => {
-    console.log('msg received');
+    // console.log('msg received');
     const data = JSON.parse(message.value);
     if (data === null) {
       return;
     }
     // get the correlationId
     const { correlationId } = data;
-    console.log('response for id ', correlationId);
-    console.log(self.requests);
+    // console.log('response for id ', correlationId);
+    // console.log(self.requests);
     // is it a response to a pending request
     if (correlationId in self.requests) {
       // retrieve the request entry

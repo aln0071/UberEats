@@ -13,6 +13,10 @@ module.exports = {
   dishTopic: 'dish_topic',
   dishSubTopics: {
     ADD_DISH: 'ADD_DISH',
-    GET_ALL_DISHES: 'GET_ALL_DISHES'
+    GET_ALL_DISHES: 'GET_ALL_DISHES',
+  },
+  restaurantTopic: 'restaurant_topic',
+  restaurantSubTopics: {
+    GET_ALL_RESTAURANTS: 'GET_ALL_RESTAURANTS',
   },
 };

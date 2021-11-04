@@ -1,3 +1,4 @@
+/* eslint max-len: 0 */
 const bcrypt = require('bcrypt');
 const mysql = require('mysql');
 const kafka = require('../kafka/client');
@@ -51,6 +52,8 @@ const {
   userSubTopics,
   dishTopic,
   dishSubTopics,
+  restaurantTopic,
+  restaurantSubTopics,
 } = require('./topicTypes');
 
 async function login(username, password) {
@@ -308,7 +311,9 @@ function addDish(dish) {
 }
 
 function getAllDishes(restaurantid) {
-  return kafkaRequest(dishTopic, dishSubTopics.GET_ALL_DISHES, restaurantid)
+  return kafkaRequest(dishTopic, dishSubTopics.GET_ALL_DISHES, {
+    restaurantid,
+  });
   // if ([undefined, null, ''].includes(restaurantid)) return executeQuery(_getAllDishesFromAllRestaurants);
   // return executeQuery(_getAllDishes, { restaurantid });
 }
@@ -322,8 +327,13 @@ function getAllRestaurants({ citycode, statecode, countrycode }) {
   //   return executeQuery(_getAllRestaurants);
   // }
   // return executeQuery(_getAllRestaurantsByCity, { citycode, statecode });
-  if ([undefined, null, ''].includes(countrycode)) return executeQuery(_getAllRestaurants);
-  return executeQuery(_getAllRestaurantsByCountry, { countrycode });
+  return kafkaRequest(
+    restaurantTopic,
+    restaurantSubTopics.GET_ALL_RESTAURANTS,
+    { countrycode },
+  );
+  // if ([undefined, null, ''].includes(countrycode)) return executeQuery(_getAllRestaurants);
+  // return executeQuery(_getAllRestaurantsByCountry, { countrycode });
 }
 
 /* eslint no-unused-vars: 0 */

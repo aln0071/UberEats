@@ -5,8 +5,8 @@ const rpc = new RPC();
 
 // make request to kafka
 function make_request(queue_name, sub_type, msg_payload, callback) {
-  console.log('in make request');
-  console.log(msg_payload);
+  // console.log('in make request');
+  // console.log(msg_payload);
   return rpc.makeRequest(
     queue_name,
     sub_type,
@@ -16,7 +16,7 @@ function make_request(queue_name, sub_type, msg_payload, callback) {
         console.log('error', error);
         callback(error, null);
       } else {
-        console.log('response', response);
+        // console.log('response', response);
         callback(null, response);
       }
     },
