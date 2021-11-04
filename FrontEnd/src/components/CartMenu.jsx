@@ -7,7 +7,7 @@ import { Button as BaseButton } from 'baseui/button';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import styles from '../styles.scss';
-import { setCurrentTabAction } from '../store/actions';
+import { removeFromCartAction, setCurrentTabAction } from '../store/actions';
 
 export default function CartMenu() {
   const cart = useSelector((state) => state.cart);
@@ -50,7 +50,12 @@ export default function CartMenu() {
             <div className={styles.cartItem}>
               <div className={styles.cartItemHeader}>
                 {item.dishname}
-                <IconButton aria-label="delete">
+                <IconButton
+                  aria-label="delete"
+                  onClick={() => {
+                    dispatch(removeFromCartAction(item));
+                  }}
+                >
                   <DeleteIcon />
                 </IconButton>
               </div>
