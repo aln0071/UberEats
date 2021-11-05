@@ -52,7 +52,15 @@ export default function PlaceOrderPage() {
   const taxPercent = 0.15;
   const deliveryFeePercent = 0.2;
 
-  const addresses = useSelector((state) => state.addresses);
+  const addresses = useSelector((state) => {
+    if (user.location !== '') {
+      return [
+        { location: user.location, city: user.city, zip: user.zip },
+        ...state.addresses,
+      ];
+    }
+    return state.addresses;
+  });
 
   const placeOrder = () => {
     let values = {};
@@ -66,6 +74,7 @@ export default function PlaceOrderPage() {
           zip,
           location,
           citycode: city && city[0] && city[0].id,
+          city: city && city[0] && city[0].label,
         };
         Object.keys(locationProfile).forEach((key) => {
           if (!isValid(locationProfile[key].regex, values[key] || '')) {
