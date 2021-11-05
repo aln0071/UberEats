@@ -12,6 +12,7 @@ module.exports = {
     ADD_FAVORITE: 'ADD_FAVORITE',
     REMOVE_FAVORITE: 'REMOVE_FAVORITE',
     GET_ALL_FAVORITES: 'GET_ALL_FAVORITES',
+    PLACE_ORDER: 'PLACE_ORDER',
   },
   dishTopic: 'dish_topic',
   dishSubTopics: {

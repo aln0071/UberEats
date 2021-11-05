@@ -359,10 +359,11 @@ function getOrderList(userid, type = 'c') {
 }
 
 async function placeOrder({
-  locationid,
+  // locationid,
   location,
   zip,
   citycode,
+  city,
   restaurantid,
   userid,
   items,
@@ -371,53 +372,68 @@ async function placeOrder({
   tax,
   deliveryfee,
 }) {
-  if (deliverymode === 2) {
-    if ([undefined, null, ''].includes(locationid)) {
-      // create location or use existing location
-      const locationData = await executeQuery(_getLocation, {
-        citycode,
-        location,
-        zip,
-      });
-      if (locationData.length !== 0) {
-        // use existing data
-        locationid = locationData[0].locationid;
-      } else {
-        const response = await executeQuery(_addLocation, {
-          citycode,
-          location,
-          zip,
-        });
-        locationid = response.insertId;
-        executeQuery(_addRelatedAddress, { userid, locationid });
-      }
-    }
-  }
-
-  const response = await executeQuery(_placeOrder, {
-    userid,
+  return kafkaRequest(userTopic, userSubTopics.PLACE_ORDER, {
+    items,
     restaurantid,
-    price: parseFloat(price).toFixed(2),
-    locationid,
-    created: getCurrentDateTime(),
+    userid,
+    price,
+    tax,
+    deliveryfee,
     deliverymode,
-    tax: parseFloat(tax).toFixed(2),
-    deliveryfee: parseFloat(deliveryfee).toFixed(2),
+    location,
+    zip,
+    citycode,
+    city,
   });
-  const orderid = response.insertId;
-  const queryValues = Object.values(items).reduce((t, c) => {
-    if (t === '') {
-      return `(${orderid}, ${mysql.escape(c.dishid)}, ${mysql.escape(
-        c.count,
-      )}, ${(parseInt(c.count, 10) * parseFloat(c.price)).toFixed(2)} )`;
-    }
-    return `${t}, (${orderid}, ${mysql.escape(c.dishid)}, ${mysql.escape(
-      c.count,
-    )}, ${(parseInt(c.count, 10) * parseFloat(c.price)).toFixed(2)} )`;
-  }, '');
-  const query = _addOrderDetails.replace(':fields', queryValues);
-  await executeQuery(query);
-  return orderid;
+
+  // delivery mode
+  // if (deliverymode === 2) {
+  //   if ([undefined, null, ''].includes(locationid)) {
+  //     // create location or use existing location
+  //     const locationData = await executeQuery(_getLocation, {
+  //       citycode,
+  //       location,
+  //       zip,
+  //     });
+  //     if (locationData.length !== 0) {
+  //       // use existing data
+  //       locationid = locationData[0].locationid;
+  //     } else {
+  //       const response = await executeQuery(_addLocation, {
+  //         citycode,
+  //         location,
+  //         zip,
+  //       });
+  //       locationid = response.insertId;
+  //       executeQuery(_addRelatedAddress, { userid, locationid });
+  //     }
+  //   }
+  // }
+
+  // const response = await executeQuery(_placeOrder, {
+  //   userid,
+  //   restaurantid,
+  //   price: parseFloat(price).toFixed(2),
+  //   locationid,
+  //   created: getCurrentDateTime(),
+  //   deliverymode,
+  //   tax: parseFloat(tax).toFixed(2),
+  //   deliveryfee: parseFloat(deliveryfee).toFixed(2),
+  // });
+  // const orderid = response.insertId;
+  // const queryValues = Object.values(items).reduce((t, c) => {
+  //   if (t === '') {
+  //     return `(${orderid}, ${mysql.escape(c.dishid)}, ${mysql.escape(
+  //       c.count,
+  //     )}, ${(parseInt(c.count, 10) * parseFloat(c.price)).toFixed(2)} )`;
+  //   }
+  //   return `${t}, (${orderid}, ${mysql.escape(c.dishid)}, ${mysql.escape(
+  //     c.count,
+  //   )}, ${(parseInt(c.count, 10) * parseFloat(c.price)).toFixed(2)} )`;
+  // }, '');
+  // const query = _addOrderDetails.replace(':fields', queryValues);
+  // await executeQuery(query);
+  // return orderid;
 }
 
 function updateOrder({ type, orderid }) {
