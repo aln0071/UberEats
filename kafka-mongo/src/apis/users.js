@@ -1,5 +1,6 @@
 // import user model
 const CustomError = require('../errors');
+const { Address } = require('../models/AddresModel');
 const { Favorite } = require('../models/FavoriteModel');
 const { User } = require('../models/UserModel');
 
@@ -79,6 +80,15 @@ async function getAllFavorites({ userid }) {
   return (result && result.favorites) || [];
 }
 
+async function getAllAddresses({ userid }) {
+  const result = (await Address.findOne({ userid })) || [];
+  const user = await User.findOne({ _id: userid });
+  return [
+    ...result,
+    { location: user.location, city: user.city, zip: user.zip },
+  ];
+}
+
 module.exports = {
   registerUser,
   getUserByEmail,
@@ -86,4 +96,5 @@ module.exports = {
   addFavorite,
   removeFavorite,
   getAllFavorites,
+  getAllAddresses,
 };
