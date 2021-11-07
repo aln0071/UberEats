@@ -51,6 +51,7 @@ const {
   toggleFavorite,
   getFavorites,
   updateDish,
+  deleteDish,
 } = require('./utils/endpoints');
 
 // import s3 uploader function
@@ -186,6 +187,21 @@ app.post('/update-dishes', authMiddleware, async (req, res) => {
     res.status(200).send({
       status: true,
       message: 'Dishes updated successfully',
+    });
+  } catch (error) {
+    res.status(400).send({
+      status: false,
+      message: error.message,
+    });
+  }
+});
+
+app.post('/update-dish', authMiddleware, async (req, res) => {
+  try {
+    await updateDish(req.body);
+    res.status(200).send({
+      status: true,
+      message: 'Dish updated successfully',
     });
   } catch (error) {
     res.status(400).send({
@@ -349,6 +365,19 @@ app.get('/get-favorites', authMiddleware, async (req, res) => {
   const { userid } = req.query;
   try {
     const response = await getFavorites(userid);
+    res.json(response);
+  } catch (error) {
+    res.status(400).send({
+      status: false,
+      message: error.message,
+    });
+  }
+});
+
+app.delete('/delete-dish', authMiddleware, async (req, res) => {
+  const { dishid } = req.query;
+  try {
+    const response = await deleteDish(dishid);
     res.json(response);
   } catch (error) {
     res.status(400).send({

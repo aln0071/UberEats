@@ -20,6 +20,8 @@ module.exports = {
   dishSubTopics: {
     ADD_DISH: 'ADD_DISH',
     GET_ALL_DISHES: 'GET_ALL_DISHES',
+    UPDATE_DISH: 'UPDATE_DISH',
+    DELETE_DISH: 'DELETE_DISH',
   },
   restaurantTopic: 'restaurant_topic',
   restaurantSubTopics: {

@@ -275,18 +275,19 @@ function updateDish(dish) {
     dishid,
   } = dish;
   const values = {
-    restaurantid,
+    dishid,
     dishname,
     description,
     category,
     price,
     pictures,
   };
-  const query = _updateDishQuery.replace(
-    ':optionalfields',
-    paramsToQuery(values),
-  );
-  return executeQuery(query, { ...values, dishid });
+  // const query = _updateDishQuery.replace(
+  //   ':optionalfields',
+  //   paramsToQuery(values),
+  // );
+  // return executeQuery(query, { ...values, dishid });
+  return kafkaRequest(dishTopic, dishSubTopics.UPDATE_DISH, values);
 }
 
 function addDish(dish) {
@@ -469,7 +470,11 @@ function updateOrder({ type, orderid }) {
   };
   // const query = _updateOrders.replace(':optionalfields', paramsToQuery(values));
   // return executeQuery(query, { ...values, orderid });
-  return kafkaRequest(restaurantTopic, restaurantSubTopics.UPDATE_ORDER, values);
+  return kafkaRequest(
+    restaurantTopic,
+    restaurantSubTopics.UPDATE_ORDER,
+    values,
+  );
 }
 
 function toggleFavorite({ userid, restaurantid, isFavorite }) {
@@ -492,6 +497,10 @@ function getFavorites(userid) {
   // return executeQuery(_getFavorites, { userid });
 }
 
+function deleteDish(dishid) {
+  return kafkaRequest(dishTopic, dishSubTopics.DELETE_DISH, { dishid });
+}
+
 module.exports = {
   login,
   register,
@@ -510,4 +519,5 @@ module.exports = {
   toggleFavorite,
   getFavorites,
   updateDish,
+  deleteDish,
 };
