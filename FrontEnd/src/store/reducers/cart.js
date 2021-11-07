@@ -6,28 +6,28 @@ import {
   UPDATE_CART,
 } from '../actions/types';
 
-// const initialState = {
-//   items: {},
-//   restaurantid: undefined,
-// };
-
 const initialState = {
-  restaurantid: '6181b74e687cb72cd0696b81',
-  items: {
-    '6182d4935c350804bd9da2b8': {
-      _id: '6182d4935c350804bd9da2b8',
-      restaurantid: '6181b74e687cb72cd0696b81',
-      dishname: 'Rice',
-      description: 'Good rice',
-      category: 1,
-      price: 1.7,
-      pictures: [],
-      __v: 0,
-      dishid: '6182d4935c350804bd9da2b8',
-      count: 1,
-    },
-  },
+  items: {},
+  restaurantid: undefined,
 };
+
+// const initialState = {
+//   restaurantid: '6181b74e687cb72cd0696b81',
+//   items: {
+//     '6182d4935c350804bd9da2b8': {
+//       _id: '6182d4935c350804bd9da2b8',
+//       restaurantid: '6181b74e687cb72cd0696b81',
+//       dishname: 'Rice',
+//       description: 'Good rice',
+//       category: 1,
+//       price: 1.7,
+//       pictures: [],
+//       __v: 0,
+//       dishid: '6182d4935c350804bd9da2b8',
+//       count: 1,
+//     },
+//   },
+// };
 
 // const initialState = {
 //   restaurantid: 17,
