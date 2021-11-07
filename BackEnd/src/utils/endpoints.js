@@ -464,9 +464,12 @@ function updateOrder({ type, orderid }) {
   const values = {
     [type]: getCurrentDateTime(),
     status: statuses[type],
+    key: type,
+    orderid,
   };
-  const query = _updateOrders.replace(':optionalfields', paramsToQuery(values));
-  return executeQuery(query, { ...values, orderid });
+  // const query = _updateOrders.replace(':optionalfields', paramsToQuery(values));
+  // return executeQuery(query, { ...values, orderid });
+  return kafkaRequest(restaurantTopic, restaurantSubTopics.UPDATE_ORDER, values);
 }
 
 function toggleFavorite({ userid, restaurantid, isFavorite }) {
