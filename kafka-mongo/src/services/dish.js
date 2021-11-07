@@ -1,4 +1,9 @@
-const { getAllDishes, addDiahes } = require('../apis/dishes');
+const {
+  getAllDishes,
+  addDiahes,
+  updateDish,
+  deleteDish,
+} = require('../apis/dishes');
 const types = require('./types');
 
 function handleRequest(type, body) {
@@ -7,6 +12,10 @@ function handleRequest(type, body) {
       return getAllDishes(body);
     case types.ADD_DISH:
       return addDiahes(body);
+    case types.UPDATE_DISH:
+      return updateDish(body);
+    case types.DELETE_DISH:
+      return deleteDish(body);
     default:
       throw new Error('No matching type found');
   }

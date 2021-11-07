@@ -24,7 +24,23 @@ async function addDiahes(body) {
   }
 }
 
+async function updateDish(dish) {
+  await Dish.findOneAndUpdate({ _id: dish.dishid }, { ...dish });
+  return {
+    message: 'Dish updated successfully',
+  };
+}
+
+async function deleteDish({ dishid }) {
+  await Dish.findOneAndRemove({ _id: dishid });
+  return {
+    message: 'Successfully deleted dish',
+  };
+}
+
 module.exports = {
   getAllDishes,
   addDiahes,
+  updateDish,
+  deleteDish,
 };
