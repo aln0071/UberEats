@@ -342,20 +342,27 @@ function findUserWithEmail(email) {
 }
 
 function getAllRelatedAddresses(userid) {
-  return executeQuery(_getAllRelatedAddresses, { userid });
+  return kafkaRequest(userTopic, userSubTopics.GET_ALL_RELATED_ADDRESSES, {
+    userid,
+  });
+  // return executeQuery(_getAllRelatedAddresses, { userid });
 }
 
 function getOrderList(userid, type = 'c') {
   if (type === 'r') {
-    return Promise.all([
-      executeQuery(_getOrderListOfRestaurant, { restaurantid: userid }),
-      executeQuery(_getOrderDetailsOfRestaurant, { restaurantid: userid }),
-    ]);
+    // return Promise.all([
+    //   executeQuery(_getOrderListOfRestaurant, { restaurantid: userid }),
+    //   executeQuery(_getOrderDetailsOfRestaurant, { restaurantid: userid }),
+    // ]);
+    return kafkaRequest(restaurantTopic, restaurantSubTopics.GET_ALL_ORDERS, {
+      restaurantid: userid,
+    });
   }
-  return Promise.all([
-    executeQuery(_getOrderList, { userid }),
-    executeQuery(_getOrderDetails, { userid }),
-  ]);
+  // return Promise.all([
+  //   executeQuery(_getOrderList, { userid }),
+  //   executeQuery(_getOrderDetails, { userid }),
+  // ]);
+  return kafkaRequest(userTopic, userSubTopics.GET_ALL_ORDERS, { userid });
 }
 
 async function placeOrder({
@@ -371,6 +378,7 @@ async function placeOrder({
   deliverymode,
   tax,
   deliveryfee,
+  name,
 }) {
   return kafkaRequest(userTopic, userSubTopics.PLACE_ORDER, {
     items,
@@ -384,6 +392,9 @@ async function placeOrder({
     zip,
     citycode,
     city,
+    created: getCurrentDateTime(),
+    status: 1,
+    name,
   });
 
   // delivery mode

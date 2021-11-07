@@ -13,6 +13,8 @@ module.exports = {
     REMOVE_FAVORITE: 'REMOVE_FAVORITE',
     GET_ALL_FAVORITES: 'GET_ALL_FAVORITES',
     PLACE_ORDER: 'PLACE_ORDER',
+    GET_ALL_RELATED_ADDRESSES: 'GET_ALL_RELATED_ADDRESSES',
+    GET_ALL_ORDERS: 'GET_ALL_ORDERS',
   },
   dishTopic: 'dish_topic',
   dishSubTopics: {
@@ -22,5 +24,6 @@ module.exports = {
   restaurantTopic: 'restaurant_topic',
   restaurantSubTopics: {
     GET_ALL_RESTAURANTS: 'GET_ALL_RESTAURANTS',
+    GET_ALL_ORDERS: 'GET_ALL_ORDERS',
   },
 };

@@ -300,13 +300,13 @@ app.get('/get-orders', authMiddleware, async (req, res) => {
   const { userid, type } = req.query;
   try {
     const response = await getOrderList(userid, type);
-    const orders = response[0].map((order) => ({
-      ...order,
-      orderDetails: response[1].filter(
-        (detail) => detail.orderid === order.orderid,
-      ),
-    }));
-    res.json(orders);
+    // const orders = response[0].map((order) => ({
+    //   ...order,
+    //   orderDetails: response[1].filter(
+    //     (detail) => detail.orderid === order.orderid,
+    //   ),
+    // }));
+    res.json(response);
   } catch (error) {
     res.status(400).send({
       status: false,
