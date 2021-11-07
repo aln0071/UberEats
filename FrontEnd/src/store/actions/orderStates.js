@@ -5,9 +5,9 @@ import { updateOrder } from '../../utils/endpoints';
 import { getOrderListAction } from './getOrders';
 
 export const cancelOrderAction = () => async (dispatch, getState) => {
-  const { orderid } = getState().orderDetailsModal;
+  const { _id } = getState().orderDetailsModal;
   try {
-    const response = await updateOrder(orderid, 'canceled');
+    const response = await updateOrder(_id, 'canceled');
     if (response.status === true) {
       toast.success('Success: Order canceled', toastOptions);
       dispatch(hideOrderDetailsModalAction());
@@ -22,9 +22,9 @@ export const cancelOrderAction = () => async (dispatch, getState) => {
 };
 
 export const changeOrderStatusAction = (type) => async (dispatch, getState) => {
-  const { orderid } = getState().orderDetailsModal;
+  const { _id } = getState().orderDetailsModal;
   try {
-    const response = await updateOrder(orderid, type);
+    const response = await updateOrder(_id, type);
     if (response.status === true) {
       toast.success('Success: Order status updated', toastOptions);
       dispatch(hideOrderDetailsModalAction());
