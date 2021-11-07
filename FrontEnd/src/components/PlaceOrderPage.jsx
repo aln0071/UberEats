@@ -55,7 +55,7 @@ export default function PlaceOrderPage() {
   const addresses = useSelector((state) => {
     if (user.location !== '') {
       return [
-        { location: user.location, city: user.city, zip: user.zip },
+        // { location: user.location, city: user.city, zip: user.zip },
         ...state.addresses,
       ];
     }
@@ -91,12 +91,17 @@ export default function PlaceOrderPage() {
     } else {
       values = {
         locationid: restaurant.locationid,
+        zip: restaurant.zip,
+        location: restaurant.location,
+        citycode: restaurant.citycode,
+        city: restaurant.city,
       };
     }
     // place order
     dispatch(
       placeOrderAction({
         ...values,
+        name: restaurant.name,
         price: (
           total
           * (1

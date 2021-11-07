@@ -61,7 +61,7 @@ export default function Orders() {
                   }}
                   style={{ cursor: 'pointer' }}
                 >
-                  <th scope="row">{order.orderid}</th>
+                  <th scope="row">{order._id}</th>
                   {user.type === 'c' && <td>{order.name}</td>}
                   <td>
                     $

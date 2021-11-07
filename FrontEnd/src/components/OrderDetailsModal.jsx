@@ -112,7 +112,7 @@ export default () => {
     >
       <ModalHeader>Order Details</ModalHeader>
       <ModalBody>
-        {Object.values(orderDetailsModal.orderDetails).map((item) => (
+        {orderDetailsModal.items.map((item) => (
           <div>
             <div className={styles.placeOrderBodyLeftItemHeader}>
               {item.dishname}
@@ -189,7 +189,6 @@ export default () => {
             <br />
             {orderDetailsModal.country}
             {' '}
-            -
             {orderDetailsModal.zip}
           </div>
         </div>

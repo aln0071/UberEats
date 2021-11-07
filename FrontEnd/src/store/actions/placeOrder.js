@@ -14,6 +14,7 @@ export const placeOrderAction = ({
   deliverymode,
   tax,
   deliveryfee,
+  name,
 }) => async (dispatch, getState) => {
   const { userid } = getState().user;
   const { cart } = getState();
@@ -30,6 +31,7 @@ export const placeOrderAction = ({
       deliverymode,
       tax,
       deliveryfee,
+      name,
     });
     console.log(response);
     toast.success('Success: order placed', toastOptions);

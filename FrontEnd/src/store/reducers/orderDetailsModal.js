@@ -5,7 +5,7 @@ import {
 
 const initialState = {
   show: false,
-  orderDetails: [],
+  items: [],
 };
 
 const orderDetailsModal = (state = initialState, action) => {
