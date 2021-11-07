@@ -12,6 +12,9 @@ async function placeOrder({
   zip,
   citycode,
   city,
+  created,
+  status,
+  name,
 }) {
   const order = new Order({
     restaurantid,
@@ -24,6 +27,9 @@ async function placeOrder({
     zip,
     citycode,
     city,
+    created,
+    status,
+    name,
     items: Object.values(items).map((dish) => ({
       dishname: dish.dishname,
       price: dish.price,
@@ -34,6 +40,22 @@ async function placeOrder({
   return response._id;
 }
 
+async function getOrdersForUser({ userid, deliverymode }) {
+  if (deliverymode === undefined) {
+    const orders = await Order.find({ userid });
+    return orders;
+  }
+  const orders = await Order.find({ userid, deliverymode });
+  return orders;
+}
+
+async function getOrdersForRestaurant({ restaurantid }) {
+  const orders = await Order.find({ restaurantid });
+  return orders;
+}
+
 module.exports = {
   placeOrder,
+  getOrdersForUser,
+  getOrdersForRestaurant,
 };

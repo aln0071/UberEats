@@ -1,8 +1,8 @@
 // import user model
 const CustomError = require('../errors');
-const { Address } = require('../models/AddresModel');
 const { Favorite } = require('../models/FavoriteModel');
 const { User } = require('../models/UserModel');
+const { getOrdersForUser } = require('./orders');
 
 // handle register user
 async function registerUser(body) {
@@ -80,13 +80,38 @@ async function getAllFavorites({ userid }) {
   return (result && result.favorites) || [];
 }
 
+function getUnique(array) {
+  const result = [];
+  array.forEach((element) => {
+    if (
+      result.findIndex((el) => JSON.stringify(el) === JSON.stringify(element))
+      === -1
+    ) {
+      result.push(element);
+    }
+  });
+  return result;
+}
+
 async function getAllAddresses({ userid }) {
-  const result = (await Address.findOne({ userid })) || [];
   const user = await User.findOne({ _id: userid });
-  return [
-    ...result,
-    { location: user.location, city: user.city, zip: user.zip },
-  ];
+  const orders = await getOrdersForUser({ userid, deliverymode: 2 });
+  const result = [
+    {
+      location: user.location,
+      city: user.city,
+      zip: user.zip,
+      citycode: user.citycode,
+    },
+  ].concat(
+    ...orders.map((order) => ({
+      location: order.location,
+      city: order.city,
+      zip: order.zip,
+      citycode: order.citycode,
+    })),
+  );
+  return getUnique(result);
 }
 
 module.exports = {

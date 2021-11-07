@@ -1,4 +1,4 @@
-const { placeOrder } = require('../apis/orders');
+const { placeOrder, getOrdersForUser } = require('../apis/orders');
 const {
   registerUser,
   loginUser,
@@ -8,7 +8,9 @@ const {
   addFavorite,
   removeFavorite,
   getAllFavorites,
+  getAllAddresses,
 } = require('../apis/users');
+const { GET_ALL_RELATED_ADDRESSES, GET_ALL_ORDERS } = require('./types');
 const types = require('./types');
 
 function handleRequest(type, body) {
@@ -31,6 +33,10 @@ function handleRequest(type, body) {
       return getAllFavorites(body);
     case types.PLACE_ORDER:
       return placeOrder(body);
+    case GET_ALL_RELATED_ADDRESSES:
+      return getAllAddresses(body);
+    case GET_ALL_ORDERS:
+      return getOrdersForUser(body);
     default:
       throw new Error('No matching type found');
   }

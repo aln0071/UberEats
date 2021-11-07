@@ -10,6 +10,7 @@ const dishSchema = new Schema({
 
 const orderSchema = new Schema({
   restaurantid: { type: Schema.Types.ObjectId },
+  name: String,
   userid: { type: Schema.Types.ObjectId },
   status: Number,
   created: String,
@@ -25,7 +26,7 @@ const orderSchema = new Schema({
   tax: Number,
   items: [{ type: dishSchema }],
   location: String,
-  zip: Number,
+  zip: String,
   citycode: Schema.Types.ObjectId,
   city: String,
 });
