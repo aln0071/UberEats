@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { Grid, Cell } from 'baseui/layout-grid';
 import { Button } from 'baseui/button';
-import { setDishesAction } from '../store/actions';
+import { setDishesAction, showAddDishModalAction } from '../store/actions';
 // import { addDishAction } from '../store/actions';
 import { createToastBody, toastOptions } from '../utils';
 import { getAllDishes } from '../utils/endpoints';
@@ -13,8 +13,6 @@ import AddDishModal from './AddDishModal';
 import Dish from './Dish';
 
 export default function Dishes() {
-  const [isOpen, setIsOpen] = useState(false);
-
   const dishes = useSelector((state) => state.dishes);
 
   // const dispatch = useDispatch();
@@ -83,14 +81,14 @@ export default function Dishes() {
         <Cell span={4}>
           <Button
             onClick={() => {
-              setIsOpen(true);
+              dispatch(showAddDishModalAction());
             }}
           >
             Add Dish
           </Button>
         </Cell>
       </Grid>
-      <AddDishModal isOpen={isOpen} setIsOpen={setIsOpen} />
+      <AddDishModal />
 
       {/* <BlackButton onClick={updateDatabase}>Update Database</BlackButton> */}
     </div>

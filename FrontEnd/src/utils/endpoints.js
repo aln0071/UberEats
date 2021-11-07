@@ -68,6 +68,18 @@ export const updateDishes = (dishes) => {
   return post(url, dishes).then(handleResponse);
 };
 
+export const updateDish = (dish) => {
+  const url = `${baseUrl}${urls.updateDish}`;
+  return post(url, dish).then(handleResponse);
+};
+
+export const deleteDish = (dishid) => {
+  const url = `${baseUrl}${urls.deleteDish}?dishid=${dishid}`;
+  return fetch(url, {
+    method: 'DELETE',
+  }).then(handleResponse);
+};
+
 export const addDish = (dish) => {
   const { pictures } = dish;
   const formdata = new FormData();

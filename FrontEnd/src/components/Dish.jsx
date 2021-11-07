@@ -1,25 +1,19 @@
 import React, { useState } from 'react';
 // import { makeStyles } from '@material-ui/core/styles';
-import { Select, MenuItem, InputLabel } from '@material-ui/core';
-import DeleteIcon from '@material-ui/icons/Delete';
-import IconButton from '@material-ui/core/IconButton';
+// import { MenuItem } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import { Card, StyledBody } from 'baseui/card';
-import { Grid, Cell } from 'baseui/layout-grid';
-import CloudUploadIcon from '@material-ui/icons/CloudUpload';
-import { toast } from 'react-toastify';
-import { baseUrl, dishCategories, urls } from '../utils/constants';
+// import { toast } from 'react-toastify';
+import { baseUrl, urls } from '../utils/constants';
 import {
-  BlackFormControl,
-  BlackTextField,
-  createToastBody,
-  toastOptions,
-} from '../utils';
-import { updateDishAction } from '../store/actions';
+  showAddDishModalAction,
+  updateDishDataInModalAction,
+} from '../store/actions';
 import PlaceOrderModal from './PlaceOrderModal';
-import { updateDishes } from '../utils/endpoints';
+// import { updateDishes } from '../utils/endpoints';
 
+import { categories } from './AddDishModal';
 // const useStyles = makeStyles((theme) => ({
 //   root: {
 //     margin: theme.spacing(1),
@@ -37,22 +31,22 @@ import { updateDishes } from '../utils/endpoints';
 //   },
 // }));
 
-export default function Dish({ dish, index }) {
+export default function Dish({ dish }) {
   // const classes = useStyles();
 
-  const renderCategories = () => dishCategories.map((cat) => (
-    <MenuItem key={`${cat.id}${cat.label}`} value={cat.id}>
-      {cat.label}
-    </MenuItem>
-  ));
+  // const renderCategories = () => dishCategories.map((cat) => (
+  //   <MenuItem key={`${cat.id}${cat.label}`} value={cat.id}>
+  //     {cat.label}
+  //   </MenuItem>
+  // ));
 
   const dispatch = useDispatch();
 
-  const handleChange = (e) => {
-    const { id } = e.target;
-    const { value } = e.target;
-    dispatch(updateDishAction({ ...dish, [id]: value }));
-  };
+  // const handleChange = (e) => {
+  //   const { id } = e.target;
+  //   const { value } = e.target;
+  //   dispatch(updateDishAction({ ...dish, [id]: value }));
+  // };
 
   const user = useSelector((state) => state.user);
 
@@ -60,17 +54,17 @@ export default function Dish({ dish, index }) {
 
   const isCustomer = user.type === 'c';
 
-  const updateDatabase = async () => {
-    console.log(index);
-    try {
-      const response = await updateDishes(dish);
-      console.log(response);
-      toast.success('Success: Data updated', toastOptions);
-    } catch (error) {
-      console.log(error);
-      toast.error(createToastBody(error), toastOptions);
-    }
-  };
+  // const updateDatabase = async () => {
+  //   console.log(index);
+  //   try {
+  //     const response = await updateDishes(dish);
+  //     console.log(response);
+  //     toast.success('Success: Data updated', toastOptions);
+  //   } catch (error) {
+  //     console.log(error);
+  //     toast.error(createToastBody(error), toastOptions);
+  //   }
+  // };
 
   return (
     <div>
@@ -83,9 +77,19 @@ export default function Dish({ dish, index }) {
         title={dish.dishname}
         onClick={() => {
           if (isCustomer) setIsOpen(true);
+          else {
+            dispatch(showAddDishModalAction());
+            dispatch(
+              updateDishDataInModalAction({
+                ...dish,
+                category: [categories.find((cat) => cat.id === dish.category)],
+              }),
+            );
+          }
         }}
+        style={{ position: 'relative' }}
       >
-        {!isCustomer && (
+        {/* {!isCustomer && (
           <StyledBody>
             <Grid gridMargins={0} gridGaps={[0, 0, 10]}>
               <Cell span={12}>
@@ -154,16 +158,14 @@ export default function Dish({ dish, index }) {
               </Cell>
             </Grid>
           </StyledBody>
-        )}
-        {isCustomer && (
-          <StyledBody>
-            <div>{dish.description}</div>
-            <div>
-              Price: $
-              {dish.price}
-            </div>
-          </StyledBody>
-        )}
+        )} */}
+        <StyledBody>
+          <div>{dish.description}</div>
+          <div>
+            Price: $
+            {dish.price}
+          </div>
+        </StyledBody>
       </Card>
       <PlaceOrderModal dish={dish} isOpen={isOpen} setIsOpen={setIsOpen} />
     </div>
@@ -172,7 +174,6 @@ export default function Dish({ dish, index }) {
 
 Dish.defaultProps = {
   dish: {},
-  index: 0,
 };
 
 Dish.propTypes = {
@@ -184,5 +185,4 @@ Dish.propTypes = {
     price: PropTypes.number,
     pictures: PropTypes.string,
   }),
-  index: PropTypes.number,
 };

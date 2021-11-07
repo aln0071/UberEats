@@ -14,27 +14,59 @@ import { FormControl } from 'baseui/form-control';
 import { Select } from 'baseui/select';
 import { toast } from 'react-toastify';
 import { useSelector, useDispatch } from 'react-redux';
-import PropTypes from 'prop-types';
 import { FileUploader } from 'baseui/file-uploader';
-import { addDish, getAllDishes } from '../utils/endpoints';
+import {
+  addDish,
+  getAllDishes,
+  updateDish,
+  deleteDish,
+} from '../utils/endpoints';
 import { createToastBody, toastOptions } from '../utils';
 import { isValid, validations } from '../utils/validations';
-import { setDishesAction } from '../store/actions';
+import {
+  hideAddDishModalAction,
+  setDishesAction,
+  updateDishDataInModalAction,
+} from '../store/actions';
 
-const initialValues = {
-  dishname: '',
-  description: '',
-  category: [{ id: 1, label: 'Veg' }],
-  price: 1,
-};
+// const initialValues = {
+//   dishname: '',
+//   description: '',
+//   category: [{ id: 1, label: 'Veg' }],
+//   price: 1,
+// };
 
-export default function AddDishModal({ isOpen, setIsOpen }) {
-  const [values, setValues] = React.useState({ ...initialValues });
+export const categories = [
+  { label: 'Veg', id: 1 },
+  { label: 'Non-Veg', id: 2 },
+  { label: 'Vegan', id: 3 },
+];
+
+export default function AddDishModal() {
+  const dispatch = useDispatch();
+  const isOpen = useSelector((state) => state.addDishModal.show);
+  const values = useSelector((state) => state.addDishModal.data);
+  const user = useSelector((state) => state.user);
+  const isUpdate = values.dishid !== '';
+  const setValues = (val) => dispatch(updateDishDataInModalAction(val));
   const [pictures, setPictures] = React.useState([]);
-
   const resetValues = () => {
-    setValues({ ...initialValues });
     setPictures([]);
+  };
+
+  const removeDish = async () => {
+    try {
+      const response = await deleteDish(values.dishid);
+      console.log(response);
+      toast.success('Success: Dish deleted', toastOptions);
+      dispatch(hideAddDishModalAction());
+      const newDishesList = await getAllDishes(user);
+      dispatch(setDishesAction(newDishesList));
+      resetValues();
+    } catch (error) {
+      console.log(error);
+      toast.error(createToastBody(error), toastOptions);
+    }
   };
 
   const handleChange = (e) => {
@@ -55,10 +87,6 @@ export default function AddDishModal({ isOpen, setIsOpen }) {
     return errors;
   };
 
-  const user = useSelector((state) => state.user);
-
-  const dispatch = useDispatch();
-
   const handleSubmit = async () => {
     const newValues = {
       ...values,
@@ -76,11 +104,16 @@ export default function AddDishModal({ isOpen, setIsOpen }) {
 
     try {
       // const uploadDetails = await uploadFilesEndpoint(pictures);
-      const response = await addDish(newValues);
+      let response = null;
+      if (newValues.dishid === '') {
+        response = await addDish(newValues);
+      } else {
+        response = await updateDish(newValues);
+      }
       const newDishesList = await getAllDishes(user);
       dispatch(setDishesAction(newDishesList));
       toast.success(`Success: ${response.message}`, toastOptions);
-      setIsOpen(false);
+      dispatch(hideAddDishModalAction());
       resetValues();
     } catch (error) {
       console.log(error);
@@ -90,7 +123,7 @@ export default function AddDishModal({ isOpen, setIsOpen }) {
 
   return (
     <Modal
-      onClose={() => setIsOpen(false)}
+      onClose={() => dispatch(hideAddDishModalAction())}
       closeable
       isOpen={isOpen}
       animate
@@ -98,7 +131,7 @@ export default function AddDishModal({ isOpen, setIsOpen }) {
       size={SIZE.default}
       role={ROLE.dialog}
     >
-      <ModalHeader>Add Dish</ModalHeader>
+      <ModalHeader>{isUpdate ? 'Update Dish' : 'Add Dish'}</ModalHeader>
       <ModalBody>
         <FormControl label="Name">
           <Input
@@ -122,11 +155,7 @@ export default function AddDishModal({ isOpen, setIsOpen }) {
           <Select
             id="category"
             onChange={(param) => setValues({ ...values, category: param.value })}
-            options={[
-              { label: 'Veg', id: 1 },
-              { label: 'Non-Veg', id: 2 },
-              { label: 'Vegan', id: 3 },
-            ]}
+            options={categories}
             value={values.category}
             deleteRemoves={false}
             escapeClearsValue={false}
@@ -163,24 +192,25 @@ export default function AddDishModal({ isOpen, setIsOpen }) {
         <ModalButton
           kind={ButtonKind.tertiary}
           onClick={() => {
-            setIsOpen(false);
+            dispatch(hideAddDishModalAction());
             resetValues();
           }}
         >
           Cancel
         </ModalButton>
-        <ModalButton onClick={handleSubmit}>Okay</ModalButton>
+        {isUpdate && (
+          <ModalButton
+            onClick={() => {
+              removeDish();
+            }}
+          >
+            Delete
+          </ModalButton>
+        )}
+        <ModalButton onClick={handleSubmit}>
+          {isUpdate ? 'Update' : 'Okay'}
+        </ModalButton>
       </ModalFooter>
     </Modal>
   );
 }
-
-AddDishModal.propTypes = {
-  isOpen: PropTypes.bool,
-  setIsOpen: PropTypes.func,
-};
-
-AddDishModal.defaultProps = {
-  isOpen: false,
-  setIsOpen: () => {},
-};

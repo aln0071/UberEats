@@ -22,6 +22,9 @@ import {
   REMOVE_FILTERS,
   ADD_FILTERS,
   CLEAR_FILTERS,
+  SHOW_ADD_DISH_MODAL,
+  HIDE_ADD_DISH_MODAL,
+  UPDATE_DISH_DATA_IN_MODAL,
 } from './types';
 
 export const loginAction = (userDetails) => ({
@@ -157,4 +160,17 @@ export const removeFiltersAction = () => ({
 
 export const clearFiltersAction = () => ({
   type: CLEAR_FILTERS,
+});
+
+export const showAddDishModalAction = () => ({
+  type: SHOW_ADD_DISH_MODAL,
+});
+
+export const hideAddDishModalAction = () => ({
+  type: HIDE_ADD_DISH_MODAL,
+});
+
+export const updateDishDataInModalAction = (data) => ({
+  type: UPDATE_DISH_DATA_IN_MODAL,
+  payload: data,
 });

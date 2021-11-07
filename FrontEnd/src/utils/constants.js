@@ -8,6 +8,7 @@ export const urls = {
   cities: 'cities',
   updateProfile: 'update-profile',
   updateDishes: 'update-dishes',
+  updateDish: 'update-dish',
   addDish: 'add-dish',
   getDishes: 'get-dishes',
   getAllRestaurants: 'get-restaurants',
@@ -20,6 +21,7 @@ export const urls = {
   updateOrder: 'update-order',
   toggleFavorite: 'toggle-favorite',
   getFavorites: 'get-favorites',
+  deleteDish: 'delete-dish',
 };
 
 export const dishCategories = [
