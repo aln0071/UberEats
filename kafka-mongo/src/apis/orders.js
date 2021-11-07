@@ -54,8 +54,17 @@ async function getOrdersForRestaurant({ restaurantid }) {
   return orders;
 }
 
+async function updateOrder(body) {
+  const { status, orderid, key } = body;
+  await Order.findOneAndUpdate({ _id: orderid }, { status, [key]: body[key] });
+  return {
+    message: 'Updated successfully',
+  };
+}
+
 module.exports = {
   placeOrder,
   getOrdersForUser,
   getOrdersForRestaurant,
+  updateOrder,
 };
