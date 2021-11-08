@@ -84,8 +84,9 @@ function getUnique(array) {
   const result = [];
   array.forEach((element) => {
     if (
-      result.findIndex((el) => JSON.stringify(el) === JSON.stringify(element))
-      === -1
+      result.findIndex(
+        (el) => JSON.stringify(el) === JSON.stringify(element),
+      ) === -1
     ) {
       result.push(element);
     }
@@ -96,21 +97,20 @@ function getUnique(array) {
 async function getAllAddresses({ userid }) {
   const user = await User.findOne({ _id: userid });
   const orders = await getOrdersForUser({ userid, deliverymode: 2 });
-  const result = [
-    {
+  const result = orders.map((order) => ({
+    location: order.location,
+    city: order.city,
+    zip: order.zip,
+    citycode: order.citycode,
+  }));
+  if (user.city !== '') {
+    result.unshift({
       location: user.location,
       city: user.city,
       zip: user.zip,
       citycode: user.citycode,
-    },
-  ].concat(
-    ...orders.map((order) => ({
-      location: order.location,
-      city: order.city,
-      zip: order.zip,
-      citycode: order.citycode,
-    })),
-  );
+    });
+  }
   return getUnique(result);
 }
 
