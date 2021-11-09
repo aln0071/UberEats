@@ -52,7 +52,10 @@ export default function Orders() {
           </thead>
           <tbody>
             {orders
-              .sort((a, b) => b.orderid - a.orderid)
+              .sort(
+                (a, b) => new Date(b[deliveryStatus[1].time])
+                  - new Date(a[deliveryStatus[1].time]),
+              )
               .filter((order) => applyFilter(order))
               .map((order) => (
                 <tr
