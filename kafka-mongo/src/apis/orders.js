@@ -15,6 +15,7 @@ async function placeOrder({
   created,
   status,
   name,
+  instructions,
 }) {
   const order = new Order({
     restaurantid,
@@ -35,6 +36,7 @@ async function placeOrder({
       price: dish.price,
       quantity: dish.count,
     })),
+    instructions,
   });
   const response = await order.save();
   return response._id;

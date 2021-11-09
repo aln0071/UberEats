@@ -29,6 +29,7 @@ const orderSchema = new Schema({
   zip: String,
   citycode: Schema.Types.ObjectId,
   city: String,
+  instructions: String,
 });
 
 const Order = mongoose.model('Orders', orderSchema);
