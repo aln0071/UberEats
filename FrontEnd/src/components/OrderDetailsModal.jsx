@@ -177,6 +177,10 @@ export default () => {
               <hr />
             </>
           )}
+          Instructions:
+          <br />
+          {orderDetailsModal.instructions}
+          <hr />
           {orderDetailsModal.deliverymode === 2
             ? 'Delivery Address'
             : 'Pickup Address:'}

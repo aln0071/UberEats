@@ -7,6 +7,7 @@ import { Input } from 'baseui/input';
 import { FormControl } from 'baseui/form-control';
 import { Select } from 'baseui/select';
 import { toast } from 'react-toastify';
+import { Textarea } from 'baseui/textarea';
 import styles from '../styles.scss';
 import { getAddressList } from '../store/actions/addresses';
 import { getCities } from '../utils/endpoints';
@@ -37,6 +38,8 @@ export default function PlaceOrderPage() {
   const [cities, setCities] = useState([]);
 
   const [address, setAddress] = useState({});
+
+  const [instructions, setInstructions] = useState('');
 
   useEffect(async () => {
     dispatch(getAddressList());
@@ -112,6 +115,7 @@ export default function PlaceOrderPage() {
         deliveryfee:
           deliveryOption === 'delivery' ? total * deliveryFeePercent : 0,
         deliverymode: deliveryOption === 'delivery' ? 2 : 3,
+        instructions,
       }),
     );
   };
@@ -223,6 +227,14 @@ export default function PlaceOrderPage() {
             </div>
           </div>
         )}
+        <FormControl label="Instructions">
+          <Textarea
+            value={instructions}
+            onChange={(e) => setInstructions(e.target.value)}
+            placeholder="Instructions"
+            clearOnEscape
+          />
+        </FormControl>
         <hr />
         {renderItems()}
       </div>
