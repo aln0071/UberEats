@@ -194,12 +194,14 @@ export default () => {
         </div>
       </ModalBody>
       <ModalFooter>
-        {user.type === 'c' && ![4, 6, 7].includes(orderDetailsModal.status) && (
-          <>
-            <ModalButton onClick={() => cancelOrder()}>
-              Cancel Order
-            </ModalButton>
-          </>
+        {((user.type === 'c' && orderDetailsModal.status === 1)
+          || (user.type === 'r'
+            && ![4, 6, 7].includes(orderDetailsModal.status))) && (
+            <>
+              <ModalButton onClick={() => cancelOrder()}>
+                Cancel Order
+              </ModalButton>
+            </>
         )}
         {user.type === 'r' && <>{renderRestaurantFooterButtons()}</>}
         <ModalButton onClick={() => closeModal()}>Close</ModalButton>
