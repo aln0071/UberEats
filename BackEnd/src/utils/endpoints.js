@@ -380,6 +380,7 @@ async function placeOrder({
   tax,
   deliveryfee,
   name,
+  instructions,
 }) {
   return kafkaRequest(userTopic, userSubTopics.PLACE_ORDER, {
     items,
@@ -396,6 +397,7 @@ async function placeOrder({
     created: getCurrentDateTime(),
     status: 1,
     name,
+    instructions,
   });
 
   // delivery mode
