@@ -349,7 +349,7 @@ function getAllRelatedAddresses(userid) {
   // return executeQuery(_getAllRelatedAddresses, { userid });
 }
 
-function getOrderList(userid, type = 'c') {
+function getOrderList(userid, type = 'c', index, offset) {
   if (type === 'r') {
     // return Promise.all([
     //   executeQuery(_getOrderListOfRestaurant, { restaurantid: userid }),
@@ -357,13 +357,19 @@ function getOrderList(userid, type = 'c') {
     // ]);
     return kafkaRequest(restaurantTopic, restaurantSubTopics.GET_ALL_ORDERS, {
       restaurantid: userid,
+      index,
+      offset,
     });
   }
   // return Promise.all([
   //   executeQuery(_getOrderList, { userid }),
   //   executeQuery(_getOrderDetails, { userid }),
   // ]);
-  return kafkaRequest(userTopic, userSubTopics.GET_ALL_ORDERS, { userid });
+  return kafkaRequest(userTopic, userSubTopics.GET_ALL_ORDERS, {
+    userid,
+    index,
+    offset,
+  });
 }
 
 async function placeOrder({

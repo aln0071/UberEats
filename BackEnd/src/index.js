@@ -313,9 +313,11 @@ app.post('/place-order', authMiddleware, async (req, res) => {
 });
 
 app.get('/get-orders', authMiddleware, async (req, res) => {
-  const { userid, type } = req.query;
+  const {
+    userid, type, index, offset,
+  } = req.query;
   try {
-    const response = await getOrderList(userid, type);
+    const response = await getOrderList(userid, type, index, offset);
     // const orders = response[0].map((order) => ({
     //   ...order,
     //   orderDetails: response[1].filter(
