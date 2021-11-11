@@ -102,66 +102,75 @@ export default function Orders() {
           <tfoot>
             <tr>
               <td colSpan="5">
-                <div className={styles.ordersFooterContainer}>
-                  <div className={styles.ordersPerpage}>
-                    Rows Per Page:&nbsp;
-                    <select
-                      value={ordersPagination.ordersPerPage}
-                      onChange={(e) => dispatch(setOrdersPerPageAction(e.target.value))}
-                    >
-                      <option value={2}>2</option>
-                      <option value={5}>5</option>
-                      <option value={10}>10</option>
-                    </select>
+                {totalPages === 0 ? (
+                  <div style={{ textAlign: 'center', width: '100%' }}>
+                    No Data Found
                   </div>
-                  <div>
-                    <span
-                      style={{ cursor: page === 1 ? 'not-allowed' : 'pointer' }}
-                      role="button"
-                      onKeyPress={() => {}}
-                      tabIndex={0}
-                      onClick={() => {
-                        if (page !== 1) {
-                          dispatch(
-                            setOrdersIndexAction(
-                              ordersPagination.startingIndex
-                                - ordersPagination.ordersPerPage,
-                            ),
-                          );
-                          dispatch(getOrderListAction());
-                        }
-                      }}
-                    >
-                      &#9664;
-                    </span>
-                    &nbsp;
-                    {page}
-                    /
-                    {totalPages}
-                    &nbsp;
-                    <span
-                      style={{
-                        cursor: page === totalPages ? 'not-allowed' : 'pointer',
-                      }}
-                      role="button"
-                      onKeyPress={() => {}}
-                      tabIndex={0}
-                      onClick={() => {
-                        if (page !== totalPages) {
-                          dispatch(
-                            setOrdersIndexAction(
-                              ordersPagination.startingIndex
-                                + ordersPagination.ordersPerPage,
-                            ),
-                          );
-                          dispatch(getOrderListAction());
-                        }
-                      }}
-                    >
-                      &#9654;
-                    </span>
+                ) : (
+                  <div className={styles.ordersFooterContainer}>
+                    <div className={styles.ordersPerpage}>
+                      Rows Per Page:&nbsp;
+                      <select
+                        value={ordersPagination.ordersPerPage}
+                        onChange={(e) => dispatch(setOrdersPerPageAction(e.target.value))}
+                      >
+                        <option value={2}>2</option>
+                        <option value={5}>5</option>
+                        <option value={10}>10</option>
+                      </select>
+                    </div>
+                    <div>
+                      <span
+                        style={{
+                          cursor: page === 1 ? 'not-allowed' : 'pointer',
+                        }}
+                        role="button"
+                        onKeyPress={() => {}}
+                        tabIndex={0}
+                        onClick={() => {
+                          if (page !== 1) {
+                            dispatch(
+                              setOrdersIndexAction(
+                                ordersPagination.startingIndex
+                                  - ordersPagination.ordersPerPage,
+                              ),
+                            );
+                            dispatch(getOrderListAction());
+                          }
+                        }}
+                      >
+                        &#9664;
+                      </span>
+                      &nbsp;
+                      {page}
+                      /
+                      {totalPages}
+                      &nbsp;
+                      <span
+                        style={{
+                          cursor:
+                            page === totalPages ? 'not-allowed' : 'pointer',
+                        }}
+                        role="button"
+                        onKeyPress={() => {}}
+                        tabIndex={0}
+                        onClick={() => {
+                          if (page !== totalPages) {
+                            dispatch(
+                              setOrdersIndexAction(
+                                ordersPagination.startingIndex
+                                  + ordersPagination.ordersPerPage,
+                              ),
+                            );
+                            dispatch(getOrderListAction());
+                          }
+                        }}
+                      >
+                        &#9654;
+                      </span>
+                    </div>
                   </div>
-                </div>
+                )}
               </td>
             </tr>
           </tfoot>
