@@ -179,3 +179,18 @@ body {
   width: 100%;
   height: 100%;
 }
+
+.orders {
+  &__footer {
+    &__container {
+      display: grid;
+      grid-template-columns: 1fr repeat(3, auto) 1fr;
+      grid-column-gap: 5px;
+      justify-items: center;
+    }
+  }
+
+  &__perpage {
+    margin-right: auto;
+  }
+}

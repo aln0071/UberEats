@@ -1,15 +1,31 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { showOrderDetailsModalAction } from '../store/actions';
-import { getOrderListAction } from '../store/actions/getOrders';
+import {
+  getOrderListAction,
+  setOrdersIndexAction,
+  setOrdersPerPageAction,
+} from '../store/actions/getOrders';
 import { deliveryModes, deliveryStatus } from '../utils/constants';
 import OrderDetailsModal from './OrderDetailsModal';
+import styles from '../styles.scss';
 
 export default function Orders() {
   const dispatch = useDispatch();
 
   // const restaurants = useSelector(state => state.restaurants);
-  const { orders, user, filters } = useSelector((state) => state);
+  const {
+    orders, user, filters, ordersPagination,
+  } = useSelector(
+    (state) => state,
+  );
+
+  const page = Math.ceil(
+    (ordersPagination.startingIndex + 1) / ordersPagination.ordersPerPage,
+  );
+  const totalPages = Math.ceil(
+    ordersPagination.totalCount / ordersPagination.ordersPerPage,
+  );
 
   useEffect(() => {
     dispatch(getOrderListAction());
@@ -83,6 +99,72 @@ export default function Orders() {
                 </tr>
               ))}
           </tbody>
+          <tfoot>
+            <tr>
+              <td colSpan="5">
+                <div className={styles.ordersFooterContainer}>
+                  <div className={styles.ordersPerpage}>
+                    Rows Per Page:&nbsp;
+                    <select
+                      value={ordersPagination.ordersPerPage}
+                      onChange={(e) => dispatch(setOrdersPerPageAction(e.target.value))}
+                    >
+                      <option value={2}>2</option>
+                      <option value={5}>5</option>
+                      <option value={10}>10</option>
+                    </select>
+                  </div>
+                  <div>
+                    <span
+                      style={{ cursor: page === 1 ? 'not-allowed' : 'pointer' }}
+                      role="button"
+                      onKeyPress={() => {}}
+                      tabIndex={0}
+                      onClick={() => {
+                        if (page !== 1) {
+                          dispatch(
+                            setOrdersIndexAction(
+                              ordersPagination.startingIndex
+                                - ordersPagination.ordersPerPage,
+                            ),
+                          );
+                          dispatch(getOrderListAction());
+                        }
+                      }}
+                    >
+                      &#9664;
+                    </span>
+                    &nbsp;
+                    {page}
+                    /
+                    {totalPages}
+                    &nbsp;
+                    <span
+                      style={{
+                        cursor: page === totalPages ? 'not-allowed' : 'pointer',
+                      }}
+                      role="button"
+                      onKeyPress={() => {}}
+                      tabIndex={0}
+                      onClick={() => {
+                        if (page !== totalPages) {
+                          dispatch(
+                            setOrdersIndexAction(
+                              ordersPagination.startingIndex
+                                + ordersPagination.ordersPerPage,
+                            ),
+                          );
+                          dispatch(getOrderListAction());
+                        }
+                      }}
+                    >
+                      &#9654;
+                    </span>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </tfoot>
         </table>
       </div>
       <OrderDetailsModal />

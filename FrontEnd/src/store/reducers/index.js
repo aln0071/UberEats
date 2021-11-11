@@ -14,6 +14,7 @@ import filters from './filters';
 import allDishes from './allDishes';
 import registerErrors from './registerErrors';
 import addDishModal from './addDish';
+import ordersPagination from './ordersPagination';
 
 export default combineReducers({
   user,
@@ -32,4 +33,5 @@ export default combineReducers({
   updatedDishes,
   registerErrors,
   addDishModal,
+  ordersPagination,
 });
