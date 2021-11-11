@@ -42,18 +42,28 @@ async function placeOrder({
   return response._id;
 }
 
-async function getOrdersForUser({ userid, deliverymode }) {
+async function getOrdersForUser({
+  userid, deliverymode, index, offset,
+}) {
+  const limit = parseInt(offset, 10);
+  const skip = parseInt(index, 10);
+  const count = await Order.count({ userid });
   if (deliverymode === undefined) {
-    const orders = await Order.find({ userid });
-    return orders;
+    const orders = await Order.find({ userid }).limit(limit).skip(skip);
+    return { count, orders };
   }
-  const orders = await Order.find({ userid, deliverymode });
-  return orders;
+  const orders = await Order.find({ userid, deliverymode })
+    .limit(limit)
+    .skip(skip);
+  return { count, orders };
 }
 
-async function getOrdersForRestaurant({ restaurantid }) {
-  const orders = await Order.find({ restaurantid });
-  return orders;
+async function getOrdersForRestaurant({ restaurantid, index, offset }) {
+  const limit = parseInt(offset, 10);
+  const skip = parseInt(index, 10);
+  const count = await Order.count({ restaurantid });
+  const orders = await Order.find({ restaurantid }).limit(limit).skip(skip);
+  return { count, orders };
 }
 
 async function updateOrder(body) {
