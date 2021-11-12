@@ -1,7 +1,11 @@
 const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv');
+const passport = require('passport');
+const JwtStrategy = require('passport-jwt').Strategy;
+const { ExtractJwt } = require('passport-jwt');
 
 const { pool } = require('./mysql');
+const { findUserWithEmail } = require('./endpoints');
 
 dotenv.config();
 
@@ -10,26 +14,50 @@ function generateAccessToken(username) {
   return jwt.sign({ username }, process.env.SECRET, { expiresIn: '1h' });
 }
 
-// to verify jwt token
-function authMiddleware(req, res, next) {
-  const authHeader = req.headers.authorization;
-  console.log(authHeader);
-  const token = authHeader && authHeader.split(' ')[1];
+function authWithPassport() {
+  const opts = {
+    jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+    secretOrKey: process.env.SECRET,
+  };
 
-  if (token === null) {
-    return res.setStatus(401);
-  }
-
-  jwt.verify(token, process.env.SECRET, (error, user) => {
-    if (error) {
-      return res.sendStatus(403);
-    }
-    req.user = user;
-    next();
-    return null;
-  });
-  return null;
+  passport.use(
+    new JwtStrategy(opts, async (jwtPayload, callback) => {
+      try {
+        const { username } = jwtPayload;
+        const user = await findUserWithEmail(username);
+        if (user === null) {
+          throw new Error('Invalid user');
+        }
+        callback(null, username);
+      } catch (error) {
+        callback(null, false);
+      }
+    }),
+  );
 }
+
+const authMiddleware = passport.authenticate('jwt', { session: false });
+
+// to verify jwt token
+// function authMiddleware(req, res, next) {
+//   const authHeader = req.headers.authorization;
+//   console.log(authHeader);
+//   const token = authHeader && authHeader.split(' ')[1];
+
+//   if (token === null) {
+//     return res.sendStatus(401);
+//   }
+
+//   jwt.verify(token, process.env.SECRET, (error, user) => {
+//     if (error) {
+//       return res.sendStatus(403);
+//     }
+//     req.user = user;
+//     next();
+//     return null;
+//   });
+//   return null;
+// }
 
 // to execute an sql query
 function executeQuery(queryString, params = {}) {
@@ -118,4 +146,5 @@ module.exports = {
   optionalFields,
   optionalConditions,
   getCurrentDateTime,
+  authWithPassport,
 };

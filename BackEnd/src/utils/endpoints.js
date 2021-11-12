@@ -339,7 +339,8 @@ function getAllRestaurants({ citycode, statecode, countrycode }) {
 
 /* eslint no-unused-vars: 0 */
 function findUserWithEmail(email) {
-  return executeQuery(_findUserWithEmail, { email });
+  // return executeQuery(_findUserWithEmail, { email });
+  return kafkaRequest(userTopic, userSubTopics.GET_USER_BY_EMAIL, { email });
 }
 
 function getAllRelatedAddresses(userid) {

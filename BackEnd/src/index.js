@@ -10,6 +10,9 @@ const unlink = util.promisify(fs.unlink);
 
 // define app
 const app = express();
+const passport = require('passport');
+
+app.use(passport.initialize());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // add dotenv
@@ -32,7 +35,11 @@ const helmet = require('helmet');
 
 // import morgan for loging
 const morgan = require('morgan');
-const { generateAccessToken, authMiddleware } = require('./utils/utils');
+const {
+  generateAccessToken,
+  authMiddleware,
+  authWithPassport,
+} = require('./utils/utils');
 
 const {
   login,
@@ -388,6 +395,8 @@ app.delete('/delete-dish', authMiddleware, async (req, res) => {
     });
   }
 });
+
+authWithPassport();
 
 // starting the server
 const server = app.listen(3001, () => {
