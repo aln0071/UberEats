@@ -1,6 +1,10 @@
 const kafka = require('kafka-node');
+require('dotenv').config();
 
-const client = new kafka.KafkaClient({ kafkaHost: 'localhost:9092' });
+const ipAddress = process.env.KAFKA_SERVER;
+const port = process.env.KAFKA_PORT;
+
+const client = new kafka.KafkaClient({ kafkaHost: `${ipAddress}:${port}` });
 const consumer = new kafka.Consumer(
   client,
   [
