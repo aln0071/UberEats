@@ -5,11 +5,16 @@ import {
   TextareaAutosize,
   FormHelperText,
 } from '@material-ui/core';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { useSelector, useDispatch } from 'react-redux';
 import styles from '../styles.scss';
 import { BlackFormControl, BlackTextField } from '../utils';
-import { getCities, getCountries, getStates } from '../utils/endpoints';
+import {
+  getCountriesAction,
+  getStatesAction,
+  getCitiesAction,
+} from '../store/actions/location';
 
 export default function Location({ errors, onChange, value }) {
   const defaultValues = {
@@ -29,44 +34,27 @@ export default function Location({ errors, onChange, value }) {
     </MenuItem>
   ));
 
-  const [countries, setCountries] = useState([]);
-  const [states, setStates] = useState([]);
-  const [cities, setCities] = useState([]);
+  const { countries, states, cities } = useSelector((state) => state.location);
+  const dispatch = useDispatch();
 
   const fetchCountryList = async () => {
-    try {
-      const countryList = await getCountries();
-      setCountries(countryList);
-    } catch (error) {
-      console.log(error);
-    }
+    console.log('indise');
+    dispatch(getCountriesAction());
   };
 
   const fetchStateList = async (countrycode) => {
-    try {
-      const stateList = await getStates(countrycode);
-      setStates(stateList);
-    } catch (error) {
-      console.log(error);
-    }
+    dispatch(getStatesAction(countrycode));
   };
 
   const fetchCityList = async (statecode) => {
-    try {
-      const cityList = await getCities(statecode);
-      setCities(cityList);
-    } catch (error) {
-      console.log(error);
-    }
+    dispatch(getCitiesAction(statecode));
   };
 
   const handleChange = (e, id) => {
     const newValue = e.target.value;
     switch (id) {
       case 'country': {
-        const { country } = countries.find(
-          (c) => c.countrycode === newValue,
-        );
+        const { country } = countries.find((c) => c.countrycode === newValue);
         onChange({
           ...defaultValues,
           countrycode: newValue,
@@ -104,7 +92,7 @@ export default function Location({ errors, onChange, value }) {
     }
   };
 
-  useEffect(fetchCountryList, []);
+  useEffect(() => fetchCountryList(), []);
 
   return (
     <div>
