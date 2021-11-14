@@ -48,7 +48,7 @@ KafkaRPC.prototype.makeRequest = function (
 
   // make sure we have a response topic
   self.setupResponseQueue(self.producer, topic_name, () => {
-    console.log('in response');
+    // console.log('in response');
     // put the request on a topic
 
     const payloads = [
@@ -63,6 +63,7 @@ KafkaRPC.prototype.makeRequest = function (
         partition: 0,
       },
     ];
+    console.log('\x1b[34m%s\x1b[0m', 'request: ', payloads[0]);
     // console.log('in response1');
     // console.log(self.producer.ready);
     self.producer.send(payloads, (err, data) => {
@@ -89,6 +90,7 @@ KafkaRPC.prototype.setupResponseQueue = function (producer, topic_name, next) {
     if (data === null) {
       return;
     }
+    console.log('\x1b[33m%s\x1b[0m', 'response: ', data);
     // get the correlationId
     const { correlationId } = data;
     // console.log('response for id ', correlationId);
