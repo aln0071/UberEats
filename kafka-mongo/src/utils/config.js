@@ -7,6 +7,8 @@ const config = {
     ssl: true,
     sslKey: 'cert.pem',
     sslCert: 'cert.pem',
+    keepAlive: true,
+    keepAliveInitialDelay: 300000,
   },
 };
 
