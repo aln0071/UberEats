@@ -160,7 +160,7 @@ export default function Profile() {
 
         <Cell span={4}>
           <BlackTextField
-            id="nickName"
+            id="nickname"
             label="Nick Name"
             value={profileData.nickname}
             onChange={handleChange}
