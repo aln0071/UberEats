@@ -68,11 +68,6 @@ export const updateDishes = (dishes) => {
   return post(url, dishes).then(handleResponse);
 };
 
-export const updateDish = (dish) => {
-  const url = `${baseUrl}${urls.updateDish}`;
-  return post(url, dish).then(handleResponse);
-};
-
 export const deleteDish = (dishid) => {
   const url = `${baseUrl}${urls.deleteDish}?dishid=${dishid}`;
   return fetch(url, {
@@ -94,6 +89,25 @@ export const addDish = (dish) => {
   });
   const url = `${baseUrl}${urls.addDish}`;
   // return post(url, dish).then(handleResponse);
+  return fetch(url, {
+    method: 'POST',
+    body: formdata,
+  }).then(handleResponse);
+};
+
+export const updateDish = (dish) => {
+  const { pictures } = dish;
+  const formdata = new FormData();
+  pictures.forEach((pic) => {
+    formdata.append('image', pic);
+  });
+  Object.keys(dish).forEach((key) => {
+    if (key === 'pictures') {
+      return;
+    }
+    formdata.append(key, dish[key]);
+  });
+  const url = `${baseUrl}${urls.updateDish}`;
   return fetch(url, {
     method: 'POST',
     body: formdata,

@@ -21,7 +21,26 @@ export default function RestaurantCard({ restaurant }) {
   return (
     <Card
       key={restaurant.userid}
-      overrides={{ Root: { style: { width: '328px', cursor: 'pointer' } } }}
+      overrides={{
+        Root: { style: { width: '328px', cursor: 'pointer', height: '380px' } },
+        HeaderImage: {
+          style: {
+            display: 'block',
+            maxWidth: '100%',
+            width: '328px',
+            height: '270px',
+            objectFit: 'cover',
+          },
+        },
+        Contents: { style: { whiteSpace: 'nowrap', overflow: 'hidden' } },
+        Title: {
+          style: {
+            whiteSpace: 'nowrap',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+          },
+        },
+      }}
       headerImage={`${baseUrl}${
         restaurant.pictures[0] ? 'images' : urls.uploadsFolder
       }/${restaurant.pictures[0] || 'no-image'}`}
@@ -44,7 +63,17 @@ export default function RestaurantCard({ restaurant }) {
           {isFavorite ? <FavoriteIcon /> : <FavoriteBorderIcon />}
         </IconButton>
       </div>
-      <StyledBody>{restaurant.description}</StyledBody>
+      <StyledBody>
+        <div
+          style={{
+            overflow: 'hidden',
+            whiteSpace: 'nowrap',
+            textOverflow: 'ellipsis',
+          }}
+        >
+          {restaurant.description}
+        </div>
+      </StyledBody>
       <StyledAction>
         {/* <Button overrides={{BaseButton: {style: {width: '100%'}}}}>
           Button Label

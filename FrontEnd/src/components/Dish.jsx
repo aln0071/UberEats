@@ -70,7 +70,28 @@ export default function Dish({ dish }) {
     <div>
       <Card
         key={dish.dishid}
-        overrides={{ Root: { style: { width: '328px', cursor: 'pointer' } } }}
+        overrides={{
+          Root: {
+            style: { width: '328px', cursor: 'pointer', height: '390px' },
+          },
+          HeaderImage: {
+            style: {
+              display: 'block',
+              maxWidth: '100%',
+              width: '328px',
+              height: '270px',
+              objectFit: 'cover',
+            },
+          },
+          Contents: { style: { whiteSpace: 'nowrap', overflow: 'hidden' } },
+          Title: {
+            style: {
+              whiteSpace: 'nowrap',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+            },
+          },
+        }}
         headerImage={`${baseUrl}${
           dish.pictures[0] ? 'images' : urls.uploadsFolder
         }/${dish.pictures[0] || 'no-image'}`}
@@ -160,7 +181,15 @@ export default function Dish({ dish }) {
           </StyledBody>
         )} */}
         <StyledBody>
-          <div>{dish.description}</div>
+          <div
+            style={{
+              overflow: 'hidden',
+              whiteSpace: 'nowrap',
+              textOverflow: 'ellipsis',
+            }}
+          >
+            {dish.description}
+          </div>
           <div>
             Price: $
             {dish.price}
