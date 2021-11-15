@@ -52,10 +52,8 @@ async function getOrdersForUser({
     const orders = await Order.find({ userid }).limit(limit).skip(skip);
     return { count, orders };
   }
-  const orders = await Order.find({ userid, deliverymode })
-    .limit(limit)
-    .skip(skip);
-  return { count, orders };
+  const orders = await Order.find({ userid, deliverymode });
+  return orders;
 }
 
 async function getOrdersForRestaurant({ restaurantid, index, offset }) {
