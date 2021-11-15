@@ -284,6 +284,9 @@ function updateDish(dish) {
     price,
     pictures,
   };
+  if (JSON.stringify(dish.pictures) === '[]') {
+    delete values.pictures;
+  }
   // const query = _updateDishQuery.replace(
   //   ':optionalfields',
   //   paramsToQuery(values),

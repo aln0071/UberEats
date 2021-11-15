@@ -219,42 +219,59 @@ app.post('/update-dishes', authMiddleware, async (req, res) => {
   }
 });
 
-app.post('/update-dish', authMiddleware, async (req, res) => {
-  try {
-    await updateDish(req.body);
-    res.status(200).send({
-      status: true,
-      message: 'Dish updated successfully',
-    });
-  } catch (error) {
-    res.status(400).send({
-      status: false,
-      message: error.message,
-    });
-  }
-});
+app.post(
+  '/update-dish',
+  authMiddleware,
+  upload.array('image', 12),
+  async (req, res) => {
+    try {
+      const uploadedFiles = await Promise.all(
+        req.files.map((file) => uploadFile(file)),
+      );
+      await Promise.all(req.files.map((file) => unlink(file.path)));
+      await updateDish({
+        ...req.body,
+        pictures: uploadedFiles.map((file) => file.key),
+      });
+      res.status(200).send({
+        status: true,
+        message: 'Dish updated successfully',
+      });
+    } catch (error) {
+      res.status(400).send({
+        status: false,
+        message: error.message,
+      });
+    }
+  },
+);
 
-app.post('/add-dish', upload.array('image', 12), async (req, res) => {
-  try {
-    const uploadedFiles = await Promise.all(
-      req.files.map((file) => uploadFile(file)),
-    );
-    await Promise.all(req.files.map((file) => unlink(file.path)));
-    await addDish({
-      ...req.body,
-      pictures: uploadedFiles.map((file) => file.key),
-    });
-    res.status(200).send({
-      status: true,
-      message: 'Dish added successfully',
-    });
-  } catch (error) {
-    res.status(400).send({
-      status: false,
-      message: error.message,
-    });
-  }
-});
+app.post(
+  '/add-dish',
+  authMiddleware,
+  upload.array('image', 12),
+  async (req, res) => {
+    try {
+      const uploadedFiles = await Promise.all(
+        req.files.map((file) => uploadFile(file)),
+      );
+      await Promise.all(req.files.map((file) => unlink(file.path)));
+      await addDish({
+        ...req.body,
+        pictures: uploadedFiles.map((file) => file.key),
+      });
+      res.status(200).send({
+        status: true,
+        message: 'Dish added successfully',
+      });
+    } catch (error) {
+      res.status(400).send({
+        status: false,
+        message: error.message,
+      });
+    }
+  },
+);
 
 app.get('/get-dishes', authMiddleware, async (req, res) => {
   try {
