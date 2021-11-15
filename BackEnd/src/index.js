@@ -30,6 +30,22 @@ const bodyParser = require('body-parser');
 // import cors for removing cors error
 const cors = require('cors');
 
+// Allow Access Control
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', process.env.FRONT_END_URL);
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  res.setHeader(
+    'Access-Control-Allow-Methods',
+    'GET,HEAD,OPTIONS,POST,PUT,DELETE',
+  );
+  res.setHeader(
+    'Access-Control-Allow-Headers',
+    'Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers',
+  );
+  res.setHeader('Cache-Control', 'no-cache');
+  next();
+});
+
 // import helmet for extra security
 const helmet = require('helmet');
 
