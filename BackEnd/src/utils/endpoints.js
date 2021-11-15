@@ -2,13 +2,15 @@
 const bcrypt = require('bcrypt');
 const mysql = require('mysql');
 const kafka = require('../kafka/client');
-const {
-  // executeQuery,
-  // paramsToQuery,
-  // optionalFields,
-  getCurrentDateTime,
-  // optionalConditions,
-} = require('./utils');
+
+const getCurrentDateTime = () => {
+  const now = new Date();
+  const result = `${now.getFullYear()}-${
+    now.getMonth() + 1
+  }-${now.getDate()} ${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`;
+  return result;
+};
+
 // const {
 //   _login,
 //   _register,
@@ -389,6 +391,8 @@ async function placeOrder({
   name,
   instructions,
 }) {
+  const date = getCurrentDateTime();
+
   return kafkaRequest(userTopic, userSubTopics.PLACE_ORDER, {
     items,
     restaurantid,
@@ -401,7 +405,7 @@ async function placeOrder({
     zip,
     citycode,
     city,
-    created: getCurrentDateTime(),
+    created: date,
     status: 1,
     name,
     instructions,
