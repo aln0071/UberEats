@@ -21,11 +21,10 @@ describe('Get Countries', () => {
 });
 
 describe('Get States', () => {
-  it('should return list of states in US', (done) => {
+  it('should return list of states', (done) => {
     chai
       .request(server)
       .get('/states')
-      .query({ countrycode: 1 })
       .end((err, response) => {
         response.should.have.status(200);
         response.body.should.be.a('array');
@@ -35,11 +34,10 @@ describe('Get States', () => {
 });
 
 describe('Get Cities', () => {
-  it('should return list of cities in California', (done) => {
+  it('should return list of cities', (done) => {
     chai
       .request(server)
       .get('/cities')
-      .query({ statecode: 1 })
       .end((err, response) => {
         response.should.have.status(200);
         response.body.should.be.a('array');
@@ -63,7 +61,7 @@ describe('Login User', () => {
   });
 });
 
-const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJpYXQiOjE2MzM5MjYyNDAsImV4cCI6MTYzMzkyOTg0MH0.L6faWmR18Y5eIc0WMyoHTtVd29gHlTpuZXALqF_bizw';
+const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFsYW5AZ21haWwuY29tIiwiaWF0IjoxNjM2OTYxNzQ5LCJleHAiOjE2MzY5NjUzNDl9.jt2_xRRueZONo2UHATGUP-d5uYsOj-gl6TlSrjCBIso';
 
 describe('Get Restaurants List', () => {
   it('should return list of restaurants', (done) => {
