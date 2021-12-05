@@ -4,7 +4,7 @@ const {
   GraphQLFloat,
   GraphQLList,
 } = require('graphql');
-const OrderItem = require('../models/OrderItem');
+const OrderItem = require('../models/inputs/OrderItem');
 const { placeOrder } = require('../../utils/endpoints');
 
 module.exports = {

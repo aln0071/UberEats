@@ -1,5 +1,5 @@
 const { GraphQLObjectType, GraphQLList } = require('graphql');
-const User = require('../models/User');
+const User = require('../models/outputs/User');
 const Login = require('./login');
 const Dishes = require('./dishes');
 const Countries = require('./countries');

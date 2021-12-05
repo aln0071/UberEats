@@ -1,5 +1,5 @@
 const { GraphQLList } = require('graphql');
-const Country = require('../models/Country');
+const Country = require('../models/outputs/Country');
 const { getCountries } = require('../../utils/endpoints');
 
 module.exports = {

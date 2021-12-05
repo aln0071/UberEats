@@ -1,6 +1,6 @@
 const { GraphQLList, GraphQLString } = require('graphql');
 const { getAllDishes } = require('../../utils/endpoints');
-const Dish = require('../models/Dish');
+const Dish = require('../models/outputs/Dish');
 
 module.exports = {
   type: new GraphQLList(Dish),

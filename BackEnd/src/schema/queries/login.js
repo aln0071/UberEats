@@ -3,7 +3,7 @@
 const { GraphQLString } = require('graphql');
 const { login } = require('../../utils/endpoints');
 const { generateAccessToken } = require('../../utils/utils');
-const User = require('../models/User');
+const User = require('../models/outputs/User');
 
 module.exports = {
   type: User,

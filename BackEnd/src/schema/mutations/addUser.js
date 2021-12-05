@@ -1,5 +1,5 @@
 const { GraphQLString, GraphQLList } = require('graphql');
-const User = require('../models/User');
+const User = require('../models/outputs/User');
 
 const userdb = [
   {

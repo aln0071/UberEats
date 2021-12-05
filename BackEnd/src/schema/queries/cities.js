@@ -1,6 +1,6 @@
 const { GraphQLList, GraphQLString } = require('graphql');
 const { getCities } = require('../../utils/endpoints');
-const City = require('../models/City');
+const City = require('../models/outputs/City');
 
 module.exports = {
   type: new GraphQLList(City),
