@@ -2,6 +2,8 @@ const { GraphQLObjectType, GraphQLList } = require('graphql');
 const User = require('../models/User');
 const Login = require('./login');
 const Dishes = require('./dishes');
+const Countries = require('./countries');
+const States = require('./states');
 
 const userdb = [
   {
@@ -18,6 +20,8 @@ const RootQuery = new GraphQLObjectType({
     },
     Login,
     Dishes,
+    Countries,
+    States,
   },
 });
 
