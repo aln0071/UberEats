@@ -31,11 +31,7 @@ async function placeOrder({
     created,
     status,
     name,
-    items: Object.values(items).map((dish) => ({
-      dishname: dish.dishname,
-      price: dish.price,
-      quantity: dish.count,
-    })),
+    items,
     instructions,
   });
   const response = await order.save();
