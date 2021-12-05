@@ -18,7 +18,7 @@ export const placeOrderAction = ({
   instructions,
 }) => async (dispatch, getState) => {
   const { userid } = getState().user;
-  const { cart } = getState();
+  const { restaurantid, items } = getState().cart;
   try {
     const response = await placeOrder({
       locationid,
@@ -27,13 +27,18 @@ export const placeOrderAction = ({
       citycode,
       city,
       userid,
-      ...cart,
       price,
       deliverymode,
       tax,
       deliveryfee,
       name,
       instructions,
+      restaurantid,
+      items: Object.values(items).map((dish) => ({
+        dishname: dish.dishname,
+        price: dish.price,
+        quantity: dish.count,
+      })),
     });
     console.log(response);
     toast.success('Success: order placed', toastOptions);

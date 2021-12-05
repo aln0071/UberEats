@@ -105,15 +105,21 @@ export default function PlaceOrderPage() {
       placeOrderAction({
         ...values,
         name: restaurant.name,
-        price: (
-          total
-          * (1
-            + taxPercent
-            + (deliveryOption === 'delivery' ? deliveryFeePercent : 0))
-        ).toFixed(2),
-        tax: total * taxPercent,
-        deliveryfee:
-          deliveryOption === 'delivery' ? total * deliveryFeePercent : 0,
+        price: parseFloat(
+          (
+            total
+            * (1
+              + taxPercent
+              + (deliveryOption === 'delivery' ? deliveryFeePercent : 0))
+          ).toFixed(2),
+        ),
+        tax: parseFloat((total * taxPercent).toFixed(2)),
+        deliveryfee: parseFloat(
+          (deliveryOption === 'delivery'
+            ? total * deliveryFeePercent
+            : 0
+          ).toFixed(2),
+        ),
         deliverymode: deliveryOption === 'delivery' ? 2 : 3,
         instructions,
       }),
