@@ -4,11 +4,12 @@ const {
   GraphQLFloat,
   GraphQLList,
 } = require('graphql');
-const { addDish } = require('../../utils/endpoints');
+const { updateDish } = require('../../utils/endpoints');
 
 module.exports = {
   type: GraphQLString,
   args: {
+    dishid: { type: GraphQLString },
     dishname: { type: GraphQLString },
     description: { type: GraphQLString },
     category: { type: GraphQLInt },
@@ -18,7 +19,8 @@ module.exports = {
   },
   resolve: async (parent, args) => {
     if (!args.restaurantid) throw new Error('Restaurant id required');
-    await addDish(args);
-    return 'Dish added successfully';
+    if (!args.dishid) throw new Error('Dish id required');
+    await updateDish(args);
+    return 'Dish updated successfully';
   },
 };
