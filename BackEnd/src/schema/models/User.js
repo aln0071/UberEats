@@ -1,4 +1,9 @@
-const { GraphQLObjectType, GraphQLString, GraphQLList } = require('graphql');
+const {
+  GraphQLObjectType,
+  GraphQLString,
+  GraphQLList,
+  GraphQLInt,
+} = require('graphql');
 
 module.exports = new GraphQLObjectType({
   name: 'User',
@@ -53,7 +58,7 @@ module.exports = new GraphQLObjectType({
       type: GraphQLString,
     },
     deliverymode: {
-      type: GraphQLString,
+      type: GraphQLInt,
     },
     userid: {
       type: GraphQLString,
