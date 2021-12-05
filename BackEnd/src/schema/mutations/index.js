@@ -4,6 +4,7 @@ const register = require('./register');
 const updateProfile = require('./updateProfile');
 const addDish = require('./addDish');
 const updateDish = require('./updateDish');
+const placeOrder = require('./placeOrder');
 
 module.exports = new GraphQLObjectType({
   name: 'RootMutation',
@@ -13,5 +14,6 @@ module.exports = new GraphQLObjectType({
     updateProfile,
     addDish,
     updateDish,
+    placeOrder,
   },
 });

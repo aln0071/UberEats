@@ -3,6 +3,7 @@ const {
   GraphQLString,
   GraphQLInt,
   GraphQLFloat,
+  GraphQLList,
 } = require('graphql');
 
 module.exports = new GraphQLObjectType({
@@ -15,5 +16,6 @@ module.exports = new GraphQLObjectType({
     category: { type: GraphQLInt },
     price: { type: GraphQLFloat },
     restaurantid: { type: GraphQLString },
+    pictures: { type: new GraphQLList(GraphQLString) },
   },
 });
