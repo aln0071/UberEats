@@ -1,6 +1,11 @@
+/* eslint no-use-before-define: 0 */
 // import express
 const express = require('express');
 const path = require('path');
+
+// import graphql
+const { graphqlHTTP } = require('express-graphql');
+// import graphql schema
 
 // create unlink function - remove local copy of images
 const fs = require('fs');
@@ -14,6 +19,12 @@ const passport = require('passport');
 
 app.use(passport.initialize());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+// add graphql to express
+app.use('/graphql', graphqlHTTP({
+  schema,
+  graphiql: true,
+}));
 
 // add dotenv
 const dotenv = require('dotenv');
@@ -51,6 +62,7 @@ const helmet = require('helmet');
 
 // import morgan for loging
 const morgan = require('morgan');
+const schema = require('./schema');
 const {
   generateAccessToken,
   authMiddleware,
