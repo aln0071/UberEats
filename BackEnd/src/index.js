@@ -1,4 +1,3 @@
-/* eslint no-use-before-define: 0 */
 // import express
 const express = require('express');
 const path = require('path');
@@ -19,12 +18,6 @@ const passport = require('passport');
 
 app.use(passport.initialize());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-
-// add graphql to express
-app.use('/graphql', graphqlHTTP({
-  schema,
-  graphiql: true,
-}));
 
 // add dotenv
 const dotenv = require('dotenv');
@@ -94,6 +87,13 @@ const { uploadFile, getFileStream } = require('./utils/s3');
 
 // defining an array to work as the database (temporary solution)
 const ads = [{ title: 'Hello, world (again)!' }];
+
+// add graphql to express
+app.use('/graphql', graphqlHTTP({
+  schema,
+  graphiql: true,
+  formatError: (err) => ({ message: err.message }),
+}));
 
 // add Helmet for extra security
 app.use(helmet());

@@ -1,5 +1,6 @@
 const { GraphQLObjectType, GraphQLList } = require('graphql');
 const User = require('../models/User');
+const Login = require('./login');
 
 const userdb = [
   {
@@ -14,6 +15,7 @@ const RootQuery = new GraphQLObjectType({
       type: new GraphQLList(User),
       resolve: () => userdb,
     },
+    Login,
   },
 });
 
