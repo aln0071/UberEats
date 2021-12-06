@@ -5,6 +5,8 @@ import { Client as Styletron } from 'styletron-engine-atomic';
 import { Provider as StyletronProvider } from 'styletron-react';
 import { LightTheme, BaseProvider } from 'baseui';
 import fetchIntercept from 'fetch-intercept';
+import { ApolloProvider } from '@apollo/client';
+import graphqlClient from './graphql';
 import App from './App';
 import './styles.scss';
 import store from './store';
@@ -53,11 +55,13 @@ const engine = new Styletron();
 
 ReactDOM.render(
   <Provider store={store}>
-    <StyletronProvider value={engine}>
-      <BaseProvider theme={LightTheme}>
-        <App />
-      </BaseProvider>
-    </StyletronProvider>
+    <ApolloProvider client={graphqlClient}>
+      <StyletronProvider value={engine}>
+        <BaseProvider theme={LightTheme}>
+          <App />
+        </BaseProvider>
+      </StyletronProvider>
+    </ApolloProvider>
   </Provider>,
   document.getElementById('root'),
 );

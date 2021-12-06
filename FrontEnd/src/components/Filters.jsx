@@ -3,7 +3,10 @@ import { RadioGroup, Radio, ALIGN } from 'baseui/radio';
 import { useSelector, useDispatch } from 'react-redux';
 import { Select } from 'baseui/select';
 import { addFiltersAction } from '../store/actions';
-import { getCountries, getCities, getStates } from '../utils/endpoints';
+import runQuery from '../graphql/runQuery';
+import getCountries from '../graphql/queries/getCountries';
+import getStates from '../graphql/queries/getStates';
+import getCities from '../graphql/queries/getCities';
 
 export default function Filters() {
   const {
@@ -48,7 +51,8 @@ export default function Filters() {
 
   const fetchCountryList = async () => {
     try {
-      const countryList = await getCountries();
+      const { data } = await runQuery(getCountries());
+      const countryList = data.Countries;
       setCountries(countryList);
     } catch (error) {
       console.log(error);
@@ -56,9 +60,9 @@ export default function Filters() {
   };
 
   const fetchStateList = async (countrycode) => {
-    console.log(countrycode);
     try {
-      const stateList = await getStates(countrycode);
+      const { data } = await runQuery(getStates(countrycode));
+      const stateList = data.States;
       setStates(stateList);
     } catch (error) {
       console.log(error);
@@ -66,9 +70,9 @@ export default function Filters() {
   };
 
   const fetchCityList = async (statecode) => {
-    console.log(statecode);
     try {
-      const cityList = await getCities(statecode);
+      const { data } = await runQuery(getCities(statecode));
+      const cityList = data.Cities;
       setCities(cityList);
     } catch (error) {
       console.log(error);

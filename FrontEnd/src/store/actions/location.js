@@ -1,5 +1,8 @@
 import { SET_COUNTRIES, SET_CITIES, SET_STATES } from './types';
-import { getCountries, getStates, getCities } from '../../utils/endpoints';
+import runQuery from '../../graphql/runQuery';
+import getCountries from '../../graphql/queries/getCountries';
+import getStates from '../../graphql/queries/getStates';
+import getCities from '../../graphql/queries/getCities';
 
 const setCountryListAction = (countryList) => ({
   type: SET_COUNTRIES,
@@ -18,7 +21,8 @@ const setStateListAction = (stateList) => ({
 
 export const getCountriesAction = () => async (dispatch) => {
   try {
-    const countryList = await getCountries();
+    const { data } = await runQuery(getCountries());
+    const countryList = data.Countries;
     dispatch(setCountryListAction(countryList));
   } catch (error) {
     console.log(error);
@@ -28,7 +32,8 @@ export const getCountriesAction = () => async (dispatch) => {
 
 export const getStatesAction = (countrycode) => async (dispatch) => {
   try {
-    const stateList = await getStates(countrycode);
+    const { data } = await runQuery(getStates(countrycode));
+    const stateList = data.States;
     dispatch(setStateListAction(stateList));
   } catch (error) {
     console.log(error);
@@ -38,7 +43,8 @@ export const getStatesAction = (countrycode) => async (dispatch) => {
 
 export const getCitiesAction = (statecode) => async (dispatch) => {
   try {
-    const cityList = await getCities(statecode);
+    const { data } = await runQuery(getCities(statecode));
+    const cityList = data.Cities;
     dispatch(setCityListAction(cityList));
   } catch (error) {
     console.log(error);

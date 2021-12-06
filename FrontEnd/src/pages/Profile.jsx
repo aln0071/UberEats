@@ -16,14 +16,13 @@ import {
   toastOptions,
   createToastBody,
 } from '../utils';
-import {
-  getCountries,
-  getStates,
-  getCities,
-  updateProfile,
-} from '../utils/endpoints';
 import { validations, isValid } from '../utils/validations';
 import { getAllRestaurantsAction } from '../store/actions/restaurants';
+import runQuery from '../graphql/runQuery';
+import getCountries from '../graphql/queries/getCountries';
+import getStates from '../graphql/queries/getStates';
+import getCities from '../graphql/queries/getCities';
+import { updateProfile } from '../utils/endpoints';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -77,13 +76,13 @@ export default function Profile() {
   const fetchAllLocations = async () => {
     try {
       const [countryList, stateList, cityList] = await Promise.all([
-        getCountries(),
-        getStates(),
-        getCities(),
+        runQuery(getCountries()),
+        runQuery(getStates()),
+        runQuery(getCities()),
       ]);
-      setCountries(countryList);
-      setStates(stateList);
-      setCities(cityList);
+      setCountries(countryList.Countries);
+      setStates(stateList.States);
+      setCities(cityList.Cities);
     } catch (error) {
       console.log(error);
     }

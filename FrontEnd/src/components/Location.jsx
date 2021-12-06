@@ -38,7 +38,6 @@ export default function Location({ errors, onChange, value }) {
   const dispatch = useDispatch();
 
   const fetchCountryList = async () => {
-    console.log('indise');
     dispatch(getCountriesAction());
   };
 
