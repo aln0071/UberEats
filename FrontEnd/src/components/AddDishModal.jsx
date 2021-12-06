@@ -20,6 +20,7 @@ import {
   getAllDishes,
   updateDish,
   deleteDish,
+  uploadFilesEndpoint,
 } from '../utils/endpoints';
 import { createToastBody, toastOptions } from '../utils';
 import { isValid, validations } from '../utils/validations';
@@ -103,8 +104,10 @@ export default function AddDishModal() {
     newValues.pictures = pictures;
 
     try {
-      // const uploadDetails = await uploadFilesEndpoint(pictures);
+      const pictureKeys = await uploadFilesEndpoint(pictures);
+      newValues.pictures = pictureKeys;
       let response = null;
+      newValues.price = parseFloat(parseFloat(newValues.price).toFixed(2));
       if (newValues.dishid === '') {
         response = await addDish(newValues);
       } else {

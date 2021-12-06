@@ -4,6 +4,7 @@ import { post, get } from './request';
 import graphqlLogin from '../graphql/queries/login';
 import graphqlRegister from '../graphql/mutations/register';
 import graphqlUpdateProfile from '../graphql/mutations/updateProfile';
+import graphqlAddDish from '../graphql/mutations/addDish';
 import runMutation from '../graphql/runMutation';
 
 const handleResponse = async (response) => {
@@ -133,24 +134,42 @@ export const deleteDish = (dishid) => {
   }).then(handleResponse);
 };
 
-export const addDish = (dish) => {
-  const { pictures } = dish;
-  const formdata = new FormData();
-  pictures.forEach((pic) => {
-    formdata.append('image', pic);
-  });
-  Object.keys(dish).forEach((key) => {
-    if (key === 'pictures') {
-      return;
-    }
-    formdata.append(key, dish[key]);
-  });
-  const url = `${baseUrl}${urls.addDish}`;
-  // return post(url, dish).then(handleResponse);
-  return fetch(url, {
-    method: 'POST',
-    body: formdata,
-  }).then(handleResponse);
+export const addDish = ({
+  dishname,
+  description,
+  category,
+  price,
+  restaurantid,
+  pictures,
+}) => {
+  // const { pictures } = dish;
+  // const formdata = new FormData();
+  // pictures.forEach((pic) => {
+  //   formdata.append('image', pic);
+  // });
+  // Object.keys(dish).forEach((key) => {
+  //   if (key === 'pictures') {
+  //     return;
+  //   }
+  //   formdata.append(key, dish[key]);
+  // });
+  // const url = `${baseUrl}${urls.addDish}`;
+  // // return post(url, dish).then(handleResponse);
+  // return fetch(url, {
+  //   method: 'POST',
+  //   body: formdata,
+  // }).then(handleResponse);
+  const addDishAdapter = adapter('addDish');
+  return runMutation(
+    graphqlAddDish({
+      dishname,
+      description,
+      category,
+      price,
+      restaurantid,
+      pictures,
+    }),
+  ).then(addDishAdapter);
 };
 
 export const updateDish = (dish) => {
@@ -172,8 +191,8 @@ export const updateDish = (dish) => {
   }).then(handleResponse);
 };
 
-export const getAllDishes = ({ _id }) => {
-  const url = `${baseUrl}${urls.getDishes}?restaurantid=${_id || ''}`;
+export const getAllDishes = ({ userid }) => {
+  const url = `${baseUrl}${urls.getDishes}?restaurantid=${userid || ''}`;
   return get(url).then(handleResponse);
 };
 
