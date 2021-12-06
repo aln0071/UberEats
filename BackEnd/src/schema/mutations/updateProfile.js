@@ -23,6 +23,7 @@ module.exports = {
     deliverymode: { type: GraphQLInt },
     hoursfrom: { type: GraphQLString },
     hoursto: { type: GraphQLString },
+    dob: { type: GraphQLString },
   },
   resolve: async (parent, args) => {
     if (!args.userid) throw new Error('User id required');

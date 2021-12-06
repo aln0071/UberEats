@@ -6,5 +6,6 @@ module.exports = new GraphQLObjectType({
   fields: {
     city: { type: GraphQLString },
     citycode: { type: GraphQLString },
+    statecode: { type: GraphQLString },
   },
 });
