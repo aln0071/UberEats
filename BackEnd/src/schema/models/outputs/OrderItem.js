@@ -2,11 +2,11 @@ const {
   GraphQLString,
   GraphQLInt,
   GraphQLFloat,
-  GraphQLInputObjectType,
+  GraphQLObjectType,
 } = require('graphql');
 
-module.exports = new GraphQLInputObjectType({
-  name: 'InputOrderItem',
+module.exports = new GraphQLObjectType({
+  name: 'OutputOrderItem',
   description: 'Order item type definition',
   fields: {
     dishname: { type: GraphQLString },

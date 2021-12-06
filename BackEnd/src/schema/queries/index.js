@@ -5,6 +5,7 @@ const Dishes = require('./dishes');
 const Countries = require('./countries');
 const States = require('./states');
 const Cities = require('./cities');
+const Orders = require('./orders');
 
 const userdb = [
   {
@@ -24,6 +25,7 @@ const RootQuery = new GraphQLObjectType({
     Countries,
     States,
     Cities,
+    Orders,
   },
 });
 
