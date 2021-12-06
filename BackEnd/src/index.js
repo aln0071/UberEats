@@ -88,13 +88,6 @@ const { uploadFile, getFileStream } = require('./utils/s3');
 // defining an array to work as the database (temporary solution)
 const ads = [{ title: 'Hello, world (again)!' }];
 
-// add graphql to express
-app.use('/graphql', graphqlHTTP({
-  schema,
-  graphiql: true,
-  formatError: (err) => ({ message: err.message }),
-}));
-
 // add Helmet for extra security
 app.use(helmet());
 
@@ -106,6 +99,16 @@ app.use(cors());
 
 // adding morgan to log HTTP requests
 app.use(morgan('combined'));
+
+// add graphql to express
+app.use(
+  '/graphql',
+  graphqlHTTP({
+    schema,
+    graphiql: true,
+    formatError: (err) => ({ message: err.message }),
+  }),
+);
 
 // defining an endpoint to return all ads
 app.get('/', (req, res) => {
