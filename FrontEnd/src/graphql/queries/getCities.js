@@ -1,12 +1,13 @@
 import { gql } from '@apollo/client';
 
-export default (statecode) => {
+export default (statecode = '') => {
   if (statecode === '') {
     return gql`
       query {
         Cities {
           city
           citycode
+          statecode
         }
       }
     `;
@@ -15,7 +16,8 @@ export default (statecode) => {
     query {
         Cities(statecode: "${statecode}") {
             city,
-            citycode
+            citycode,
+            statecode
         }
     }
     `;

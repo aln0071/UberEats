@@ -1,12 +1,13 @@
 import { gql } from '@apollo/client';
 
-export default (countrycode) => {
+export default (countrycode = '') => {
   if (countrycode === '') {
     return gql`
       query {
         States {
           state
           statecode
+          countrycode
         }
       }
     `;
@@ -15,7 +16,8 @@ export default (countrycode) => {
     query {
         States(countrycode: "${countrycode}") {
             state,
-            statecode
+            statecode,
+            countrycode
         }
     }
     `;

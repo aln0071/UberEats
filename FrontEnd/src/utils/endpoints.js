@@ -3,6 +3,7 @@ import { baseUrl, urls } from './constants';
 import { post, get } from './request';
 import graphqlLogin from '../graphql/queries/login';
 import graphqlRegister from '../graphql/mutations/register';
+import graphqlUpdateProfile from '../graphql/mutations/updateProfile';
 import runMutation from '../graphql/runMutation';
 
 const handleResponse = async (response) => {
@@ -36,21 +37,67 @@ export const register = async (params) => {
   return runMutation(graphqlRegister(params)).then(registerAdapter);
 };
 
-export const updateProfile = (params, pictures = []) => {
-  const url = `${baseUrl}${urls.updateProfile}`;
-  const formData = new FormData();
-  pictures.forEach((pic) => {
-    formData.append('image', pic);
-  });
-  Object.keys(params).forEach((key) => {
-    if (key === 'pictures') {
-      formData.append(key, JSON.stringify(params[key] || []));
-    } else if (params[key] !== null) formData.append(key, params[key]);
-  });
-  return fetch(url, {
-    method: 'POST',
-    body: formData,
-  }).then(handleResponse);
+export const updateProfile = ({
+  userid,
+  dob,
+  restaurantid,
+  email,
+  name,
+  city,
+  citycode,
+  state,
+  statecode,
+  country,
+  countrycode,
+  location,
+  zip,
+  pictures,
+  nickname,
+  phone,
+  description,
+  deliverymode,
+  hoursfrom,
+  hoursto,
+}) => {
+  // const url = `${baseUrl}${urls.updateProfile}`;
+  // const formData = new FormData();
+  // pictures.forEach((pic) => {
+  //   formData.append('image', pic);
+  // });
+  // Object.keys(params).forEach((key) => {
+  //   if (key === 'pictures') {
+  //     formData.append(key, JSON.stringify(params[key] || []));
+  //   } else if (params[key] !== null) formData.append(key, params[key]);
+  // });
+  // return fetch(url, {
+  //   method: 'POST',
+  //   body: formData,
+  // }).then(handleResponse);
+  const updateProfileAdapter = adapter('updateProfile');
+  return runMutation(
+    graphqlUpdateProfile({
+      userid,
+      restaurantid,
+      email,
+      name,
+      city,
+      citycode,
+      state,
+      statecode,
+      country,
+      countrycode,
+      location,
+      zip,
+      pictures,
+      nickname,
+      phone,
+      description,
+      deliverymode,
+      hoursfrom,
+      hoursto,
+      dob,
+    }),
+  ).then(updateProfileAdapter);
 };
 
 export const getCountries = () => {
@@ -147,7 +194,6 @@ export const uploadFilesEndpoint = (files) => {
   files.forEach((file) => {
     formdata.append('image', file);
   });
-  formdata.append('username', 'alan');
   const url = `${baseUrl}${urls.uploadImage}`;
   return fetch(url, {
     method: 'POST',

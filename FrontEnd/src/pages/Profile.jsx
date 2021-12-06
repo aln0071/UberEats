@@ -22,7 +22,7 @@ import runQuery from '../graphql/runQuery';
 import getCountries from '../graphql/queries/getCountries';
 import getStates from '../graphql/queries/getStates';
 import getCities from '../graphql/queries/getCities';
-import { updateProfile } from '../utils/endpoints';
+import { updateProfile, uploadFilesEndpoint } from '../utils/endpoints';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -80,9 +80,9 @@ export default function Profile() {
         runQuery(getStates()),
         runQuery(getCities()),
       ]);
-      setCountries(countryList.Countries);
-      setStates(stateList.States);
-      setCities(cityList.Cities);
+      setCountries(countryList.data.Countries);
+      setStates(stateList.data.States);
+      setCities(cityList.data.Cities);
     } catch (error) {
       console.log(error);
     }
@@ -123,10 +123,24 @@ export default function Profile() {
     if (Object.keys(localErrors).length === 0) {
       // call api
       try {
-        const response = await updateProfile(profileData, pictures);
-        toast.success(`Success: ${response.message}`, toastOptions);
-        console.log(response);
-        dispatch(updateUserDetails(response.data));
+        // const response = await updateProfile(profileData, pictures);
+        // toast.success(`Success: ${response.message}`, toastOptions);
+        // console.log(response);
+        // dispatch(updateUserDetails(response.data));
+
+        // upload images
+        let pictureKeys = [];
+        if (pictures) {
+          pictureKeys = await uploadFilesEndpoint(pictures);
+        }
+
+        // update profile
+        console.log(profileData);
+        const response = await updateProfile({
+          ...profileData,
+          pictures: pictureKeys,
+        });
+        toast.success(`Success: ${response}`, toastOptions);
       } catch (error) {
         console.log(error);
         toast.error(createToastBody(error), toastOptions);
