@@ -2,6 +2,8 @@ import runQuery from '../graphql/runQuery';
 import { baseUrl, urls } from './constants';
 import { post, get } from './request';
 import graphqlLogin from '../graphql/queries/login';
+import graphqlRegister from '../graphql/mutations/register';
+import runMutation from '../graphql/runMutation';
 
 const handleResponse = async (response) => {
   let data = null;
@@ -17,23 +19,21 @@ const handleResponse = async (response) => {
   return data;
 };
 
-const adapter = (dataPoint) => (response) => {
-  if (response.error) {
-    throw new Error(response.error[0].message);
+const adapter = (dataPoint) => ({ data, errors }) => {
+  if (errors) {
+    throw new Error(errors[0].message);
   }
-  return response.data[dataPoint];
+  return data[dataPoint];
 };
 
 export const login = (username, password) => {
-  // const url = `${baseUrl}${urls.login}`;
-  // return post(url, { username, password }).then(handleResponse);
   const loginAdapter = adapter('Login');
   return runQuery(graphqlLogin(username, password)).then(loginAdapter);
 };
 
-export const register = (params) => {
-  const url = `${baseUrl}${urls.register}`;
-  return post(url, params).then(handleResponse);
+export const register = async (params) => {
+  const registerAdapter = adapter('register');
+  return runMutation(graphqlRegister(params)).then(registerAdapter);
 };
 
 export const updateProfile = (params, pictures = []) => {
