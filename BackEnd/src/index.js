@@ -315,11 +315,14 @@ app.get('/get-restaurants', authMiddleware, async (req, res) => {
   }
 });
 
-app.post('/images', upload.array('image', 12), (req, res) => {
+app.post('/images', upload.array('image', 12), async (req, res) => {
   console.log(req.body.username);
   const { files } = req;
-  console.log(files);
-  res.send('got it!');
+  const uploadedFiles = await Promise.all(
+    files.map((file) => uploadFile(file)),
+  );
+  await Promise.all(files.map((file) => unlink(file.path)));
+  res.send(uploadedFiles.map((file) => file.key));
 });
 
 // get image from s3
