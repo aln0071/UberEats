@@ -474,9 +474,7 @@ function updateOrder({ type, orderid }) {
     canceled: 7,
   };
   if (statuses[type] === undefined) {
-    return {
-      message: 'Invalid update type',
-    };
+    throw new Error('Invalid update type');
   }
   const values = {
     [type]: getCurrentDateTime(),
