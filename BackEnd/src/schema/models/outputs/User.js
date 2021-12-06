@@ -63,5 +63,8 @@ module.exports = new GraphQLObjectType({
     userid: {
       type: GraphQLString,
     },
+    dob: {
+      type: GraphQLString,
+    },
   }),
 });
