@@ -1,5 +1,7 @@
+import runQuery from '../graphql/runQuery';
 import { baseUrl, urls } from './constants';
 import { post, get } from './request';
+import graphqlLogin from '../graphql/queries/login';
 
 const handleResponse = async (response) => {
   let data = null;
@@ -15,9 +17,18 @@ const handleResponse = async (response) => {
   return data;
 };
 
+const adapter = (dataPoint) => (response) => {
+  if (response.error) {
+    throw new Error(response.error[0].message);
+  }
+  return response.data[dataPoint];
+};
+
 export const login = (username, password) => {
-  const url = `${baseUrl}${urls.login}`;
-  return post(url, { username, password }).then(handleResponse);
+  // const url = `${baseUrl}${urls.login}`;
+  // return post(url, { username, password }).then(handleResponse);
+  const loginAdapter = adapter('Login');
+  return runQuery(graphqlLogin(username, password)).then(loginAdapter);
 };
 
 export const register = (params) => {
