@@ -20,7 +20,8 @@ query {
         statecode,
         countrycode,
         deliverymode,
-        userid
+        userid,
+        dob
     }
 }
 `;
