@@ -2,11 +2,13 @@ import runQuery from '../graphql/runQuery';
 import { baseUrl, urls } from './constants';
 import { post, get } from './request';
 import graphqlLogin from '../graphql/queries/login';
+import graphqlGetAddresses from '../graphql/queries/getAddresses';
 import graphqlRegister from '../graphql/mutations/register';
 import graphqlUpdateProfile from '../graphql/mutations/updateProfile';
 import graphqlAddDish from '../graphql/mutations/addDish';
 import graphqlUpdateDish from '../graphql/mutations/updateDish';
 import graphqlDeleteDish from '../graphql/mutations/deleteDish';
+import graphqlPlaceOrder from '../graphql/mutations/placeOrder';
 import runMutation from '../graphql/runMutation';
 
 const handleResponse = async (response) => {
@@ -234,8 +236,10 @@ export const getAllRestaurants = ({ citycode, statecode, countrycode }) => {
 };
 
 export const getAllRelatedAddresses = ({ userid }) => {
-  const url = `${baseUrl}${urls.getAllRelatedAddresses}?userid=${userid}`;
-  return get(url).then(handleResponse);
+  // const url = `${baseUrl}${urls.getAllRelatedAddresses}?userid=${userid}`;
+  // return get(url).then(handleResponse);
+  const addressAdapter = adapter('Addresses');
+  return runQuery(graphqlGetAddresses(userid)).then(addressAdapter);
 };
 
 export const uploadFilesEndpoint = (files) => {
@@ -251,8 +255,13 @@ export const uploadFilesEndpoint = (files) => {
 };
 
 export const placeOrder = (params) => {
-  const url = `${baseUrl}${urls.placeOrder}`;
-  return post(url, { ...params }).then(handleResponse);
+  // const url = `${baseUrl}${urls.placeOrder}`;
+  // return post(url, { ...params }).then(handleResponse);
+  // console.log(queryMaker(params));
+  const placeOrderAdapter = adapter('placeOrder');
+  return runMutation(graphqlPlaceOrder(params))
+    .then(placeOrderAdapter)
+    .then((orderid) => ({ orderid }));
 };
 
 export const getOrderList = (userid, type, ordersPerPage, startingIndex) => {
