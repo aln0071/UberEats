@@ -26,6 +26,7 @@ module.exports = {
   restaurantTopic: 'restaurant_topic',
   restaurantSubTopics: {
     GET_ALL_RESTAURANTS: 'GET_ALL_RESTAURANTS',
+    GET_RESTAURANT: 'GET_RESTAURANT',
     GET_ALL_ORDERS: 'GET_ALL_ORDERS',
     UPDATE_ORDER: 'UPDATE_ORDER',
   },

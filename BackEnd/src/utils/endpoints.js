@@ -266,6 +266,12 @@ function getCities(statecode) {
   });
 }
 
+function getRestaurant({ restaurantid }) {
+  return kafkaRequest(restaurantTopic, restaurantSubTopics.GET_RESTAURANT, {
+    restaurantid,
+  });
+}
+
 function updateDish(dish) {
   const {
     restaurantid,
@@ -527,6 +533,7 @@ module.exports = {
   getAllRestaurants,
   findUserWithEmail,
   getAllRelatedAddresses,
+  getRestaurant,
   placeOrder,
   getOrderList,
   updateOrder,

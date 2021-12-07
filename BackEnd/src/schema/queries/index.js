@@ -1,5 +1,4 @@
-const { GraphQLObjectType, GraphQLList } = require('graphql');
-const User = require('../models/outputs/User');
+const { GraphQLObjectType } = require('graphql');
 const Login = require('./login');
 const Dishes = require('./dishes');
 const Countries = require('./countries');
@@ -8,20 +7,11 @@ const Cities = require('./cities');
 const Orders = require('./orders');
 const Addresses = require('./addresses');
 const Restaurants = require('./restaurants');
-
-const userdb = [
-  {
-    email: 'test',
-  },
-];
+const Restaurant = require('./restaurant');
 
 const RootQuery = new GraphQLObjectType({
   name: 'RootQuery',
   fields: {
-    Users: {
-      type: new GraphQLList(User),
-      resolve: () => userdb,
-    },
     Login,
     Dishes,
     Countries,
@@ -30,6 +20,7 @@ const RootQuery = new GraphQLObjectType({
     Orders,
     Addresses,
     Restaurants,
+    Restaurant,
   },
 });
 
