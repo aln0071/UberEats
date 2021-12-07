@@ -5,6 +5,7 @@ import graphqlLogin from '../graphql/queries/login';
 import graphqlRegister from '../graphql/mutations/register';
 import graphqlUpdateProfile from '../graphql/mutations/updateProfile';
 import graphqlAddDish from '../graphql/mutations/addDish';
+import graphqlDeleteDish from '../graphql/mutations/deleteDish';
 import runMutation from '../graphql/runMutation';
 
 const handleResponse = async (response) => {
@@ -128,10 +129,12 @@ export const updateDishes = (dishes) => {
 };
 
 export const deleteDish = (dishid) => {
-  const url = `${baseUrl}${urls.deleteDish}?dishid=${dishid}`;
-  return fetch(url, {
-    method: 'DELETE',
-  }).then(handleResponse);
+  // const url = `${baseUrl}${urls.deleteDish}?dishid=${dishid}`;
+  // return fetch(url, {
+  //   method: 'DELETE',
+  // }).then(handleResponse);
+  const deleteDishAdapter = adapter('deleteDish');
+  return runMutation(graphqlDeleteDish(dishid)).then(deleteDishAdapter);
 };
 
 export const addDish = ({
