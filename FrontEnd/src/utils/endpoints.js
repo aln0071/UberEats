@@ -5,6 +5,7 @@ import graphqlLogin from '../graphql/queries/login';
 import graphqlGetAddresses from '../graphql/queries/getAddresses';
 import graphqlGetDishes from '../graphql/queries/getDishes';
 import graphqlGetOrders from '../graphql/queries/getOrders';
+import graphqlGetRestaurants from '../graphql/queries/getRestaurants';
 import graphqlRegister from '../graphql/mutations/register';
 import graphqlUpdateProfile from '../graphql/mutations/updateProfile';
 import graphqlAddDish from '../graphql/mutations/addDish';
@@ -82,6 +83,28 @@ export const updateProfile = ({
   //   method: 'POST',
   //   body: formData,
   // }).then(handleResponse);
+  // console.log(queryMaker({
+  //   userid,
+  //   restaurantid,
+  //   email,
+  //   name,
+  //   city,
+  //   citycode,
+  //   state,
+  //   statecode,
+  //   country,
+  //   countrycode,
+  //   location,
+  //   zip,
+  //   pictures,
+  //   nickname,
+  //   phone,
+  //   description,
+  //   deliverymode,
+  //   hoursfrom,
+  //   hoursto,
+  //   dob,
+  // }))
   const updateProfileAdapter = adapter('updateProfile');
   return runMutation(
     graphqlUpdateProfile({
@@ -233,10 +256,14 @@ export const getAllDishes = ({ userid }) => {
 };
 
 export const getAllRestaurants = ({ citycode, statecode, countrycode }) => {
-  const url = `${baseUrl}${urls.getAllRestaurants}?citycode=${
-    citycode || ''
-  }&statecode=${statecode || ''}&countrycode=${countrycode || ''}`;
-  return get(url).then(handleResponse);
+  // const url = `${baseUrl}${urls.getAllRestaurants}?citycode=${
+  //   citycode || ''
+  // }&statecode=${statecode || ''}&countrycode=${countrycode || ''}`;
+  // return get(url).then(handleResponse);
+  const restaurantAdapter = adapter('Restaurants');
+  return runQuery(
+    graphqlGetRestaurants({ citycode, statecode, countrycode }),
+  ).then(restaurantAdapter);
 };
 
 export const getAllRelatedAddresses = ({ userid }) => {

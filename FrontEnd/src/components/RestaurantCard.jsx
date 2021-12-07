@@ -17,7 +17,7 @@ export default function RestaurantCard({ restaurant }) {
   const dispatch = useDispatch();
   const toggleFavorites = () => dispatch(toggleFavoriteAction(restaurant.userid));
   const favorites = useSelector((state) => state.favorites);
-  const isFavorite = favorites.includes(restaurant.restaurantid);
+  const isFavorite = favorites.includes(restaurant.userid);
   return (
     <Card
       key={restaurant.userid}
