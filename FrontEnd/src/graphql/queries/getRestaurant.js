@@ -1,15 +1,9 @@
 import { gql } from '@apollo/client';
-import queryMaker from '../queryMaker';
 
-export default ({ citycode, statecode, countrycode }) => gql`
+export default ({ restaurantid }) => gql`
 query {
-    Restaurants(${queryMaker({
-    citycode: citycode || '',
-    statecode: statecode || '',
-    countrycode: countrycode || '',
-  })}) {
+    Restaurant(restaurantid: "${restaurantid}" ) {
         email,
-        token,
         name,
         type,
         city,

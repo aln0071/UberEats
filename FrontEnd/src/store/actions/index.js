@@ -1,3 +1,4 @@
+import { getRestaurant } from '../../utils/endpoints';
 import {
   CLEAR_USER_DETAILS,
   SET_USER_DETAILS,
@@ -82,10 +83,22 @@ export const setCurrentTabAction = (tabid) => ({
   payload: tabid,
 });
 
-export const setCurrentRestaurantAction = (restaurantid) => ({
-  type: SET_CURRENT_RESTAURANT,
-  payload: restaurantid,
-});
+export const setCurrentRestaurantAction = (restaurant) => async (dispatch) => {
+  try {
+    const { restaurantid } = restaurant;
+    getRestaurant(restaurantid);
+    dispatch({
+      type: SET_CURRENT_RESTAURANT,
+      payload: restaurant,
+    });
+  } catch (error) {
+    console.log(error);
+    dispatch({
+      type: SET_CURRENT_RESTAURANT,
+      payload: restaurant,
+    });
+  }
+};
 
 export const addToCartAction = (dish) => ({
   type: ADD_TO_CART,

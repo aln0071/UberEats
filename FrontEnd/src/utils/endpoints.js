@@ -6,12 +6,14 @@ import graphqlGetAddresses from '../graphql/queries/getAddresses';
 import graphqlGetDishes from '../graphql/queries/getDishes';
 import graphqlGetOrders from '../graphql/queries/getOrders';
 import graphqlGetRestaurants from '../graphql/queries/getRestaurants';
+import graphqlGetRestaurant from '../graphql/queries/getRestaurant';
 import graphqlRegister from '../graphql/mutations/register';
 import graphqlUpdateProfile from '../graphql/mutations/updateProfile';
 import graphqlAddDish from '../graphql/mutations/addDish';
 import graphqlUpdateDish from '../graphql/mutations/updateDish';
 import graphqlDeleteDish from '../graphql/mutations/deleteDish';
 import graphqlPlaceOrder from '../graphql/mutations/placeOrder';
+import graphqlUpdateOrder from '../graphql/mutations/updateOrder';
 import runMutation from '../graphql/runMutation';
 
 const handleResponse = async (response) => {
@@ -266,6 +268,13 @@ export const getAllRestaurants = ({ citycode, statecode, countrycode }) => {
   ).then(restaurantAdapter);
 };
 
+export const getRestaurant = (restaurantid) => {
+  const restaurantAdapter = adapter('Restaurant');
+  return runQuery(graphqlGetRestaurant({ restaurantid }))
+    .then(restaurantAdapter)
+    .then((data) => console.log(data));
+};
+
 export const getAllRelatedAddresses = ({ userid }) => {
   // const url = `${baseUrl}${urls.getAllRelatedAddresses}?userid=${userid}`;
   // return get(url).then(handleResponse);
@@ -308,11 +317,18 @@ export const getOrderList = (userid, type, ordersPerPage, startingIndex) => {
 };
 
 export const updateOrder = (orderid, type) => {
-  const url = `${baseUrl}${urls.updateOrder}`;
-  return post(url, {
-    type,
-    orderid,
-  }).then(handleResponse);
+  // const url = `${baseUrl}${urls.updateOrder}`;
+  // return post(url, {
+  //   type,
+  //   orderid,
+  // }).then(handleResponse);
+  const updateAdapter = adapter('updateOrder');
+  return runMutation(graphqlUpdateOrder({ orderid, type }))
+    .then((data) => {
+      console.log(data);
+      return updateAdapter(data);
+    })
+    .then(messageAdapter);
 };
 
 export const toggleFavorite = ({ userid, restaurantid, isFavorite }) => {

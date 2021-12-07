@@ -105,6 +105,9 @@ export default function PlaceOrderPage() {
       placeOrderAction({
         ...values,
         name: restaurant.name,
+        customername: user.name,
+        customeremail: user.email,
+        customerphone: user.phone,
         price: parseFloat(
           (
             total

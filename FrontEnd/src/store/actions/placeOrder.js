@@ -16,11 +16,17 @@ export const placeOrderAction = ({
   deliveryfee,
   name,
   instructions,
+  customername,
+  customeremail,
+  customerphone,
 }) => async (dispatch, getState) => {
   const { userid } = getState().user;
   const { restaurantid, items } = getState().cart;
   try {
     const response = await placeOrder({
+      customername,
+      customeremail,
+      customerphone,
       locationid,
       zip,
       location,

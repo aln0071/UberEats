@@ -6,11 +6,19 @@ export default ({
 }) => gql`
   query {
     Orders(${queryMaker({
-    userid, type, index, offset,
+    userid,
+    type,
+    index,
+    offset,
   })}) {
       count,
       orders {
           canceled,
+          preparing,
+          onway,
+          delivered,
+          ready,
+          pickedup,
           city,
           citycode,
           created,
@@ -28,6 +36,10 @@ export default ({
           status,
           tax,
           userid,
+          customername,
+          customeremail,
+          customerphone,
+          instructions,
           zip,
           _id
       }

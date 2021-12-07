@@ -7,14 +7,10 @@ import { getOrderListAction } from './getOrders';
 export const cancelOrderAction = () => async (dispatch, getState) => {
   const { _id } = getState().orderDetailsModal;
   try {
-    const response = await updateOrder(_id, 'canceled');
-    if (response.status === true) {
-      toast.success('Success: Order canceled', toastOptions);
-      dispatch(hideOrderDetailsModalAction());
-      dispatch(getOrderListAction());
-    } else {
-      throw new Error('Failed to cancel order');
-    }
+    await updateOrder(_id, 'canceled');
+    toast.success('Success: Order canceled', toastOptions);
+    dispatch(hideOrderDetailsModalAction());
+    dispatch(getOrderListAction());
   } catch (error) {
     console.log(error);
     toast.error(createToastBody(error), toastOptions);
@@ -24,14 +20,10 @@ export const cancelOrderAction = () => async (dispatch, getState) => {
 export const changeOrderStatusAction = (type) => async (dispatch, getState) => {
   const { _id } = getState().orderDetailsModal;
   try {
-    const response = await updateOrder(_id, type);
-    if (response.status === true) {
-      toast.success('Success: Order status updated', toastOptions);
-      dispatch(hideOrderDetailsModalAction());
-      dispatch(getOrderListAction());
-    } else {
-      throw new Error(response.message);
-    }
+    await updateOrder(_id, type);
+    toast.success('Success: Order status updated', toastOptions);
+    dispatch(hideOrderDetailsModalAction());
+    dispatch(getOrderListAction());
   } catch (error) {
     console.log(error);
     toast.error(createToastBody(error), toastOptions);
