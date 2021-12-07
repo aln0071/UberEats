@@ -5,6 +5,7 @@ import graphqlLogin from '../graphql/queries/login';
 import graphqlRegister from '../graphql/mutations/register';
 import graphqlUpdateProfile from '../graphql/mutations/updateProfile';
 import graphqlAddDish from '../graphql/mutations/addDish';
+import graphqlUpdateDish from '../graphql/mutations/updateDish';
 import graphqlDeleteDish from '../graphql/mutations/deleteDish';
 import runMutation from '../graphql/runMutation';
 
@@ -28,6 +29,8 @@ const adapter = (dataPoint) => ({ data, errors }) => {
   }
   return data[dataPoint];
 };
+
+const messageAdapter = (message) => ({ message });
 
 export const login = (username, password) => {
   const loginAdapter = adapter('Login');
@@ -172,26 +175,50 @@ export const addDish = ({
       restaurantid,
       pictures,
     }),
-  ).then(addDishAdapter);
+  )
+    .then(addDishAdapter)
+    .then(messageAdapter);
 };
 
-export const updateDish = (dish) => {
-  const { pictures } = dish;
-  const formdata = new FormData();
-  pictures.forEach((pic) => {
-    formdata.append('image', pic);
-  });
-  Object.keys(dish).forEach((key) => {
-    if (key === 'pictures') {
-      return;
-    }
-    formdata.append(key, dish[key]);
-  });
-  const url = `${baseUrl}${urls.updateDish}`;
-  return fetch(url, {
-    method: 'POST',
-    body: formdata,
-  }).then(handleResponse);
+export const updateDish = ({
+  dishid,
+  dishname,
+  description,
+  category,
+  price,
+  restaurantid,
+  pictures,
+}) => {
+  // const { pictures } = dish;
+  // const formdata = new FormData();
+  // pictures.forEach((pic) => {
+  //   formdata.append('image', pic);
+  // });
+  // Object.keys(dish).forEach((key) => {
+  //   if (key === 'pictures') {
+  //     return;
+  //   }
+  //   formdata.append(key, dish[key]);
+  // });
+  // const url = `${baseUrl}${urls.updateDish}`;
+  // return fetch(url, {
+  //   method: 'POST',
+  //   body: formdata,
+  // }).then(handleResponse);
+  const updateDishAdapter = adapter('updateDish');
+  return runMutation(
+    graphqlUpdateDish({
+      dishid,
+      dishname,
+      description,
+      category,
+      price,
+      restaurantid,
+      pictures,
+    }),
+  )
+    .then(updateDishAdapter)
+    .then(messageAdapter);
 };
 
 export const getAllDishes = ({ userid }) => {
