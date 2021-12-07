@@ -386,6 +386,9 @@ function getOrderList(userid, type = 'c', index, offset) {
 
 async function placeOrder({
   // locationid,
+  customername,
+  customeremail,
+  customerphone,
   location,
   zip,
   citycode,
@@ -403,6 +406,9 @@ async function placeOrder({
   const date = getCurrentDateTime();
 
   return kafkaRequest(userTopic, userSubTopics.PLACE_ORDER, {
+    customername,
+    customeremail,
+    customerphone,
     items,
     restaurantid,
     userid,

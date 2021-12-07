@@ -11,6 +11,9 @@ module.exports = {
   type: GraphQLString,
   args: {
     zip: { type: GraphQLString },
+    customername: { type: GraphQLString },
+    customeremail: { type: GraphQLString },
+    customerphone: { type: GraphQLString },
     location: { type: GraphQLString },
     citycode: { type: GraphQLString },
     city: { type: GraphQLString },
