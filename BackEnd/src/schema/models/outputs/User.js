@@ -63,7 +63,16 @@ module.exports = new GraphQLObjectType({
     userid: {
       type: GraphQLString,
     },
+    restaurantid: {
+      type: GraphQLString,
+    },
     dob: {
+      type: GraphQLString,
+    },
+    hoursfrom: {
+      type: GraphQLString,
+    },
+    hoursto: {
       type: GraphQLString,
     },
   }),
