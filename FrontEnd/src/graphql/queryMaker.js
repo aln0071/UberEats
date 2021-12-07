@@ -17,9 +17,12 @@ const queryMaker = (object) => Object.keys(object).reduce((query, key) => {
     query += ', ';
   }
   if (Array.isArray(object[key])) {
+    // iterate through array
     return `${query} ${key}: [${object[key].reduce((t, c) => {
       if (typeof c === 'object') {
         c = `{${queryMaker(c)}}`;
+      } else {
+        c = JSON.stringify(c);
       }
       if (t === '') {
         return c;
