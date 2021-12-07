@@ -3,6 +3,7 @@ import { baseUrl, urls } from './constants';
 import { post, get } from './request';
 import graphqlLogin from '../graphql/queries/login';
 import graphqlGetAddresses from '../graphql/queries/getAddresses';
+import graphqlGetDishes from '../graphql/queries/getDishes';
 import graphqlRegister from '../graphql/mutations/register';
 import graphqlUpdateProfile from '../graphql/mutations/updateProfile';
 import graphqlAddDish from '../graphql/mutations/addDish';
@@ -224,8 +225,10 @@ export const updateDish = ({
 };
 
 export const getAllDishes = ({ userid }) => {
-  const url = `${baseUrl}${urls.getDishes}?restaurantid=${userid || ''}`;
-  return get(url).then(handleResponse);
+  // const url = `${baseUrl}${urls.getDishes}?restaurantid=${userid || ''}`;
+  // return get(url).then(handleResponse);
+  const dishAdapter = adapter('Dishes');
+  return runQuery(graphqlGetDishes(userid || '')).then(dishAdapter);
 };
 
 export const getAllRestaurants = ({ citycode, statecode, countrycode }) => {
