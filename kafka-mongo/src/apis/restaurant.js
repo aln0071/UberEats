@@ -14,6 +14,15 @@ async function getAllRestaurants({ countrycode }) {
   }));
 }
 
+async function getRestaurant({ restaurantid }) {
+  if (restaurantid === undefined || restaurantid === '') {
+    return {};
+  }
+  const data = await User.findOne({ type: 'r', _id: restaurantid });
+  return data;
+}
+
 module.exports = {
   getAllRestaurants,
+  getRestaurant,
 };

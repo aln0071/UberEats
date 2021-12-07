@@ -1,6 +1,9 @@
 const { Order } = require('../models/OrderModel');
 
 async function placeOrder({
+  customername,
+  customeremail,
+  customerphone,
   items,
   restaurantid,
   userid,
@@ -33,6 +36,9 @@ async function placeOrder({
     name,
     items,
     instructions,
+    customername,
+    customeremail,
+    customerphone,
   });
   const response = await order.save();
   return response._id;

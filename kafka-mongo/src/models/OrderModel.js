@@ -30,6 +30,9 @@ const orderSchema = new Schema({
   citycode: Schema.Types.ObjectId,
   city: String,
   instructions: String,
+  customername: String,
+  customeremail: String,
+  customerphone: String,
 });
 
 const Order = mongoose.model('Orders', orderSchema);
