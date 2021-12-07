@@ -4,6 +4,7 @@ import { post, get } from './request';
 import graphqlLogin from '../graphql/queries/login';
 import graphqlGetAddresses from '../graphql/queries/getAddresses';
 import graphqlGetDishes from '../graphql/queries/getDishes';
+import graphqlGetOrders from '../graphql/queries/getOrders';
 import graphqlRegister from '../graphql/mutations/register';
 import graphqlUpdateProfile from '../graphql/mutations/updateProfile';
 import graphqlAddDish from '../graphql/mutations/addDish';
@@ -268,8 +269,15 @@ export const placeOrder = (params) => {
 };
 
 export const getOrderList = (userid, type, ordersPerPage, startingIndex) => {
-  const url = `${baseUrl}${urls.getOrderList}?userid=${userid}&type=${type}&index=${startingIndex}&offset=${ordersPerPage}`;
-  return get(url).then(handleResponse);
+  const orderAdapter = adapter('Orders');
+  return runQuery(
+    graphqlGetOrders({
+      userid,
+      type,
+      index: startingIndex,
+      offset: ordersPerPage,
+    }),
+  ).then(orderAdapter);
 };
 
 export const updateOrder = (orderid, type) => {
